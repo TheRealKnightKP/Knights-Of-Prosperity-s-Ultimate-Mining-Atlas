@@ -14,7 +14,7 @@
       "usefulnessRating": 3,
       "miningRating": 4,
       "qualityRating": 3,
-      "isPriority": false,
+      "isPriority": true,
       "id": "mmxmtnrrf6ie"
     },
     {
@@ -33,9 +33,81 @@
       "qualityRating": 4,
       "isPriority": false,
       "id": "mmxmxp7p16ex"
+    },
+    {
+      "location": "Hurston",
+      "primaryMineral": "Ouratite",
+      "rsSignature": 3370,
+      "secondaryMineral": "Ouratite",
+      "tertiaryMineral": "Agricium",
+      "quality": "550",
+      "findDifficulty": "Moderate",
+      "mineDifficulty": "Hard",
+      "requiredShip": "Id say a fully kitted Prospector might be able to get the higher quality rocks. Something weird to note, it has two qualities of Ouratite always, one better quality, one lesser.",
+      "primaryUse": "Primarily used in Armor",
+      "usefulnessRating": 4,
+      "miningRating": 4,
+      "qualityRating": 3,
+      "isPriority": true,
+      "id": "mmy33dzmhinb"
+    },
+    {
+      "location": "Hurston",
+      "primaryMineral": "Aluminium",
+      "rsSignature": 4285,
+      "secondaryMineral": "Corundum",
+      "tertiaryMineral": "Aluminium",
+      "quality": "550",
+      "findDifficulty": "Easy",
+      "mineDifficulty": "Moderate",
+      "requiredShip": "Any ship is capable",
+      "primaryUse": "Mostly used in weapons it seems.",
+      "usefulnessRating": 4,
+      "miningRating": 3,
+      "qualityRating": 3,
+      "isPriority": true,
+      "id": "mmy3a5cn9gvq"
+    },
+    {
+      "location": "Hurston",
+      "primaryMineral": "Tin",
+      "rsSignature": 4195,
+      "secondaryMineral": "Copper",
+      "tertiaryMineral": "Tin",
+      "quality": "550",
+      "findDifficulty": "Easy",
+      "mineDifficulty": "Easy",
+      "requiredShip": "Any ship works",
+      "primaryUse": "N/A",
+      "usefulnessRating": 3,
+      "miningRating": 3,
+      "qualityRating": 3,
+      "isPriority": false,
+      "id": "mmy3lcg2t2rv"
     }
   ],
   "log": [
+        {
+      "title": "Day 1:  Accident",
+      "body": "Just as we arrived to Arial's orbit, the Golem exploded in Platinum Sun's hangar. It seems we shall go rest and in day 2 go get another one.",
+      "tag": "field",
+      "id": "mmy3tuv6fpk1",
+      "ts": 1773963103362
+    },
+    {
+      "title": "Day 1:  Hurston",
+      "body": "We have logged Hurston's minerals. Aluminum, tin, and most importantly Ouratite, all at around 550 quality, and with secondary materials of Agricium and/or Copper. Its good for a start, and we have gathered some materials.",
+      "tag": "field",
+      "id": "mmy3tuv6fpk1",
+      "ts": 1773963103362
+    },
+    {
+      "title": "Day 1: Premature start",
+      "body": "Due to some issues, instead of starting with the Pre-Expedition blueprint gathering and the in-expedition mining, we shall just log whats located on Pyro, and then after the issues are resolved we shall go to Stanton and explore there. \n\nToday we start by loading everything into the Platinum Sun: The Golem, the Mining Pods, the Food, water, and mining equipment.",
+      "tag": "note",
+      "id": "mmy0d563mcnp",
+      "ts": 1773957284715
+    },
     {
       "title": "The Start",
       "body": "This is where we start. Currently, above Bloom, in Orbituary station, we await for the Platinum Sun to prepare. We shall depart with it, inside of the Platinum Sun will be a Golem for ship mining, an ATLS GEO for FPS/Ground mining, a Fury LX for scouting fast. Then in one pod theres various boxes holding supplies like food, water, and mining modules, and the Fabricator. Then, in the second Pod, we hold Golem mining bags for when we are on transit but need more space. Finally, the last pod will hold all our materials that have been refined.",
@@ -44,6 +116,6 @@
       "ts": 1773931353659
     }
   ],
-  "exportedAt": "2026-03-19T15:42:51.860Z",
+  "exportedAt": "2026-03-19T23:32:13.376Z",
   "version": "4.7"
 }
