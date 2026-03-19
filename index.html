@@ -9,11 +9,14 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
 :root{
-  --bg:#020810;--bg2:#040d18;--bg3:#071525;--surface:#0a1d30;--surface2:#0f2640;
-  --border:#1a3f60;--border2:#2a5f88;--gold:#e8a020;--gold2:#ffcc55;
-  --cyan:#00c8e8;--cyan2:#55eeff;--red:#e83030;--red2:#ff6666;
-  --green:#20e880;--purple:#cc44ff;--orange:#e87820;--yellow:#e8c820;
-  --text:#a8cce0;--text2:#c8dde8;--textdim:#4a7090;--radius:4px;
+  --bg:#020810;--bg2:#040d18;--bg3:#071525;
+  --surface:#0a1d30;--surface2:#0f2640;
+  --border:#1a3f60;--border2:#2a5f88;
+  --gold:#e8a020;--gold2:#ffcc55;
+  --cyan:#00c8e8;--cyan2:#55eeff;
+  --red:#e83030;--green:#20e880;--purple:#cc44ff;
+  --text:#a8cce0;--text2:#c8dde8;--textdim:#4a7090;
+  --radius:4px;
 }
 body{background:var(--bg);color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:15px;overflow:hidden}
 body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,180,230,0.018) 2px,rgba(0,180,230,0.018) 4px)}
@@ -34,27 +37,27 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;b
 .login-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);margin-bottom:28px}
 .field-group{margin-bottom:18px}
 .field-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;display:block}
-.field-input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-family:'Share Tech Mono',monospace;font-size:14px;padding:10px 14px;outline:none;transition:border-color .2s,box-shadow .2s;border-radius:var(--radius)}
+.field-input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-family:'Share Tech Mono',monospace;font-size:14px;padding:10px 14px;outline:none;transition:border-color .2s;border-radius:var(--radius)}
 .field-input:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,200,232,.1)}
 .login-error{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--red);letter-spacing:2px;text-align:center;min-height:20px;margin-bottom:12px}
 .btn-login{width:100%;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'Orbitron',monospace;font-size:12px;letter-spacing:4px;padding:13px;cursor:pointer;transition:all .2s;text-transform:uppercase}
 .btn-login:hover{background:var(--gold);color:#000;box-shadow:0 0 20px rgba(232,160,32,.3)}
 
-/* APP SHELL */
+/* SHELL */
 #app{position:fixed;inset:0;display:flex;flex-direction:column;z-index:1}
 #header{height:56px;flex-shrink:0;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(7,21,37,.98),rgba(4,13,24,.98));display:flex;align-items:center;padding:0 24px;gap:20px;position:relative}
 #header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.4}
-.header-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:14px;color:var(--gold);letter-spacing:2px;white-space:nowrap;text-shadow:0 0 12px rgba(232,160,32,.4)}
-.header-logo span{color:var(--cyan);font-size:10px;font-weight:400;margin-left:6px;letter-spacing:4px}
+.header-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:15px;color:var(--gold);letter-spacing:2px;white-space:nowrap;text-shadow:0 0 12px rgba(232,160,32,.4)}
+.header-logo span{color:var(--cyan);font-size:11px;font-weight:400;margin-left:8px;letter-spacing:4px}
 .header-sep{width:1px;height:24px;background:var(--border);flex-shrink:0}
-.header-nav{display:flex;gap:1px;flex:1}
-.nav-tab{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;padding:0 13px;height:40px;display:flex;align-items:center;cursor:pointer;color:var(--textdim);border:1px solid transparent;transition:all .2s;background:transparent;position:relative;text-transform:uppercase;white-space:nowrap}
+.header-nav{display:flex;gap:2px;flex:1}
+.nav-tab{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;padding:0 14px;height:40px;display:flex;align-items:center;cursor:pointer;color:var(--textdim);border:1px solid transparent;transition:all .2s;background:transparent;position:relative;text-transform:uppercase}
 .nav-tab:hover{color:var(--text2);border-color:var(--border)}
 .nav-tab.active{color:var(--cyan);border-color:var(--border2);background:rgba(0,200,232,.05)}
 .nav-tab.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:var(--cyan)}
-.header-user{display:flex;align-items:center;gap:8px;margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim);flex-shrink:0}
+.header-user{display:flex;align-items:center;gap:10px;margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--textdim)}
 .user-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
-.btn-logout{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--textdim);background:transparent;border:1px solid var(--border);padding:4px 10px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.btn-logout{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--textdim);background:transparent;border:1px solid var(--border);padding:4px 12px;cursor:pointer;transition:all .2s;text-transform:uppercase}
 .btn-logout:hover{color:var(--red);border-color:var(--red)}
 
 /* MAIN */
@@ -65,134 +68,177 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;b
 .tab-panel::-webkit-scrollbar-track{background:transparent}
 .tab-panel::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
-/* SECTION HEAD */
-.section-head{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
-.section-title{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--gold);letter-spacing:3px;text-transform:uppercase;white-space:nowrap}
-.section-count{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim);background:var(--surface);border:1px solid var(--border);padding:2px 10px;border-radius:20px;white-space:nowrap}
+/* SECTION */
+.section-head{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.section-title{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--gold);letter-spacing:3px;text-transform:uppercase}
+.section-count{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--textdim);background:var(--surface);border:1px solid var(--border);padding:2px 10px;border-radius:20px}
 .section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);min-width:20px}
-.btn-add{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:7px 14px;cursor:pointer;transition:all .2s;text-transform:uppercase;white-space:nowrap}
-.btn-add:hover{background:var(--gold);color:#000;box-shadow:0 0 14px rgba(232,160,32,.3)}
+.btn-add{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:7px 16px;cursor:pointer;transition:all .2s;text-transform:uppercase;white-space:nowrap;border-radius:var(--radius)}
+.btn-add:hover{background:var(--gold);color:#000;box-shadow:0 0 16px rgba(232,160,32,.3)}
+
+/* DATA TOOLS */
+.data-tools-row{display:flex;gap:8px;align-items:center}
+.btn-tool{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;padding:6px 14px;border:1px solid var(--border);background:transparent;color:var(--textdim);cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
+.btn-tool.export{border-color:var(--green);color:var(--green)}
+.btn-tool.export:hover{background:rgba(32,232,128,.06)}
+.btn-tool.import{border-color:var(--cyan);color:var(--cyan)}
+.btn-tool.import:hover{background:rgba(0,200,232,.06)}
+#import-file-input{display:none}
 
 /* FILTER BAR */
-.filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);align-items:flex-end}
-.filter-field{display:flex;flex-direction:column;gap:5px}
-.filter-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase}
-.filter-input,.filter-select{background:var(--surface);border:1px solid var(--border);color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:13px;padding:7px 10px;outline:none;transition:border-color .2s;border-radius:var(--radius)}
-.filter-input:focus,.filter-select:focus{border-color:var(--cyan)}
+.filter-bar{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius)}
+.filter-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase;white-space:nowrap}
+.filter-select,.filter-search{background:var(--surface);border:1px solid var(--border);color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:13px;padding:5px 10px;outline:none;border-radius:var(--radius);transition:border-color .2s}
+.filter-select:focus,.filter-search:focus{border-color:var(--cyan)}
 .filter-select option{background:var(--bg3)}
-.filter-input{width:160px}
-.filter-select{width:140px}
-.btn-clear-filter{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;background:transparent;border:1px solid var(--border);color:var(--textdim);padding:7px 12px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius);align-self:flex-end}
-.btn-clear-filter:hover{border-color:var(--red2);color:var(--red2)}
-.priority-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;align-self:flex-end;padding:7px 12px;border:1px solid var(--border);border-radius:var(--radius);transition:all .15s;background:transparent}
-.priority-toggle:hover{border-color:var(--gold)}
-.priority-toggle.active{border-color:var(--gold);background:rgba(232,160,32,.08)}
-.priority-toggle-icon{font-size:13px;color:var(--textdim);transition:color .15s}
-.priority-toggle.active .priority-toggle-icon{color:var(--gold)}
-.priority-toggle-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--textdim);text-transform:uppercase;transition:color .15s}
-.priority-toggle.active .priority-toggle-label{color:var(--gold)}
+.filter-search{width:140px}
+.filter-sep{width:1px;height:20px;background:var(--border);flex-shrink:0}
+.btn-filter-reset{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--textdim);background:transparent;border:1px solid var(--border);padding:5px 10px;cursor:pointer;transition:all .15s;text-transform:uppercase;border-radius:var(--radius)}
+.btn-filter-reset:hover{border-color:var(--cyan);color:var(--cyan)}
+.priority-filter-label{display:flex;align-items:center;gap:6px;cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--textdim);text-transform:uppercase;user-select:none}
+.priority-filter-label input{accent-color:var(--gold);width:13px;height:13px;cursor:pointer}
+.priority-filter-label.active{color:var(--gold)}
 
-/* ATLAS CARDS */
-#atlas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+/* ATLAS GRID */
+#atlas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
 .mineral-card{background:var(--bg2);border:1px solid var(--border);position:relative;overflow:hidden;transition:border-color .2s,transform .15s;animation:fadeIn .3s ease;border-radius:var(--radius)}
 .mineral-card:hover{border-color:var(--border2);transform:translateY(-2px)}
-.mineral-card.priority{border-color:rgba(232,160,32,.35)}
-.mineral-card.priority::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
-.card-header{padding:12px 14px 10px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-.card-primary-row{display:flex;align-items:center;gap:7px}
+.mineral-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--gold));opacity:0;transition:opacity .2s}
+.mineral-card:hover::before{opacity:1}
+.mineral-card.priority-card{border-color:rgba(232,160,32,.5)}
+.mineral-card.priority-card::before{opacity:1;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.card-header{padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.card-primary-wrap{display:flex;align-items:center;gap:8px}
 .card-primary{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--gold2);letter-spacing:1px}
-.priority-star{font-size:13px;color:var(--gold);text-shadow:0 0 8px rgba(232,160,32,.6)}
+.card-location-name{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--cyan);letter-spacing:2px;margin-top:3px;text-transform:uppercase}
+.priority-star-badge{font-size:13px;color:var(--gold);filter:drop-shadow(0 0 4px rgba(232,160,32,.7));animation:pulsegold 2s ease-in-out infinite}
+@keyframes pulsegold{0%,100%{opacity:1}50%{opacity:.5}}
 .card-minerals-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
 .mineral-tag{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 8px;border-radius:2px;text-transform:uppercase}
 .tag-secondary{background:rgba(0,200,232,.1);border:1px solid rgba(0,200,232,.3);color:var(--cyan)}
 .tag-tertiary{background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.2);color:var(--gold)}
+.rs-badge{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 8px;border-radius:2px;background:rgba(204,68,255,.1);border:1px solid rgba(204,68,255,.3);color:var(--purple)}
 .card-actions{display:flex;gap:5px;flex-shrink:0}
-.btn-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--border);cursor:pointer;transition:all .15s;font-size:11px;color:var(--textdim);border-radius:var(--radius)}
-.btn-icon:hover.edit{border-color:var(--cyan);color:var(--cyan);background:rgba(0,200,232,.08)}
-.btn-icon:hover.del{border-color:var(--red);color:var(--red);background:rgba(232,48,48,.08)}
-.btn-icon:hover.prio{border-color:var(--gold);color:var(--gold);background:rgba(232,160,32,.08)}
-.btn-icon.prio.on{color:var(--gold);border-color:rgba(232,160,32,.5);background:rgba(232,160,32,.06)}
-.card-body{padding:10px 14px}
-.card-row{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
-.card-key{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase;flex-shrink:0;width:104px}
+.btn-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--border);cursor:pointer;transition:all .15s;font-size:12px;color:var(--textdim);border-radius:var(--radius)}
+.btn-icon.edit:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,200,232,.08)}
+.btn-icon.del:hover{border-color:var(--red);color:var(--red);background:rgba(232,48,48,.08)}
+.btn-icon.pri:hover,.btn-icon.pri.on{border-color:var(--gold);color:var(--gold);background:rgba(232,160,32,.08)}
+.card-body{padding:12px 16px}
+.card-row{display:flex;align-items:baseline;gap:8px;margin-bottom:7px}
+.card-key{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase;flex-shrink:0;width:110px}
 .card-val{font-size:13px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-weight:500}
 .diff-badge{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 8px;border-radius:2px;text-transform:uppercase}
 .diff-easy{background:rgba(32,232,128,.1);border:1px solid rgba(32,232,128,.3);color:var(--green)}
-.diff-moderate{background:rgba(232,200,32,.1);border:1px solid rgba(232,200,32,.3);color:var(--yellow)}
-.diff-hard{background:rgba(232,120,32,.1);border:1px solid rgba(232,120,32,.3);color:var(--orange)}
+.diff-moderate{background:rgba(232,200,32,.1);border:1px solid rgba(232,200,32,.3);color:#e8c820}
+.diff-hard{background:rgba(232,120,32,.1);border:1px solid rgba(232,120,32,.3);color:#e87820}
 .diff-veryhard{background:rgba(232,48,48,.1);border:1px solid rgba(232,48,48,.3);color:var(--red)}
 .diff-extreme{background:rgba(180,0,255,.1);border:1px solid rgba(180,0,255,.3);color:var(--purple)}
 .stars{display:flex;gap:2px;align-items:center}
 .star{font-size:11px;color:var(--border)}
 .star.on{color:var(--gold)}
-.card-locations{margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
-.loc-chip-list{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
-.loc-chip{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 9px;border:1px solid var(--border);color:var(--textdim);border-radius:2px;background:rgba(255,255,255,.02)}
+.no-results{grid-column:1/-1;text-align:center;padding:40px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--textdim);letter-spacing:2px}
 
 /* FORM */
-#form-panel .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:840px}
-.form-section-label{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;grid-column:1/-1;padding-bottom:6px;border-bottom:1px solid var(--border);margin-top:4px;margin-bottom:-6px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:860px}
+.form-section-label{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;grid-column:1/-1;margin-top:4px;margin-bottom:-8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
 .form-full{grid-column:1/-1}
 .form-field{display:flex;flex-direction:column;gap:6px}
 .form-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase}
 .form-input,.form-select,.form-textarea{background:var(--surface);border:1px solid var(--border);color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:14px;padding:9px 12px;outline:none;transition:border-color .2s,box-shadow .2s;border-radius:var(--radius);width:100%}
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,200,232,.08)}
 .form-select option{background:var(--bg3)}
-.form-textarea{resize:vertical;min-height:80px;font-family:'Rajdhani',sans-serif}
-#locations-list{display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
-.loc-entry{background:var(--bg3);border:1px solid var(--border);padding:10px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:10px;align-items:center;border-radius:var(--radius)}
+.form-textarea{resize:vertical;min-height:80px}
+/* RS display in form */
+.rs-display{display:flex;align-items:center;gap:10px;padding:9px 14px;background:rgba(204,68,255,.06);border:1px solid rgba(204,68,255,.25);border-radius:var(--radius)}
+.rs-display-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase}
+.rs-display-value{font-family:'Share Tech Mono',monospace;font-size:16px;color:var(--purple);letter-spacing:2px;font-weight:700}
+.rs-display-none{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--textdim);letter-spacing:1px}
+/* location rows */
+#locations-list{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.loc-entry{background:var(--bg3);border:1px solid var(--border);padding:12px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:10px;align-items:center;border-radius:var(--radius)}
 .loc-entry .form-label{font-size:9px}
 .loc-entry .form-input{padding:6px 10px;font-size:13px}
-.btn-rm-loc{width:26px;height:26px;background:transparent;border:1px solid var(--border);color:var(--red);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .15s;border-radius:var(--radius);flex-shrink:0}
+.btn-rm-loc{width:28px;height:28px;background:transparent;border:1px solid var(--border);color:var(--red);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .15s;border-radius:var(--radius);flex-shrink:0}
 .btn-rm-loc:hover{background:rgba(232,48,48,.1);border-color:var(--red)}
-.btn-add-loc{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;background:transparent;border:1px dashed var(--border2);color:var(--textdim);padding:8px 14px;cursor:pointer;transition:all .15s;text-transform:uppercase;border-radius:var(--radius);width:100%}
+.btn-add-loc{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;background:transparent;border:1px dashed var(--border2);color:var(--textdim);padding:8px 16px;cursor:pointer;transition:all .15s;text-transform:uppercase;border-radius:var(--radius);width:100%}
 .btn-add-loc:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,200,232,.04)}
-.star-input{display:flex;gap:3px;align-items:center}
+.star-input{display:flex;gap:4px;align-items:center}
 .star-btn{font-size:18px;cursor:pointer;color:var(--border);transition:color .1s;background:none;border:none;padding:0 1px}
 .star-btn.on{color:var(--gold)}
-.priority-check-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg3);cursor:pointer;transition:all .15s}
-.priority-check-row:hover{border-color:var(--gold)}
-.priority-check-row input{accent-color:var(--gold);width:16px;height:16px;cursor:pointer}
-.priority-check-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase}
-.form-actions{grid-column:1/-1;display:flex;gap:10px;margin-top:6px}
-.btn-submit{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;background:var(--gold);color:#000;border:none;padding:11px 26px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius);font-weight:700}
-.btn-submit:hover{background:var(--gold2);box-shadow:0 0 18px rgba(232,160,32,.4)}
-.btn-cancel{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;background:transparent;border:1px solid var(--border);color:var(--textdim);padding:11px 20px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
+.priority-form-row{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:border-color .2s;user-select:none}
+.priority-form-row:hover{border-color:rgba(232,160,32,.4)}
+.priority-form-row.on{border-color:var(--gold);background:rgba(232,160,32,.05)}
+.priority-form-check{width:16px;height:16px;border:1px solid var(--border);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:10px;color:transparent;transition:all .15s;flex-shrink:0}
+.priority-form-row.on .priority-form-check{background:var(--gold);border-color:var(--gold);color:#000}
+.priority-form-label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--textdim);text-transform:uppercase}
+.priority-form-row.on .priority-form-label{color:var(--gold2)}
+.form-actions{grid-column:1/-1;display:flex;gap:12px;margin-top:8px}
+.btn-submit{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;background:var(--gold);color:#000;border:none;padding:11px 28px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius);font-weight:700}
+.btn-submit:hover{background:var(--gold2);box-shadow:0 0 20px rgba(232,160,32,.4)}
+.btn-cancel{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;background:transparent;border:1px solid var(--border);color:var(--textdim);padding:11px 24px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
 .btn-cancel:hover{border-color:var(--border2);color:var(--text2)}
 
 /* SEARCH */
-.search-bar-wrap{max-width:680px;position:relative;margin-bottom:12px}
-.search-input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:15px;padding:12px 16px 12px 42px;outline:none;transition:all .2s;border-radius:var(--radius)}
+.search-bar-wrap{max-width:700px;position:relative;margin-bottom:12px}
+.search-input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:16px;padding:13px 16px 13px 44px;outline:none;transition:all .2s;border-radius:var(--radius)}
 .search-input:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,200,232,.08)}
-.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--textdim);pointer-events:none}
-.search-mode-row{display:flex;gap:8px;margin-bottom:18px}
-.mode-btn{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;padding:6px 14px;border:1px solid var(--border);background:transparent;color:var(--textdim);cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--textdim);pointer-events:none}
+.search-mode-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.mode-btn{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;padding:6px 16px;border:1px solid var(--border);background:transparent;color:var(--textdim);cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
 .mode-btn.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,200,232,.07)}
-.search-results{display:flex;flex-direction:column;gap:10px}
-.result-card{background:var(--bg2);border:1px solid var(--border);padding:14px 18px;animation:fadeIn .2s ease;border-radius:var(--radius)}
-.result-card-title{font-family:'Orbitron',monospace;font-size:12px;color:var(--gold);margin-bottom:10px;letter-spacing:1px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mode-btn.rs-mode.active{border-color:var(--purple);color:var(--purple);background:rgba(204,68,255,.07)}
+.search-results{display:flex;flex-direction:column;gap:12px}
+.result-card{background:var(--bg2);border:1px solid var(--border);padding:16px 20px;animation:fadeIn .2s ease;border-radius:var(--radius)}
+.result-card-title{font-family:'Orbitron',monospace;font-size:13px;color:var(--gold);margin-bottom:12px;letter-spacing:1px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .result-mineral-name{color:var(--cyan)}
-.result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
 .result-row{display:flex;flex-direction:column;gap:2px}
 .result-key{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase}
 .result-val{font-size:13px;color:var(--text2);font-weight:500}
 
+/* RS LOOKUP */
+.rs-lookup-box{max-width:600px;background:var(--bg2);border:1px solid rgba(204,68,255,.3);border-radius:var(--radius);padding:24px;margin-bottom:24px}
+.rs-lookup-title{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:3px;color:var(--purple);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.rs-input-row{display:flex;gap:12px;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap}
+.rs-input-field{display:flex;flex-direction:column;gap:6px;flex:1;min-width:160px}
+.rs-number-input{background:var(--surface);border:1px solid rgba(204,68,255,.4);color:var(--purple);font-family:'Share Tech Mono',monospace;font-size:22px;padding:10px 16px;outline:none;transition:all .2s;border-radius:var(--radius);width:100%;letter-spacing:3px}
+.rs-number-input:focus{border-color:var(--purple);box-shadow:0 0 0 2px rgba(204,68,255,.1)}
+.rs-number-input::placeholder{color:var(--textdim);font-size:14px}
+.btn-rs-lookup{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;background:rgba(204,68,255,.15);border:1px solid var(--purple);color:var(--purple);padding:11px 22px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius);white-space:nowrap}
+.btn-rs-lookup:hover{background:rgba(204,68,255,.25);box-shadow:0 0 14px rgba(204,68,255,.25)}
+.rs-result-area{min-height:60px}
+.rs-result-match{padding:14px 18px;border-radius:var(--radius);background:rgba(204,68,255,.08);border:1px solid rgba(204,68,255,.3);display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.rs-result-mineral{font-family:'Orbitron',monospace;font-size:18px;color:var(--gold2);letter-spacing:2px;font-weight:700}
+.rs-result-detail{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim);letter-spacing:2px;line-height:1.6}
+.rs-result-none{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--textdim);letter-spacing:2px;padding:14px 0}
+.rs-possible-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.rs-possible-item{display:flex;align-items:center;gap:12px;padding:8px 14px;background:rgba(204,68,255,.05);border:1px solid rgba(204,68,255,.15);border-radius:var(--radius)}
+.rs-possible-mineral{font-family:'Orbitron',monospace;font-size:12px;color:var(--text2);letter-spacing:1px;flex:1}
+.rs-possible-detail{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:1px}
+.rs-possible-match{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--purple)}
+.rs-divider{height:1px;background:var(--border);margin:16px 0}
+.rs-ref-title{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--textdim);text-transform:uppercase;margin-bottom:10px}
+.rs-ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px}
+.rs-ref-item{display:flex;justify-content:space-between;align-items:center;padding:5px 10px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:2px}
+.rs-ref-name{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;color:var(--text2)}
+.rs-ref-val{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--purple);letter-spacing:1px}
+
 /* LOCATIONS */
-#locations-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+#locations-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:16px}
 .loc-card{background:var(--bg2);border:1px solid var(--border);overflow:hidden;animation:fadeIn .3s ease;border-radius:var(--radius)}
-.loc-card-header{padding:10px 14px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(0,200,232,.06),transparent);display:flex;align-items:center;gap:10px}
-.loc-card-name{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--cyan);letter-spacing:2px;flex:1}
+.loc-card-header{padding:12px 16px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(0,200,232,.06),transparent);display:flex;align-items:center;gap:10px}
+.loc-card-name{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--cyan);letter-spacing:2px;flex:1}
 .loc-mineral-count{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim)}
-.loc-card-body{padding:0}
-.loc-mineral-row{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid rgba(26,63,96,.5);transition:background .15s}
+.loc-mineral-row{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid rgba(26,63,96,.5);transition:background .15s}
 .loc-mineral-row:last-child{border-bottom:none}
 .loc-mineral-row:hover{background:rgba(0,200,232,.03)}
-.loc-min-name{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;color:var(--gold2);min-width:120px}
+.loc-min-name{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;color:var(--gold2);min-width:120px}
 .loc-min-role{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;padding:1px 6px;border-radius:2px}
 .role-primary{background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.25);color:var(--gold)}
 .role-secondary{background:rgba(0,200,232,.1);border:1px solid rgba(0,200,232,.25);color:var(--cyan)}
 .role-tertiary{background:rgba(160,0,255,.1);border:1px solid rgba(160,0,255,.25);color:var(--purple)}
-.loc-min-quality{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text2);margin-left:auto}
+.loc-min-rs{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--purple);letter-spacing:1px;margin-left:auto}
+.loc-min-quality{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text2)}
 .loc-min-ratings{display:flex;gap:8px;align-items:center}
 .loc-rating-group{display:flex;flex-direction:column;align-items:center;gap:1px}
 .loc-rating-label{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--textdim);letter-spacing:1px;text-transform:uppercase}
@@ -200,63 +246,52 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;b
 .loc-star{font-size:9px;color:var(--border)}
 .loc-star.on{color:var(--gold)}
 
-/* EXPEDITION LOG */
-.log-toolbar{display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
-.log-system-filter{display:flex;gap:6px;flex-wrap:wrap}
-.sys-btn{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;padding:5px 12px;border:1px solid var(--border);background:transparent;color:var(--textdim);cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
-.sys-btn.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,200,232,.07)}
-.btn-new-log{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;background:transparent;border:1px solid var(--green);color:var(--green);padding:7px 14px;cursor:pointer;transition:all .2s;text-transform:uppercase;white-space:nowrap;margin-left:auto}
-.btn-new-log:hover{background:var(--green);color:#000}
-.log-entries{display:flex;flex-direction:column;gap:10px}
-.log-entry{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;animation:fadeIn .3s ease;transition:border-color .15s}
-.log-entry:hover{border-color:var(--border2)}
-.log-entry-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.15);flex-wrap:wrap}
-.log-ts{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);flex-shrink:0}
-.log-location-tag{font-family:'Orbitron',monospace;font-size:10px;color:var(--cyan);letter-spacing:1px}
-.log-system-badge{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;padding:2px 8px;border-radius:2px;text-transform:uppercase}
-.sys-pyro{background:rgba(232,120,32,.1);border:1px solid rgba(232,120,32,.3);color:var(--orange)}
-.sys-stanton{background:rgba(0,200,232,.1);border:1px solid rgba(0,200,232,.25);color:var(--cyan)}
-.sys-nyx{background:rgba(160,0,255,.1);border:1px solid rgba(160,0,255,.3);color:var(--purple)}
-.log-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;color:var(--text2);flex:1;min-width:100px}
-.log-actions{display:flex;gap:5px;margin-left:auto}
-.log-body{padding:12px 14px}
-.log-text{font-family:'Rajdhani',sans-serif;font-size:14px;color:var(--text);line-height:1.6;white-space:pre-wrap}
-.log-compose{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:18px;margin-bottom:18px;animation:fadeIn .2s ease}
-.log-compose-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
-.log-compose-actions{display:flex;gap:10px}
-.btn-save-log{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;background:var(--green);color:#000;border:none;padding:9px 18px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius);font-weight:700}
-.btn-save-log:hover{box-shadow:0 0 14px rgba(32,232,128,.3)}
-.btn-discard{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;background:transparent;border:1px solid var(--border);color:var(--textdim);padding:9px 14px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
-.btn-discard:hover{border-color:var(--red2);color:var(--red2)}
-
-/* DATA */
-.data-panel{max-width:680px}
-.data-section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px}
-.data-section-title{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:12px;text-transform:uppercase}
-.data-section-desc{font-family:'Rajdhani',sans-serif;font-size:13px;color:var(--textdim);margin-bottom:12px;line-height:1.5}
-.data-actions{display:flex;gap:10px;flex-wrap:wrap}
-.btn-export{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:9px 18px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
-.btn-export:hover{background:var(--cyan);color:#000}
-.btn-import{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:9px 18px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
-.btn-import:hover{background:var(--gold);color:#000}
-.import-file{display:none}
-.data-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:14px}
-.stat-box{background:var(--bg3);border:1px solid var(--border);padding:12px;border-radius:var(--radius);text-align:center}
-.stat-num{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;color:var(--gold);line-height:1}
-.stat-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+/* LOG */
+#panel-log .log-layout{display:grid;grid-template-columns:1fr 360px;gap:20px;height:calc(100vh - 136px)}
+.log-entries-col{display:flex;flex-direction:column;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg2)}
+.log-entries-col::-webkit-scrollbar{width:4px}
+.log-entries-col::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.log-entry{padding:14px 18px;border-bottom:1px solid var(--border);animation:fadeIn .3s ease;transition:background .15s;cursor:pointer}
+.log-entry:last-child{border-bottom:none}
+.log-entry:hover{background:rgba(0,200,232,.03)}
+.log-entry.selected{background:rgba(0,200,232,.06);border-left:2px solid var(--cyan)}
+.log-entry-header{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}
+.log-entry-title{font-family:'Orbitron',monospace;font-size:12px;color:var(--text2);letter-spacing:1px;flex:1;font-weight:600}
+.log-entry-date{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim)}
+.log-entry-body{font-size:13px;color:var(--textdim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.log-tag{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;padding:1px 6px;border-radius:2px;text-transform:uppercase;flex-shrink:0}
+.log-tag-note{background:rgba(0,200,232,.1);border:1px solid rgba(0,200,232,.25);color:var(--cyan)}
+.log-tag-field{background:rgba(32,232,128,.1);border:1px solid rgba(32,232,128,.25);color:var(--green)}
+.log-tag-alert{background:rgba(232,48,48,.1);border:1px solid rgba(232,48,48,.25);color:var(--red)}
+.btn-log-del{width:24px;height:24px;background:transparent;border:1px solid transparent;color:var(--textdim);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius);transition:all .15s;flex-shrink:0}
+.btn-log-del:hover{background:rgba(232,48,48,.1);border-color:var(--red);color:var(--red)}
+.log-right-col{display:flex;flex-direction:column;gap:14px}
+.log-compose{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:10px}
+.log-compose-title{font-family:'Orbitron',monospace;font-size:11px;color:var(--gold);letter-spacing:3px;text-transform:uppercase}
+.log-compose-divider{height:1px;background:var(--border)}
+.btn-log-post{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;background:var(--cyan);color:#000;border:none;padding:9px 18px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius);font-weight:700;align-self:flex-end}
+.btn-log-post:hover{background:var(--cyan2);box-shadow:0 0 14px rgba(0,200,232,.3)}
+.log-detail{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;flex:1;overflow-y:auto;min-height:0}
+.log-detail-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px;opacity:.35}
+.log-detail-empty .icon{font-size:28px}
+.log-detail-empty .txt{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase}
+.log-detail-title{font-family:'Orbitron',monospace;font-size:14px;color:var(--text2);letter-spacing:1px;margin-bottom:4px;font-weight:600}
+.log-detail-meta{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.log-detail-body{font-size:14px;color:var(--text2);line-height:1.75;white-space:pre-wrap}
+.log-empty-msg{padding:30px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase}
 
 /* MISC */
 .empty-state{text-align:center;padding:60px 20px}
-.empty-icon{font-size:44px;margin-bottom:14px;opacity:.4}
-.empty-title{font-family:'Orbitron',monospace;font-size:12px;color:var(--textdim);letter-spacing:3px;margin-bottom:8px}
+.empty-icon{font-size:48px;margin-bottom:16px;opacity:.4}
+.empty-title{font-family:'Orbitron',monospace;font-size:13px;color:var(--textdim);letter-spacing:3px;margin-bottom:8px}
 .empty-sub{font-size:13px;color:var(--textdim);opacity:.7}
-#toast{position:fixed;bottom:22px;right:22px;z-index:9000;display:flex;flex-direction:column;gap:8px}
-.toast-item{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;padding:9px 16px;border-radius:var(--radius);animation:slideIn .3s ease}
+#toast{position:fixed;bottom:24px;right:24px;z-index:9000;display:flex;flex-direction:column;gap:8px}
+.toast-item{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;padding:10px 18px;border-radius:var(--radius);animation:slideIn .3s ease}
 .toast-success{background:rgba(32,232,128,.15);border:1px solid var(--green);color:var(--green)}
 .toast-error{background:rgba(232,48,48,.15);border:1px solid var(--red);color:var(--red)}
 .toast-info{background:rgba(0,200,232,.15);border:1px solid var(--cyan);color:var(--cyan)}
 @keyframes slideIn{from{transform:translateX(60px);opacity:0}to{transform:none;opacity:1}}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .hidden{display:none!important}
 </style>
 </head>
@@ -291,12 +326,11 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;b
     <div class="header-logo">UEE MINING ATLAS <span>v4.7</span></div>
     <div class="header-sep"></div>
     <div class="header-nav">
-      <button class="nav-tab active" onclick="setTab('atlas',this)">⬡ ATLAS</button>
-      <button class="nav-tab" onclick="setTab('form',this)">+ ADD</button>
-      <button class="nav-tab" onclick="setTab('search',this)">⌕ SEARCH</button>
-      <button class="nav-tab" onclick="setTab('locations',this)">◈ LOCATIONS</button>
-      <button class="nav-tab" onclick="setTab('log',this)">📋 EXP. LOG</button>
-      <button class="nav-tab" onclick="setTab('data',this)">⇅ DATA</button>
+      <button class="nav-tab active" id="tab-atlas" onclick="setTab('atlas',this)">⬡ ATLAS</button>
+      <button class="nav-tab" id="tab-form" onclick="setTab('form',this)">+ ADD ENTRY</button>
+      <button class="nav-tab" id="tab-search" onclick="setTab('search',this)">⌕ SEARCH</button>
+      <button class="nav-tab" id="tab-locations" onclick="setTab('locations',this)">◈ LOCATIONS</button>
+      <button class="nav-tab" id="tab-log" onclick="setTab('log',this)">✦ EXP. LOG</button>
     </div>
     <div class="header-user">
       <div class="user-dot"></div>
@@ -313,34 +347,34 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;b
         <div class="section-title">⬡ Mineral Registry</div>
         <div class="section-count" id="atlas-count">0 entries</div>
         <div class="section-line"></div>
-        <button class="btn-add" onclick="setTab('form',document.querySelector('[onclick*=form]'))">+ New Entry</button>
+        <div class="data-tools-row">
+          <button class="btn-tool export" onclick="exportData()">⬇ EXPORT</button>
+          <button class="btn-tool import" onclick="document.getElementById('import-file-input').click()">⬆ IMPORT</button>
+          <input type="file" id="import-file-input" accept=".json" onchange="importData(event)">
+        </div>
+        <button class="btn-add" onclick="setTab('form',document.getElementById('tab-form'))">+ New Entry</button>
       </div>
       <div class="filter-bar">
-        <div class="filter-field">
-          <div class="filter-label">Mineral Name</div>
-          <input class="filter-input" id="fl-name" placeholder="Search name…" oninput="renderAtlas()">
-        </div>
-        <div class="filter-field">
-          <div class="filter-label">Find Difficulty</div>
-          <select class="filter-select" id="fl-find" onchange="renderAtlas()">
-            <option value="">All</option><option>Easy</option><option>Moderate</option><option>Hard</option><option>Very Hard</option><option>Extreme</option>
-          </select>
-        </div>
-        <div class="filter-field">
-          <div class="filter-label">Mine Difficulty</div>
-          <select class="filter-select" id="fl-mine" onchange="renderAtlas()">
-            <option value="">All</option><option>Easy</option><option>Moderate</option><option>Hard</option><option>Very Hard</option><option>Extreme</option>
-          </select>
-        </div>
-        <div class="filter-field">
-          <div class="filter-label">Location</div>
-          <input class="filter-input" id="fl-loc" placeholder="Filter location…" oninput="renderAtlas()">
-        </div>
-        <div class="priority-toggle" id="fl-prio-toggle" onclick="togglePriorityFilter()">
-          <span class="priority-toggle-icon">★</span>
-          <span class="priority-toggle-label">Priority Only</span>
-        </div>
-        <button class="btn-clear-filter" onclick="clearFilters()">✕ Clear</button>
+        <span class="filter-label">Filter:</span>
+        <select class="filter-select" id="flt-mineral" onchange="renderAtlas()">
+          <option value="">Any Mineral</option>
+        </select>
+        <div class="filter-sep"></div>
+        <span class="filter-label">Find</span>
+        <select class="filter-select" id="flt-find" onchange="renderAtlas()">
+          <option value="">Any</option><option>Easy</option><option>Moderate</option><option>Hard</option><option>Very Hard</option><option>Extreme</option>
+        </select>
+        <span class="filter-label">Mine</span>
+        <select class="filter-select" id="flt-mine" onchange="renderAtlas()">
+          <option value="">Any</option><option>Easy</option><option>Moderate</option><option>Hard</option><option>Very Hard</option><option>Extreme</option>
+        </select>
+        <div class="filter-sep"></div>
+        <span class="filter-label">Location</span>
+        <input class="filter-search" id="flt-loc" placeholder="Location..." oninput="renderAtlas()">
+        <div class="filter-sep"></div>
+        <label class="priority-filter-label" id="pri-filter-label"><input type="checkbox" id="flt-priority" onchange="renderAtlas();this.closest('label').classList.toggle('active',this.checked)"> ★ Priority only</label>
+        <div class="filter-sep"></div>
+        <button class="btn-filter-reset" onclick="resetFilters()">✕ Clear</button>
       </div>
       <div id="atlas-grid"></div>
     </div>
@@ -352,31 +386,65 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;b
         <div class="section-line"></div>
       </div>
       <div class="form-grid">
+        <div class="form-section-label">— Location</div>
+        <div class="form-field form-full">
+          <label class="form-label">Location Name *</label>
+          <input class="form-input" id="f-location" placeholder="e.g. Yela, Aaron Halo, Bloom, Adir...">
+        </div>
+
         <div class="form-section-label">— Mineral Composition</div>
         <div class="form-field">
           <label class="form-label">Primary Mineral *</label>
-          <input class="form-input" id="f-primary" placeholder="e.g. Quantanium">
+          <select class="form-select" id="f-primary" onchange="onPrimaryChange()">
+            <option value="">— Select primary mineral —</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Rock Signature (RS)</label>
+          <div class="rs-display" id="rs-display-box">
+            <span class="rs-display-label">RS BASE</span>
+            <span class="rs-display-none" id="rs-display-val">Select a primary mineral</span>
+          </div>
         </div>
         <div class="form-field">
           <label class="form-label">Secondary Mineral</label>
-          <input class="form-input" id="f-secondary" placeholder="e.g. Borase">
+          <select class="form-select" id="f-secondary">
+            <option value="">— None —</option>
+          </select>
         </div>
         <div class="form-field">
           <label class="form-label">Tertiary Mineral</label>
-          <input class="form-input" id="f-tertiary" placeholder="e.g. Taranite">
+          <select class="form-select" id="f-tertiary">
+            <option value="">— None —</option>
+          </select>
+        </div>
+
+        <div class="form-section-label">— Quality & Ratings</div>
+        <div class="form-field">
+          <label class="form-label">Average Quality</label>
+          <input class="form-input" id="f-quality" placeholder="e.g. 75–85%">
         </div>
         <div class="form-field">
-          <label class="form-label">Priority Target</label>
-          <label class="priority-check-row">
-            <input type="checkbox" id="f-priority">
-            <span class="priority-check-label">★ Mark as Priority Target for Platinum Post</span>
-          </label>
+          <label class="form-label">Mining Rating</label>
+          <div class="star-input" id="f-mining-rating" data-val="0">
+            <button class="star-btn" onclick="setStar('f-mining-rating',1)">★</button>
+            <button class="star-btn" onclick="setStar('f-mining-rating',2)">★</button>
+            <button class="star-btn" onclick="setStar('f-mining-rating',3)">★</button>
+            <button class="star-btn" onclick="setStar('f-mining-rating',4)">★</button>
+            <button class="star-btn" onclick="setStar('f-mining-rating',5)">★</button>
+          </div>
         </div>
-        <div class="form-section-label">— Locations & Quality</div>
-        <div class="form-full">
-          <div id="locations-list"></div>
-          <button class="btn-add-loc" onclick="addLocationRow()">+ Add Location</button>
+        <div class="form-field">
+          <label class="form-label">Quality Rating</label>
+          <div class="star-input" id="f-quality-rating" data-val="0">
+            <button class="star-btn" onclick="setStar('f-quality-rating',1)">★</button>
+            <button class="star-btn" onclick="setStar('f-quality-rating',2)">★</button>
+            <button class="star-btn" onclick="setStar('f-quality-rating',3)">★</button>
+            <button class="star-btn" onclick="setStar('f-quality-rating',4)">★</button>
+            <button class="star-btn" onclick="setStar('f-quality-rating',5)">★</button>
+          </div>
         </div>
+
         <div class="form-section-label">— Mining Difficulty</div>
         <div class="form-field">
           <label class="form-label">Difficulty to Find</label>
@@ -392,12 +460,13 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;b
         </div>
         <div class="form-field form-full">
           <label class="form-label">Required Mining Setup</label>
-          <input class="form-input" id="f-ship" placeholder="e.g. Fully kitted Prospector, Base MOLE, Hand laser…">
+          <input class="form-input" id="f-ship" placeholder="e.g. Fully kitted Prospector, Base MOLE, Hand mining laser...">
         </div>
-        <div class="form-section-label">— Use & Value</div>
+
+        <div class="form-section-label">— Use, Value & Priority</div>
         <div class="form-field form-full">
           <label class="form-label">Primary Use</label>
-          <textarea class="form-textarea" id="f-use" placeholder="Describe the primary industrial / economic use of this mineral…"></textarea>
+          <textarea class="form-textarea" id="f-use" placeholder="Describe the primary industrial/economic use of this mineral..."></textarea>
         </div>
         <div class="form-field">
           <label class="form-label">Usefulness Rating</label>
@@ -407,6 +476,13 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;b
             <button class="star-btn" onclick="setStar('f-usefulness',3)">★</button>
             <button class="star-btn" onclick="setStar('f-usefulness',4)">★</button>
             <button class="star-btn" onclick="setStar('f-usefulness',5)">★</button>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Priority Target</label>
+          <div class="priority-form-row" id="f-priority-row" onclick="toggleFormPriority()">
+            <div class="priority-form-check" id="f-priority-check">✓</div>
+            <span class="priority-form-label">Mark as priority for Platinum Post</span>
           </div>
         </div>
         <div class="form-actions">
@@ -419,12 +495,31 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;b
     <!-- SEARCH -->
     <div class="tab-panel" id="panel-search">
       <div class="section-head">
-        <div class="section-title">⌕ Search Database</div>
+        <div class="section-title">⌕ Search & Identify</div>
         <div class="section-line"></div>
       </div>
+
+      <!-- RS LOOKUP TOOL -->
+      <div class="rs-lookup-box">
+        <div class="rs-lookup-title">◈ Rock Signature Identifier</div>
+        <div class="rs-input-row">
+          <div class="rs-input-field">
+            <label class="form-label">Scanner Reading</label>
+            <input class="rs-number-input" id="rs-lookup-input" type="number" placeholder="Enter RS value..." oninput="runRSLookup()">
+          </div>
+          <button class="btn-rs-lookup" onclick="runRSLookup()">IDENTIFY</button>
+        </div>
+        <div class="rs-result-area" id="rs-result-area">
+          <div class="rs-result-none">Enter a scanner reading to identify the mineral</div>
+        </div>
+        <div class="rs-divider"></div>
+        <div class="rs-ref-title">Known RS Base Values — 4.7.0-PTU</div>
+        <div class="rs-ref-grid" id="rs-ref-grid"></div>
+      </div>
+
       <div class="search-bar-wrap">
         <div class="search-icon">⌕</div>
-        <input class="search-input" id="search-input" placeholder="Type mineral name or location…" oninput="runSearch()">
+        <input class="search-input" id="search-input" placeholder="Search mineral name or location..." oninput="runSearch()">
       </div>
       <div class="search-mode-row">
         <button class="mode-btn active" id="mode-mineral" onclick="setMode('mineral')">By Mineral</button>
@@ -434,7 +529,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;b
         <div class="empty-state">
           <div class="empty-icon">⌕</div>
           <div class="empty-title">Begin typing to search</div>
-          <div class="empty-sub">Switch between mineral and location modes above</div>
+          <div class="empty-sub">Switch between mineral and location search modes above</div>
         </div>
       </div>
     </div>
@@ -452,48 +547,39 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;b
     <!-- EXPEDITION LOG -->
     <div class="tab-panel" id="panel-log">
       <div class="section-head">
-        <div class="section-title">📋 Expedition Log</div>
+        <div class="section-title">✦ Expedition Log</div>
         <div class="section-count" id="log-count">0 entries</div>
         <div class="section-line"></div>
       </div>
-      <div class="log-toolbar">
-        <div class="log-system-filter">
-          <button class="sys-btn active" id="sys-all" onclick="setSysFilter('all')">All Systems</button>
-          <button class="sys-btn" id="sys-pyro" onclick="setSysFilter('Pyro')">Pyro</button>
-          <button class="sys-btn" id="sys-stanton" onclick="setSysFilter('Stanton')">Stanton</button>
-          <button class="sys-btn" id="sys-nyx" onclick="setSysFilter('Nyx')">Nyx</button>
+      <div class="log-layout">
+        <div class="log-entries-col" id="log-entries-col">
+          <div class="log-empty-msg">No log entries yet — write your first field note →</div>
         </div>
-        <button class="btn-new-log" onclick="openLogCompose()">+ New Log Entry</button>
-      </div>
-      <div id="log-compose-area"></div>
-      <div class="log-entries" id="log-entries"></div>
-    </div>
-
-    <!-- DATA MANAGEMENT -->
-    <div class="tab-panel" id="panel-data">
-      <div class="section-head">
-        <div class="section-title">⇅ Data Management</div>
-        <div class="section-line"></div>
-      </div>
-      <div class="data-panel">
-        <div class="data-section">
-          <div class="data-section-title">Export Atlas Data</div>
-          <div class="data-section-desc">Download all mineral entries and expedition log entries as a JSON file. Back up your data, transfer to another device, or share with crew.</div>
-          <div class="data-actions">
-            <button class="btn-export" onclick="exportData()">⬇ Export JSON</button>
+        <div class="log-right-col">
+          <div class="log-compose">
+            <div class="log-compose-title">✦ New Log Entry</div>
+            <div class="log-compose-divider"></div>
+            <div class="form-field">
+              <label class="form-label">Title</label>
+              <input class="form-input" id="log-title-input" placeholder="e.g. Day 3 — Bloom Eastern Flats">
+            </div>
+            <div class="form-field">
+              <label class="form-label">Category</label>
+              <select class="form-select" id="log-tag-input">
+                <option value="note">Field Note</option>
+                <option value="field">Discovery</option>
+                <option value="alert">Alert / Hazard</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Entry</label>
+              <textarea class="form-textarea" id="log-body-input" style="min-height:110px" placeholder="Location, ore density, hazards, coordinates, observations..."></textarea>
+            </div>
+            <button class="btn-log-post" onclick="postLogEntry()">⬡ COMMIT LOG</button>
           </div>
-        </div>
-        <div class="data-section">
-          <div class="data-section-title">Import Atlas Data</div>
-          <div class="data-section-desc">Load a previously exported JSON file. This will <strong style="color:var(--red2)">merge</strong> imported entries with your current data. Duplicate IDs are skipped automatically.</div>
-          <div class="data-actions">
-            <button class="btn-import" onclick="document.getElementById('import-file').click()">⬆ Import JSON</button>
-            <input type="file" id="import-file" class="import-file" accept=".json" onchange="importData(event)">
+          <div class="log-detail" id="log-detail">
+            <div class="log-detail-empty"><div class="icon">✦</div><div class="txt">Select entry to read</div></div>
           </div>
-        </div>
-        <div class="data-section">
-          <div class="data-section-title">Atlas Statistics</div>
-          <div class="data-stats" id="data-stats"></div>
         </div>
       </div>
     </div>
@@ -503,350 +589,487 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;b
 <div id="toast"></div>
 
 <script>
-// ===== DB =====
-const DB={
-  get entries(){try{return JSON.parse(localStorage.getItem('sc_atlas_v2')||'[]')}catch{return[]}},
-  get logs(){try{return JSON.parse(localStorage.getItem('sc_logs_v2')||'[]')}catch{return[]}},
-  saveEntries(e){localStorage.setItem('sc_atlas_v2',JSON.stringify(e))},
-  saveLogs(l){localStorage.setItem('sc_logs_v2',JSON.stringify(l))},
-  addEntry(e){const a=DB.entries;e.id=uid();a.push(e);DB.saveEntries(a);return e},
-  updateEntry(id,d){DB.saveEntries(DB.entries.map(x=>x.id===id?{...x,...d}:x))},
-  deleteEntry(id){DB.saveEntries(DB.entries.filter(x=>x.id!==id))},
-  getEntry(id){return DB.entries.find(x=>x.id===id)},
-  addLog(l){const a=DB.logs;l.id=uid();a.unshift(l);DB.saveLogs(a);return l},
-  deleteLog(id){DB.saveLogs(DB.logs.filter(x=>x.id!==id))},
-};
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+/* ===== MINERAL DATA ===== */
+const MINERALS = [
+  {name:'Quantanium',  rs:3170},
+  {name:'Stileron',    rs:3185},
+  {name:'Savrilium',   rs:3200},
+  {name:'Ouratite',    rs:3370},
+  {name:'Riccite',     rs:3385},
+  {name:'Lindinium',   rs:3400},
+  {name:'Beryl',       rs:3540},
+  {name:'Taranite',    rs:3555},
+  {name:'Borase',      rs:3570},
+  {name:'Gold',        rs:3585},
+  {name:'Bexalite',    rs:3600},
+  {name:'Laranite',    rs:3825},
+  {name:'Aslarite',    rs:3840},
+  {name:'Titanium',    rs:3855},
+  {name:'Tungsten',    rs:3870},
+  {name:'Agricium',    rs:3885},
+  {name:'Torite',      rs:3900},
+  {name:'Hephestanite',rs:4180},
+  {name:'Tin',         rs:4195},
+  {name:'Quartz',      rs:4210},
+  {name:'Corundum',    rs:4225},
+  {name:'Copper',      rs:4240},
+  {name:'Silicon',     rs:4255},
+  {name:'Iron',        rs:4270},
+  {name:'Aluminium',   rs:4285},
+  {name:'Ice',         rs:4300},
+];
+const MINERAL_MAP = Object.fromEntries(MINERALS.map(m=>[m.name, m.rs]));
 
-// ===== AUTH =====
+/* ===== DB ===== */
+const DB={
+  get entries(){try{return JSON.parse(localStorage.getItem('sc_atlas_v3')||'[]')}catch{return[]}},
+  save(e){localStorage.setItem('sc_atlas_v3',JSON.stringify(e))},
+  add(entry){const e=DB.entries;entry.id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);e.push(entry);DB.save(e);return entry},
+  update(id,data){DB.save(DB.entries.map(x=>x.id===id?{...x,...data}:x))},
+  delete(id){DB.save(DB.entries.filter(x=>x.id!==id))},
+  get(id){return DB.entries.find(x=>x.id===id)},
+};
+const LogDB={
+  get entries(){try{return JSON.parse(localStorage.getItem('sc_log_v1')||'[]')}catch{return[]}},
+  save(e){localStorage.setItem('sc_log_v1',JSON.stringify(e))},
+  add(entry){const e=LogDB.entries;entry.id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);entry.ts=Date.now();e.unshift(entry);LogDB.save(e);return entry},
+  delete(id){LogDB.save(LogDB.entries.filter(x=>x.id!==id))},
+};
+
+/* ===== AUTH ===== */
+const CREDS={user:'TheRealKnight',pass:'IMTHEREALKNIGHT67'};
 function doLogin(){
   const u=document.getElementById('l-user').value.trim();
   const p=document.getElementById('l-pass').value;
-  if(u==='TheRealKnight'&&p==='IMTHEREALKNIGHT67'){
+  if(u===CREDS.user&&p===CREDS.pass){
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('app').classList.remove('hidden');
     document.getElementById('header-username').textContent=u;
-    renderAtlas();renderLocations();renderLog();renderStats();
-  } else {
+    populateDropdowns();buildRSRefGrid();
+    renderAtlas();renderLocations();renderLog();buildFilterMineralDropdown();
+  }else{
     const err=document.getElementById('l-error');
     err.textContent='⚠ INVALID CREDENTIALS — ACCESS DENIED';
     document.getElementById('l-pass').value='';
-    setTimeout(()=>err.textContent='',3000);
+    setTimeout(()=>{err.textContent=''},3000);
   }
-}
-function doLogout(){
-  document.getElementById('login-screen').classList.remove('hidden');
-  document.getElementById('app').classList.add('hidden');
-  document.getElementById('l-user').value='';
-  document.getElementById('l-pass').value='';
 }
 document.getElementById('l-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
 document.getElementById('l-user').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('l-pass').focus()});
+function doLogout(){
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('l-user').value='';document.getElementById('l-pass').value='';
+}
 
-// ===== TABS =====
+/* ===== POPULATE DROPDOWNS ===== */
+function mineralOptions(selectedVal='', includeNone=false){
+  let html = includeNone ? '<option value="">— None —</option>' : '<option value="">— Select primary mineral —</option>';
+  MINERALS.forEach(m=>{
+    html+=`<option value="${m.name}"${m.name===selectedVal?' selected':''}>${m.name} (RS ${m.rs})</option>`;
+  });
+  return html;
+}
+function populateDropdowns(){
+  ['f-primary','f-secondary','f-tertiary'].forEach(id=>{
+    const el=document.getElementById(id);
+    const isNone = id!=='f-primary';
+    el.innerHTML=mineralOptions('',isNone);
+  });
+}
+function buildFilterMineralDropdown(){
+  const el=document.getElementById('flt-mineral');
+  el.innerHTML='<option value="">Any Mineral</option>';
+  MINERALS.forEach(m=>el.innerHTML+=`<option value="${m.name}">${m.name}</option>`);
+}
+function buildRSRefGrid(){
+  const grid=document.getElementById('rs-ref-grid');
+  grid.innerHTML=MINERALS.map(m=>`<div class="rs-ref-item"><span class="rs-ref-name">${m.name}</span><span class="rs-ref-val">${m.rs}</span></div>`).join('');
+}
+function onPrimaryChange(){
+  const val=document.getElementById('f-primary').value;
+  const box=document.getElementById('rs-display-val');
+  const rs=MINERAL_MAP[val];
+  if(rs){
+    box.className='rs-display-value';
+    box.textContent=rs;
+  }else{
+    box.className='rs-display-none';
+    box.textContent='Select a primary mineral';
+  }
+}
+
+/* ===== TABS ===== */
 function setTab(id,btn){
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   if(btn)btn.classList.add('active');
-  else document.querySelectorAll('.nav-tab').forEach(t=>{if((t.getAttribute('onclick')||'').includes("'"+id+"'"))t.classList.add('active')});
   document.getElementById('panel-'+id).classList.add('active');
   if(id==='atlas')renderAtlas();
   if(id==='locations')renderLocations();
   if(id==='log')renderLog();
-  if(id==='data')renderStats();
   if(id==='form'&&!editingId)resetForm();
-  if(id==='search')document.getElementById('search-input').focus();
+  if(id==='search')setTimeout(()=>document.getElementById('search-input').focus(),50);
 }
 
-// ===== HELPERS =====
-function diffClass(d){const m={Easy:'easy',Moderate:'moderate',Hard:'hard','Very Hard':'veryhard',Extreme:'extreme'};return'diff-'+(m[d]||'moderate')}
+/* ===== HELPERS ===== */
+function diffClass(d){const m={'Easy':'easy','Moderate':'moderate','Hard':'hard','Very Hard':'veryhard','Extreme':'extreme'};return'diff-'+(m[d]||'moderate')}
 function starsHtml(n,max=5){let s='';for(let i=1;i<=max;i++)s+=`<span class="star ${i<=n?'on':''}">★</span>`;return s}
 function locStarsHtml(n,max=5){let s='';for(let i=1;i<=max;i++)s+=`<span class="loc-star ${i<=n?'on':''}">★</span>`;return s}
-function toast(msg,type='success'){
-  const t=document.getElementById('toast');const d=document.createElement('div');
-  d.className=`toast-item toast-${type}`;d.textContent=msg;t.appendChild(d);setTimeout(()=>d.remove(),3000);
-}
-function getAllLocations(){
-  const locs=new Map();
-  DB.entries.forEach(e=>{(e.locations||[]).forEach(l=>{
-    if(l.name&&l.name.trim()){const k=l.name.trim();if(!locs.has(k))locs.set(k,[]);locs.get(k).push({entry:e,loc:l});}
-  })});
-  return locs;
-}
+function toast(msg,type='success'){const t=document.getElementById('toast');const d=document.createElement('div');d.className=`toast-item toast-${type}`;d.textContent=msg;t.appendChild(d);setTimeout(()=>d.remove(),3200)}
 function fmtDate(ts){const d=new Date(ts);return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+' '+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}
-function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
-// ===== FILTERS =====
-let prioFilterOn=false;
-function togglePriorityFilter(){
-  prioFilterOn=!prioFilterOn;
-  document.getElementById('fl-prio-toggle').classList.toggle('active',prioFilterOn);
-  renderAtlas();
-}
-function clearFilters(){
-  ['fl-name','fl-loc'].forEach(id=>document.getElementById(id).value='');
-  ['fl-find','fl-mine'].forEach(id=>document.getElementById(id).value='');
-  prioFilterOn=false;document.getElementById('fl-prio-toggle').classList.remove('active');
-  renderAtlas();
-}
+/* ===== RS LOOKUP ===== */
+function runRSLookup(){
+  const raw=parseFloat(document.getElementById('rs-lookup-input').value);
+  const area=document.getElementById('rs-result-area');
+  if(!raw||raw<=0){area.innerHTML='<div class="rs-result-none">Enter a scanner reading to identify the mineral</div>';return}
 
-// ===== ATLAS =====
-function renderAtlas(){
-  let entries=DB.entries;
-  const name=(document.getElementById('fl-name')?.value||'').toLowerCase();
-  const find=document.getElementById('fl-find')?.value||'';
-  const mine=document.getElementById('fl-mine')?.value||'';
-  const loc=(document.getElementById('fl-loc')?.value||'').toLowerCase();
-  if(name)entries=entries.filter(e=>(e.primaryMineral||'').toLowerCase().includes(name)||(e.secondaryMineral||'').toLowerCase().includes(name)||(e.tertiaryMineral||'').toLowerCase().includes(name));
-  if(find)entries=entries.filter(e=>e.findDifficulty===find);
-  if(mine)entries=entries.filter(e=>e.mineDifficulty===mine);
-  if(loc)entries=entries.filter(e=>(e.locations||[]).some(l=>(l.name||'').toLowerCase().includes(loc)));
-  if(prioFilterOn)entries=entries.filter(e=>e.isPriority);
-  const grid=document.getElementById('atlas-grid');
-  document.getElementById('atlas-count').textContent=entries.length+' entr'+(entries.length===1?'y':'ies');
-  if(!entries.length){grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">⬡</div><div class="empty-title">No entries match filters</div><div class="empty-sub">Adjust filters or add new entries</div></div>`;return;}
-  grid.innerHTML=entries.map(cardHtml).join('');
-}
-function cardHtml(e){
-  const locs=(e.locations||[]).filter(l=>l.name);
-  const tags=[e.secondaryMineral?`<span class="mineral-tag tag-secondary">◈ ${e.secondaryMineral}</span>`:'',e.tertiaryMineral?`<span class="mineral-tag tag-tertiary">◈ ${e.tertiaryMineral}</span>`:''].join('');
-  return`<div class="mineral-card${e.isPriority?' priority':''}">
-  <div class="card-header">
+  // Try dividing by n=1..20 and find all exact or near matches
+  const matches=[];
+  const TOLERANCE=2; // allow ±2 rounding tolerance
+  for(let n=1;n<=20;n++){
+    const divided=raw/n;
+    MINERALS.forEach(m=>{
+      if(Math.abs(divided-m.rs)<=TOLERANCE){
+        matches.push({mineral:m,n,divided,diff:Math.abs(divided-m.rs)});
+      }
+    });
+  }
+  // deduplicate by mineral name, keep lowest diff
+  const best=new Map();
+  matches.forEach(m=>{
+    const key=m.mineral.name;
+    if(!best.has(key)||m.diff<best.get(key).diff)best.set(key,m);
+  });
+  const results=[...best.values()].sort((a,b)=>a.diff-b.diff||a.n-b.n);
+
+  if(!results.length){
+    area.innerHTML=`<div class="rs-result-none">⚠ No mineral match found for reading ${raw.toLocaleString()}<br><span style="font-size:9px;color:var(--textdim)">Try checking if the value was read correctly — it may be a composite rock with mixed minerals.</span></div>`;
+    return;
+  }
+
+  const top=results[0];
+  const topHtml=`<div class="rs-result-match">
     <div>
-      <div class="card-primary-row">
-        <div class="card-primary">⬡ ${e.primaryMineral||'—'}</div>
-        ${e.isPriority?'<span class="priority-star">★</span>':''}
-      </div>
-      <div class="card-minerals-row">${tags}</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:2px;margin-bottom:4px">BEST MATCH</div>
+      <div class="rs-result-mineral">${top.mineral.name}</div>
     </div>
-    <div class="card-actions">
-      <button class="btn-icon prio ${e.isPriority?'on':''}" onclick="togglePriority('${e.id}')" title="${e.isPriority?'Remove priority':'Mark priority'}">★</button>
-      <button class="btn-icon edit" onclick="editEntry('${e.id}')">✎</button>
-      <button class="btn-icon del" onclick="deleteEntry('${e.id}')">✕</button>
+    <div class="rs-result-detail">
+      RS Base: ${top.mineral.name} = ${top.mineral.rs}<br>
+      Your reading: ${raw.toLocaleString()}<br>
+      Formula: ${raw.toLocaleString()} ÷ ${top.n} = ${top.divided.toFixed(1)}<br>
+      Multiplier n = ${top.n}${top.diff>0?` (±${top.diff.toFixed(1)} tolerance)`:''}
     </div>
-  </div>
-  <div class="card-body">
-    <div class="card-row"><span class="card-key">Find Diff.</span><span class="diff-badge ${diffClass(e.findDifficulty)}">${e.findDifficulty||'—'}</span></div>
-    <div class="card-row"><span class="card-key">Mine Diff.</span><span class="diff-badge ${diffClass(e.mineDifficulty)}">${e.mineDifficulty||'—'}</span></div>
-    <div class="card-row"><span class="card-key">Ship Req.</span><span class="card-val">${e.requiredShip||'—'}</span></div>
-    <div class="card-row"><span class="card-key">Primary Use</span><span class="card-val" style="font-size:12px">${e.primaryUse||'—'}</span></div>
-    <div class="card-row"><span class="card-key">Usefulness</span><div class="stars">${starsHtml(e.usefulnessRating||0)}</div></div>
-    ${locs.length?`<div class="card-locations"><div class="card-key" style="margin-bottom:4px">Locations</div><div class="loc-chip-list">${locs.map(l=>`<span class="loc-chip">${l.name}</span>`).join('')}</div></div>`:''}
-  </div></div>`;
-}
-function togglePriority(id){const e=DB.getEntry(id);if(!e)return;DB.updateEntry(id,{isPriority:!e.isPriority});renderAtlas();toast(e.isPriority?'Priority removed':'Marked as Priority Target','info')}
-function deleteEntry(id){if(!confirm('Delete this entry?'))return;DB.deleteEntry(id);renderAtlas();renderLocations();toast('Entry deleted')}
+  </div>`;
 
-// ===== EDIT =====
-let editingId=null;
+  let othersHtml='';
+  if(results.length>1){
+    othersHtml=`<div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:2px;margin:12px 0 6px">OTHER POSSIBLE MATCHES</div>
+    <div class="rs-possible-list">${results.slice(1,5).map(r=>`<div class="rs-possible-item">
+      <span class="rs-possible-mineral">${r.mineral.name}</span>
+      <span class="rs-possible-detail">RS ${r.mineral.rs} · n=${r.n}</span>
+      <span class="rs-possible-match">${r.mineral.rs} × ${r.n} = ${(r.mineral.rs*r.n).toLocaleString()}</span>
+    </div>`).join('')}</div>`;
+  }
+  area.innerHTML=topHtml+othersHtml;
+}
+
+/* ===== ATLAS ===== */
+function resetFilters(){
+  document.getElementById('flt-mineral').value='';
+  document.getElementById('flt-find').value='';
+  document.getElementById('flt-mine').value='';
+  document.getElementById('flt-loc').value='';
+  const cb=document.getElementById('flt-priority');cb.checked=false;
+  document.getElementById('pri-filter-label').classList.remove('active');
+  renderAtlas();
+}
+function renderAtlas(){
+  const fMin=document.getElementById('flt-mineral')?.value||'';
+  const fFind=document.getElementById('flt-find')?.value||'';
+  const fMine=document.getElementById('flt-mine')?.value||'';
+  const fLoc=(document.getElementById('flt-loc')?.value||'').trim().toLowerCase();
+  const fPri=document.getElementById('flt-priority')?.checked||false;
+  let entries=DB.entries;
+  if(fMin)entries=entries.filter(e=>e.primaryMineral===fMin||e.secondaryMineral===fMin||e.tertiaryMineral===fMin);
+  if(fFind)entries=entries.filter(e=>e.findDifficulty===fFind);
+  if(fMine)entries=entries.filter(e=>e.mineDifficulty===fMine);
+  if(fLoc)entries=entries.filter(e=>(e.location||'').toLowerCase().includes(fLoc));
+  if(fPri)entries=entries.filter(e=>e.isPriority);
+  const total=DB.entries.length;
+  document.getElementById('atlas-count').textContent=total+' entr'+(total===1?'y':'ies')+(entries.length!==total?` · ${entries.length} shown`:'');
+  const grid=document.getElementById('atlas-grid');
+  if(!entries.length){
+    grid.innerHTML=total?`<div class="no-results">No entries match current filters — <button onclick="resetFilters()" style="background:none;border:none;color:var(--cyan);cursor:pointer;font-family:inherit;font-size:inherit;text-decoration:underline">clear filters</button></div>`:`<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">⬡</div><div class="empty-title">No entries yet</div><div class="empty-sub">Add your first mineral entry using the ADD ENTRY tab</div></div>`;
+    return;
+  }
+  grid.innerHTML=entries.map(e=>{
+    const rs=MINERAL_MAP[e.primaryMineral];
+    return`<div class="mineral-card ${e.isPriority?'priority-card':''}">
+      <div class="card-header">
+        <div>
+          <div class="card-primary-wrap">
+            <div class="card-primary">⬡ ${e.primaryMineral||'—'}</div>
+            ${e.isPriority?'<span class="priority-star-badge" title="Priority Target">★</span>':''}
+          </div>
+          <div class="card-location-name">◈ ${e.location||'Unknown Location'}</div>
+          <div class="card-minerals-row">
+            ${rs?`<span class="rs-badge">RS ${rs}</span>`:''}
+            ${e.secondaryMineral?`<span class="mineral-tag tag-secondary">◈ ${e.secondaryMineral}</span>`:''}
+            ${e.tertiaryMineral?`<span class="mineral-tag tag-tertiary">◈ ${e.tertiaryMineral}</span>`:''}
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-icon pri${e.isPriority?' on':''}" onclick="togglePriority('${e.id}')" title="${e.isPriority?'Remove priority':'Set as priority'}">★</button>
+          <button class="btn-icon edit" onclick="editEntry('${e.id}')" title="Edit">✎</button>
+          <button class="btn-icon del" onclick="deleteEntry('${e.id}')" title="Delete">✕</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-row"><span class="card-key">Avg. Quality</span><span class="card-val">${e.quality||'—'}</span></div>
+        <div class="card-row"><span class="card-key">Find Diff.</span><span class="diff-badge ${diffClass(e.findDifficulty)}">${e.findDifficulty||'—'}</span></div>
+        <div class="card-row"><span class="card-key">Mine Diff.</span><span class="diff-badge ${diffClass(e.mineDifficulty)}">${e.mineDifficulty||'—'}</span></div>
+        <div class="card-row"><span class="card-key">Ship Req.</span><span class="card-val">${e.requiredShip||'—'}</span></div>
+        <div class="card-row"><span class="card-key">Primary Use</span><span class="card-val" style="font-size:12px">${e.primaryUse||'—'}</span></div>
+        <div class="card-row"><span class="card-key">Usefulness</span><div class="stars">${starsHtml(e.usefulnessRating||0)}</div></div>
+        <div class="card-row"><span class="card-key">Mining</span><div class="stars">${starsHtml(e.miningRating||0)}</div></div>
+        <div class="card-row"><span class="card-key">Quality</span><div class="stars">${starsHtml(e.qualityRating||0)}</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function togglePriority(id){
+  const e=DB.get(id);if(!e)return;
+  DB.update(id,{isPriority:!e.isPriority});
+  renderAtlas();
+  toast(e.isPriority?'Removed from priority targets':'★ Marked as priority target','info');
+}
+function deleteEntry(id){
+  if(!confirm('Delete this mineral entry?'))return;
+  DB.delete(id);renderAtlas();renderLocations();toast('Entry deleted');
+}
+
+/* ===== FORM ===== */
+let editingId=null,formPriority=false;
+function toggleFormPriority(){
+  formPriority=!formPriority;
+  document.getElementById('f-priority-row').classList.toggle('on',formPriority);
+}
+function resetForm(){
+  editingId=null;formPriority=false;
+  document.getElementById('form-title').textContent='+ Add New Entry';
+  document.getElementById('f-location').value='';
+  document.getElementById('f-primary').innerHTML=mineralOptions('',false);
+  document.getElementById('f-secondary').innerHTML=mineralOptions('',true);
+  document.getElementById('f-tertiary').innerHTML=mineralOptions('',true);
+  const box=document.getElementById('rs-display-val');box.className='rs-display-none';box.textContent='Select a primary mineral';
+  document.getElementById('f-quality').value='';
+  document.getElementById('f-find-diff').value='';
+  document.getElementById('f-mine-diff').value='';
+  document.getElementById('f-ship').value='';
+  document.getElementById('f-use').value='';
+  setStar('f-usefulness',0);setStar('f-mining-rating',0);setStar('f-quality-rating',0);
+  document.getElementById('f-priority-row').classList.remove('on');
+}
 function editEntry(id){
-  const e=DB.getEntry(id);if(!e)return;
-  editingId=id;
+  const e=DB.get(id);if(!e)return;
+  editingId=id;formPriority=!!e.isPriority;
   document.getElementById('form-title').textContent='✎ Edit Entry';
-  document.getElementById('f-primary').value=e.primaryMineral||'';
-  document.getElementById('f-secondary').value=e.secondaryMineral||'';
-  document.getElementById('f-tertiary').value=e.tertiaryMineral||'';
-  document.getElementById('f-priority').checked=!!e.isPriority;
+  document.getElementById('f-location').value=e.location||'';
+  document.getElementById('f-primary').innerHTML=mineralOptions(e.primaryMineral||'',false);
+  document.getElementById('f-secondary').innerHTML=mineralOptions(e.secondaryMineral||'',true);
+  document.getElementById('f-tertiary').innerHTML=mineralOptions(e.tertiaryMineral||'',true);
+  onPrimaryChange();
+  document.getElementById('f-quality').value=e.quality||'';
   document.getElementById('f-find-diff').value=e.findDifficulty||'';
   document.getElementById('f-mine-diff').value=e.mineDifficulty||'';
   document.getElementById('f-ship').value=e.requiredShip||'';
   document.getElementById('f-use').value=e.primaryUse||'';
   setStar('f-usefulness',e.usefulnessRating||0);
-  const list=document.getElementById('locations-list');list.innerHTML='';
-  (e.locations||[]).forEach(l=>addLocationRow(l));
-  setTab('form');
-  document.querySelectorAll('.nav-tab').forEach(t=>{t.classList.toggle('active',(t.getAttribute('onclick')||'').includes("'form'"))});
+  setStar('f-mining-rating',e.miningRating||0);
+  setStar('f-quality-rating',e.qualityRating||0);
+  document.getElementById('f-priority-row').classList.toggle('on',formPriority);
+  setTab('form',document.getElementById('tab-form'));
 }
-function cancelForm(){resetForm();setTab('atlas',document.querySelector('.nav-tab[onclick*="atlas"]'))}
-
-// ===== FORM =====
-function resetForm(){
-  editingId=null;
-  document.getElementById('form-title').textContent='+ Add New Entry';
-  ['f-primary','f-secondary','f-tertiary','f-ship','f-use'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('f-find-diff').value='';
-  document.getElementById('f-mine-diff').value='';
-  document.getElementById('f-priority').checked=false;
-  setStar('f-usefulness',0);
-  document.getElementById('locations-list').innerHTML='';
-}
-function addLocationRow(prefill){
-  const list=document.getElementById('locations-list');
-  const el=document.createElement('div');el.className='loc-entry';
-  const mr=prefill?.miningRating||0;const qr=prefill?.qualityRating||0;
-  el.innerHTML=`
-    <div><div class="form-label">Location</div><input class="form-input" placeholder="e.g. Yela" value="${prefill?.name||''}"></div>
-    <div><div class="form-label">Avg. Quality</div><input class="form-input" placeholder="e.g. 75–85%" value="${prefill?.avgQuality||''}"></div>
-    <div><div class="form-label">Mining Rating</div><div class="star-input loc-star-input" data-val="${mr}">${[1,2,3,4,5].map(i=>`<button class="star-btn ${i<=mr?'on':''}" onclick="setLocStar(this.closest('.loc-star-input'),${i})">★</button>`).join('')}</div></div>
-    <div><div class="form-label">Quality Rating</div><div class="star-input loc-star-input" data-val="${qr}">${[1,2,3,4,5].map(i=>`<button class="star-btn ${i<=qr?'on':''}" onclick="setLocStar(this.closest('.loc-star-input'),${i})">★</button>`).join('')}</div></div>
-    <button class="btn-rm-loc" onclick="this.closest('.loc-entry').remove()">✕</button>`;
-  list.appendChild(el);
-}
-function setLocStar(c,v){c.dataset.val=v;c.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('on',i<v))}
-function setStar(fieldId,val){const el=document.getElementById(fieldId);el.dataset.val=val;el.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('on',i<val))}
-function getLocations(){
-  return[...document.querySelectorAll('#locations-list .loc-entry')].map(row=>{
-    const inputs=row.querySelectorAll('input');const stars=row.querySelectorAll('.loc-star-input');
-    return{name:inputs[0].value.trim(),avgQuality:inputs[1].value.trim(),miningRating:+(stars[0]?.dataset.val||0),qualityRating:+(stars[1]?.dataset.val||0)};
-  }).filter(l=>l.name);
-}
+function cancelForm(){resetForm();setTab('atlas',document.getElementById('tab-atlas'))}
+function setStar(fid,v){const el=document.getElementById(fid);el.dataset.val=v;el.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('on',i<v))}
 function submitEntry(){
-  const primary=document.getElementById('f-primary').value.trim();
-  if(!primary){toast('Primary mineral is required','error');return;}
+  const primary=document.getElementById('f-primary').value;
+  const location=document.getElementById('f-location').value.trim();
+  if(!primary){toast('Primary mineral is required','error');return}
+  if(!location){toast('Location is required','error');return}
   const entry={
-    primaryMineral:primary,secondaryMineral:document.getElementById('f-secondary').value.trim(),
-    tertiaryMineral:document.getElementById('f-tertiary').value.trim(),
-    isPriority:document.getElementById('f-priority').checked,
-    locations:getLocations(),findDifficulty:document.getElementById('f-find-diff').value,
+    location,
+    primaryMineral:primary,
+    rsSignature:MINERAL_MAP[primary]||null,
+    secondaryMineral:document.getElementById('f-secondary').value||'',
+    tertiaryMineral:document.getElementById('f-tertiary').value||'',
+    quality:document.getElementById('f-quality').value.trim(),
+    findDifficulty:document.getElementById('f-find-diff').value,
     mineDifficulty:document.getElementById('f-mine-diff').value,
     requiredShip:document.getElementById('f-ship').value.trim(),
     primaryUse:document.getElementById('f-use').value.trim(),
-    usefulnessRating:+(document.getElementById('f-usefulness').dataset.val||0),
+    usefulnessRating:parseInt(document.getElementById('f-usefulness').dataset.val||0),
+    miningRating:parseInt(document.getElementById('f-mining-rating').dataset.val||0),
+    qualityRating:parseInt(document.getElementById('f-quality-rating').dataset.val||0),
+    isPriority:formPriority,
   };
-  if(editingId){DB.updateEntry(editingId,entry);toast('Entry updated')}
-  else{DB.addEntry(entry);toast('Entry added')}
-  resetForm();setTab('atlas',document.querySelector('.nav-tab[onclick*="atlas"]'));
+  if(editingId){DB.update(editingId,entry);toast('Entry updated')}
+  else{DB.add(entry);toast('Entry added')}
+  resetForm();setTab('atlas',document.getElementById('tab-atlas'));
   renderAtlas();renderLocations();
 }
 
-// ===== LOCATIONS =====
+/* ===== LOCATIONS ===== */
+function getAllLocations(){
+  const locs=new Map();
+  DB.entries.forEach(e=>{
+    const k=(e.location||'').trim();
+    if(!k)return;
+    if(!locs.has(k))locs.set(k,[]);
+    locs.get(k).push(e);
+  });
+  return locs;
+}
 function renderLocations(){
-  const locs=getAllLocations();const grid=document.getElementById('locations-grid');
+  const locs=getAllLocations();
+  const grid=document.getElementById('locations-grid');
   document.getElementById('loc-count').textContent=locs.size+' location'+(locs.size===1?'':'s');
-  if(!locs.size){grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">◈</div><div class="empty-title">No locations found</div><div class="empty-sub">Add entries with location data to populate this view</div></div>`;return;}
+  if(!locs.size){grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">◈</div><div class="empty-title">No locations found</div><div class="empty-sub">Add mineral entries with a location to populate this view</div></div>`;return}
   let html='';
-  locs.forEach((items,locName)=>{
+  locs.forEach((entries,locName)=>{
     const rows=[];
-    items.forEach(({entry,loc})=>{
-      rows.push({name:entry.primaryMineral,role:'PRIMARY',quality:loc.avgQuality,mr:loc.miningRating,qr:loc.qualityRating});
-      if(entry.secondaryMineral)rows.push({name:entry.secondaryMineral,role:'SECONDARY',quality:loc.avgQuality,mr:loc.miningRating,qr:loc.qualityRating});
-      if(entry.tertiaryMineral)rows.push({name:entry.tertiaryMineral,role:'TERTIARY',quality:loc.avgQuality,mr:loc.miningRating,qr:loc.qualityRating});
+    entries.forEach(e=>{
+      const rs=MINERAL_MAP[e.primaryMineral];
+      rows.push({name:e.primaryMineral,role:'PRIMARY',rs,quality:e.quality,mR:e.miningRating,qR:e.qualityRating});
+      if(e.secondaryMineral)rows.push({name:e.secondaryMineral,role:'SECONDARY',rs:MINERAL_MAP[e.secondaryMineral],quality:e.quality,mR:e.miningRating,qR:e.qualityRating});
+      if(e.tertiaryMineral)rows.push({name:e.tertiaryMineral,role:'TERTIARY',rs:MINERAL_MAP[e.tertiaryMineral],quality:e.quality,mR:e.miningRating,qR:e.qualityRating});
     });
-    html+=`<div class="loc-card"><div class="loc-card-header"><div class="loc-card-name">◈ ${locName}</div><div class="loc-mineral-count">${rows.length} mineral${rows.length===1?'':'s'}</div></div>
-    <div class="loc-card-body">${rows.map(m=>`<div class="loc-mineral-row">
-      <div class="loc-min-name">${m.name}</div><span class="loc-min-role role-${m.role.toLowerCase()}">${m.role}</span>
-      ${m.quality?`<div class="loc-min-quality">${m.quality}</div>`:'<div></div>'}
-      <div class="loc-min-ratings">
-        <div class="loc-rating-group"><div class="loc-rating-label">Mine</div><div class="loc-stars">${locStarsHtml(m.mr||0)}</div></div>
-        <div class="loc-rating-group"><div class="loc-rating-label">Qual.</div><div class="loc-stars">${locStarsHtml(m.qr||0)}</div></div>
-      </div></div>`).join('')}</div></div>`;
+    html+=`<div class="loc-card">
+      <div class="loc-card-header"><div class="loc-card-name">◈ ${locName}</div><div class="loc-mineral-count">${rows.length} mineral${rows.length===1?'':'s'}</div></div>
+      <div class="loc-card-body">${rows.map(m=>`<div class="loc-mineral-row">
+        <div class="loc-min-name">${m.name}</div>
+        <span class="loc-min-role role-${m.role.toLowerCase()}">${m.role}</span>
+        ${m.rs?`<span class="loc-min-rs">RS ${m.rs}</span>`:''}
+        ${m.quality?`<div class="loc-min-quality">${m.quality}</div>`:'<div></div>'}
+        <div class="loc-min-ratings">
+          <div class="loc-rating-group"><div class="loc-rating-label">Mine</div><div class="loc-stars">${locStarsHtml(m.mR||0)}</div></div>
+          <div class="loc-rating-group"><div class="loc-rating-label">Qual.</div><div class="loc-stars">${locStarsHtml(m.qR||0)}</div></div>
+        </div></div>`).join('')}</div></div>`;
   });
   grid.innerHTML=html;
 }
 
-// ===== SEARCH =====
+/* ===== SEARCH ===== */
 let searchMode='mineral';
-function setMode(mode){
-  searchMode=mode;
-  document.getElementById('mode-mineral').classList.toggle('active',mode==='mineral');
-  document.getElementById('mode-location').classList.toggle('active',mode==='location');
+function setMode(m){
+  searchMode=m;
+  document.getElementById('mode-mineral').classList.toggle('active',m==='mineral');
+  document.getElementById('mode-location').classList.toggle('active',m==='location');
   runSearch();
 }
 function runSearch(){
   const q=document.getElementById('search-input').value.trim().toLowerCase();
   const container=document.getElementById('search-results');
-  if(!q){container.innerHTML=`<div class="empty-state"><div class="empty-icon">⌕</div><div class="empty-title">Begin typing to search</div><div class="empty-sub">Switch between mineral and location modes above</div></div>`;return;}
+  if(!q){container.innerHTML=`<div class="empty-state"><div class="empty-icon">⌕</div><div class="empty-title">Begin typing to search</div><div class="empty-sub">Switch between mineral and location search modes above</div></div>`;return}
   if(searchMode==='mineral'){
-    const results=DB.entries.filter(e=>(e.primaryMineral||'').toLowerCase().includes(q)||(e.secondaryMineral||'').toLowerCase().includes(q)||(e.tertiaryMineral||'').toLowerCase().includes(q));
-    if(!results.length){container.innerHTML=`<div class="empty-state"><div class="empty-icon">⌕</div><div class="empty-title">No minerals found</div></div>`;return;}
+    const results=DB.entries.filter(e=>
+      (e.primaryMineral||'').toLowerCase().includes(q)||
+      (e.secondaryMineral||'').toLowerCase().includes(q)||
+      (e.tertiaryMineral||'').toLowerCase().includes(q)
+    );
+    if(!results.length){container.innerHTML=`<div class="empty-state"><div class="empty-icon">⌕</div><div class="empty-title">No minerals found</div></div>`;return}
     container.innerHTML=results.map(e=>{
-      const locs=(e.locations||[]).filter(l=>l.name);
       const match=[];
+      const rs=MINERAL_MAP[e.primaryMineral];
       if((e.primaryMineral||'').toLowerCase().includes(q))match.push(`<span class="result-mineral-name">${e.primaryMineral}</span> (Primary)`);
-      if((e.secondaryMineral||'').toLowerCase().includes(q))match.push(`<span class="result-mineral-name">${e.secondaryMineral}</span> (Secondary of ${e.primaryMineral})`);
-      if((e.tertiaryMineral||'').toLowerCase().includes(q))match.push(`<span class="result-mineral-name">${e.tertiaryMineral}</span> (Tertiary of ${e.primaryMineral})`);
+      if((e.secondaryMineral||'').toLowerCase().includes(q))match.push(`<span class="result-mineral-name">${e.secondaryMineral}</span> (Secondary)`);
+      if((e.tertiaryMineral||'').toLowerCase().includes(q))match.push(`<span class="result-mineral-name">${e.tertiaryMineral}</span> (Tertiary)`);
       return`<div class="result-card">
-        <div class="result-card-title">${match.join(' · ')}${e.isPriority?' <span class="priority-star" style="font-size:12px">★ PRIORITY</span>':''}</div>
+        <div class="result-card-title">${match.join(' · ')}${e.isPriority?' <span class="mineral-tag" style="border-color:var(--gold);color:var(--gold);background:rgba(232,160,32,.1)">★ PRIORITY</span>':''}</div>
         <div class="result-grid">
+          <div class="result-row"><div class="result-key">Location</div><div class="result-val">${e.location||'—'}</div></div>
+          <div class="result-row"><div class="result-key">RS Signature</div><div class="result-val"><span class="rs-badge">${rs||'—'}</span></div></div>
           <div class="result-row"><div class="result-key">Find Difficulty</div><div class="result-val"><span class="diff-badge ${diffClass(e.findDifficulty)}">${e.findDifficulty||'—'}</span></div></div>
           <div class="result-row"><div class="result-key">Mine Difficulty</div><div class="result-val"><span class="diff-badge ${diffClass(e.mineDifficulty)}">${e.mineDifficulty||'—'}</span></div></div>
           <div class="result-row"><div class="result-key">Ship Required</div><div class="result-val">${e.requiredShip||'—'}</div></div>
-          <div class="result-row"><div class="result-key">Primary Use</div><div class="result-val">${e.primaryUse||'—'}</div></div>
           <div class="result-row"><div class="result-key">Usefulness</div><div class="result-val">${starsHtml(e.usefulnessRating||0)}</div></div>
-          <div class="result-row"><div class="result-key">Locations</div><div class="result-val">${locs.map(l=>l.name).join(', ')||'—'}</div></div>
         </div></div>`;
     }).join('');
-  } else {
-    const locs=getAllLocations();const found=[...locs.entries()].filter(([k])=>k.toLowerCase().includes(q));
-    if(!found.length){container.innerHTML=`<div class="empty-state"><div class="empty-icon">◈</div><div class="empty-title">No locations found</div></div>`;return;}
-    container.innerHTML=found.map(([locName,items])=>{
-      const minerals=items.map(({entry,loc})=>({name:entry.primaryMineral,quality:loc.avgQuality,secondary:entry.secondaryMineral,tertiary:entry.tertiaryMineral}));
-      return`<div class="result-card">
-        <div class="result-card-title">◈ <span class="result-mineral-name">${locName}</span></div>
-        <div class="result-grid" style="grid-template-columns:1fr">${minerals.map(m=>`<div class="result-row">
-          <div class="result-key">${m.name} <span class="mineral-tag tag-secondary" style="font-size:8px">Primary</span></div>
-          <div class="result-val" style="font-size:12px">Quality: ${m.quality||'—'}${m.secondary?` · Secondary: <span style="color:var(--cyan)">${m.secondary}</span>`:''}${m.tertiary?` · Tertiary: <span style="color:var(--gold)">${m.tertiary}</span>`:''}</div>
-        </div>`).join('')}</div></div>`;
-    }).join('');
+  }else{
+    const locs=getAllLocations();
+    const found=[...locs.entries()].filter(([k])=>k.toLowerCase().includes(q));
+    if(!found.length){container.innerHTML=`<div class="empty-state"><div class="empty-icon">◈</div><div class="empty-title">No locations found</div></div>`;return}
+    container.innerHTML=found.map(([locName,entries])=>`<div class="result-card">
+      <div class="result-card-title">◈ <span class="result-mineral-name">${locName}</span></div>
+      <div class="result-grid" style="grid-template-columns:1fr">${entries.map(e=>`<div class="result-row">
+        <div class="result-key">${e.primaryMineral} <span class="mineral-tag tag-secondary" style="font-size:8px">Primary</span> <span class="rs-badge" style="font-size:8px">RS ${MINERAL_MAP[e.primaryMineral]||'?'}</span>${e.isPriority?' <span style="color:var(--gold)">★</span>':''}</div>
+        <div class="result-val" style="font-size:12px">Quality: ${e.quality||'—'}${e.secondaryMineral?` · <span style="color:var(--cyan)">${e.secondaryMineral}</span>`:''}${e.tertiaryMineral?` · <span style="color:var(--gold)">${e.tertiaryMineral}</span>`:''}</div>
+      </div>`).join('')}</div></div>`).join('');
   }
 }
 
-// ===== EXPEDITION LOG =====
-let sysFilter='all';
-function setSysFilter(sys){
-  sysFilter=sys;
-  ['all','pyro','stanton','nyx'].forEach(s=>{const el=document.getElementById('sys-'+s);if(el)el.classList.toggle('active',s===(sys==='all'?'all':sys.toLowerCase()))});
-  document.getElementById('sys-all').classList.toggle('active',sys==='all');
-  renderLog();
-}
-function openLogCompose(){
-  const area=document.getElementById('log-compose-area');
-  if(area.innerHTML!==''){area.innerHTML='';return;}
-  area.innerHTML=`<div class="log-compose">
-    <div class="log-compose-grid">
-      <div class="filter-field"><div class="filter-label">Log Title</div><input class="filter-input" style="width:100%" id="lc-title" placeholder="e.g. Bloom Survey Day 1"></div>
-      <div class="filter-field"><div class="filter-label">Location</div><input class="filter-input" style="width:100%" id="lc-loc" placeholder="e.g. Bloom, Yela Belt…"></div>
-      <div class="filter-field"><div class="filter-label">System</div>
-        <select class="filter-select" style="width:100%" id="lc-sys">
-          <option value="">— Select —</option><option>Pyro</option><option>Stanton</option><option>Nyx</option>
-        </select></div>
-    </div>
-    <div class="filter-field" style="margin-bottom:12px">
-      <div class="filter-label">Field Notes</div>
-      <textarea class="form-textarea" id="lc-notes" style="min-height:120px" placeholder="Rock density, ore clusters, coordinates, hazards, observations — anything useful for the expedition record…"></textarea>
-    </div>
-    <div class="log-compose-actions">
-      <button class="btn-save-log" onclick="saveLog()">SAVE ENTRY</button>
-      <button class="btn-discard" onclick="document.getElementById('log-compose-area').innerHTML=''">DISCARD</button>
-    </div></div>`;
-  document.getElementById('lc-title').focus();
-}
-function saveLog(){
-  const title=document.getElementById('lc-title').value.trim();
-  const loc=document.getElementById('lc-loc').value.trim();
-  const sys=document.getElementById('lc-sys').value;
-  const notes=document.getElementById('lc-notes').value.trim();
-  if(!notes&&!title){toast('Add a title or notes first','error');return;}
-  DB.addLog({title:title||'Untitled Entry',location:loc,system:sys,notes,timestamp:Date.now()});
-  document.getElementById('log-compose-area').innerHTML='';
-  renderLog();toast('Log entry saved');
-}
+/* ===== EXPEDITION LOG ===== */
+let selectedLogId=null;
 function renderLog(){
-  let logs=DB.logs;
-  if(sysFilter!=='all')logs=logs.filter(l=>l.system===sysFilter);
-  document.getElementById('log-count').textContent=DB.logs.length+' entr'+(DB.logs.length===1?'y':'ies');
-  const container=document.getElementById('log-entries');
-  if(!logs.length){container.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">${sysFilter==='all'?'No log entries yet':'No entries for this system'}</div><div class="empty-sub">Click New Log Entry above to start documenting your expedition</div></div>`;return;}
-  container.innerHTML=logs.map(l=>`<div class="log-entry">
+  const entries=LogDB.entries;
+  const col=document.getElementById('log-entries-col');
+  document.getElementById('log-count').textContent=entries.length+' entr'+(entries.length===1?'y':'ies');
+  if(!entries.length){
+    col.innerHTML='<div class="log-empty-msg">No log entries yet — write your first field note →</div>';
+    document.getElementById('log-detail').innerHTML='<div class="log-detail-empty"><div class="icon">✦</div><div class="txt">Select entry to read</div></div>';
+    selectedLogId=null;return;
+  }
+  col.innerHTML=entries.map(e=>`<div class="log-entry${selectedLogId===e.id?' selected':''}" onclick="selectLog('${e.id}')">
     <div class="log-entry-header">
-      <div class="log-ts">${fmtDate(l.timestamp)}</div>
-      ${l.location?`<div class="log-location-tag">◈ ${l.location}</div>`:''}
-      ${l.system?`<span class="log-system-badge sys-${(l.system||'').toLowerCase()}">${l.system}</span>`:''}
-      <div class="log-title">${l.title||'Untitled'}</div>
-      <div class="log-actions"><button class="btn-icon del" onclick="deleteLog('${l.id}')">✕</button></div>
+      <div class="log-entry-title">${e.title||'Untitled Entry'}</div>
+      <span class="log-tag log-tag-${e.tag||'note'}">${e.tag==='field'?'Discovery':e.tag==='alert'?'Alert':'Note'}</span>
+      <div class="log-entry-date">${fmtDate(e.ts)}</div>
+      <button class="btn-log-del" onclick="deleteLog(event,'${e.id}')">✕</button>
     </div>
-    ${l.notes?`<div class="log-body"><div class="log-text">${escHtml(l.notes)}</div></div>`:''}
+    <div class="log-entry-body">${e.body||''}</div>
   </div>`).join('');
+  if(selectedLogId)showLogDetail(selectedLogId);
 }
-function deleteLog(id){if(!confirm('Delete this log entry?'))return;DB.deleteLog(id);renderLog();toast('Log entry deleted')}
+function selectLog(id){
+  selectedLogId=id;
+  document.querySelectorAll('.log-entry').forEach(el=>{el.classList.toggle('selected',el.getAttribute('onclick')?.includes(`'${id}'`))});
+  showLogDetail(id);
+}
+function showLogDetail(id){
+  const e=LogDB.entries.find(x=>x.id===id);if(!e)return;
+  document.getElementById('log-detail').innerHTML=`
+    <div class="log-detail-title">${e.title||'Untitled Entry'}</div>
+    <div class="log-detail-meta"><span class="log-tag log-tag-${e.tag||'note'}">${e.tag==='field'?'Discovery':e.tag==='alert'?'Alert':'Field Note'}</span><span>${fmtDate(e.ts)}</span></div>
+    <div class="log-detail-body">${e.body||''}</div>`;
+}
+function postLogEntry(){
+  const title=document.getElementById('log-title-input').value.trim();
+  const body=document.getElementById('log-body-input').value.trim();
+  const tag=document.getElementById('log-tag-input').value;
+  if(!body){toast('Entry body cannot be empty','error');return}
+  const entry=LogDB.add({title,body,tag});
+  document.getElementById('log-title-input').value='';
+  document.getElementById('log-body-input').value='';
+  selectedLogId=entry.id;
+  renderLog();toast('Log entry committed ✦','success');
+}
+function deleteLog(evt,id){
+  evt.stopPropagation();
+  if(!confirm('Delete this log entry?'))return;
+  LogDB.delete(id);
+  if(selectedLogId===id)selectedLogId=null;
+  renderLog();toast('Log entry deleted');
+}
 
-// ===== DATA =====
+/* ===== EXPORT / IMPORT ===== */
 function exportData(){
-  const data={version:'sc_atlas_v2',exported:new Date().toISOString(),entries:DB.entries,logs:DB.logs};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);const a=document.createElement('a');
-  a.href=url;a.download=`uee-mining-atlas-${new Date().toISOString().slice(0,10)}.json`;
-  a.click();URL.revokeObjectURL(url);toast('Atlas exported','info');
+  const payload={atlas:DB.entries,log:LogDB.entries,exportedAt:new Date().toISOString(),version:'4.7'};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`sc_mining_atlas_${new Date().toISOString().slice(0,10)}.json`;a.click();
+  URL.revokeObjectURL(url);toast('Atlas exported ⬇','success');
 }
 function importData(evt){
   const file=evt.target.files[0];if(!file)return;
@@ -854,30 +1077,16 @@ function importData(evt){
   reader.onload=e=>{
     try{
       const data=JSON.parse(e.target.result);
-      let added=0,skipped=0;
-      const existingIds=new Set(DB.entries.map(x=>x.id));
-      const existingLogIds=new Set(DB.logs.map(x=>x.id));
-      const newEntries=[...DB.entries];const newLogs=[...DB.logs];
-      (data.entries||[]).forEach(entry=>{if(!existingIds.has(entry.id)){newEntries.push(entry);added++;}else skipped++;});
-      (data.logs||[]).forEach(log=>{if(!existingLogIds.has(log.id))newLogs.push(log);});
-      DB.saveEntries(newEntries);DB.saveLogs(newLogs);
-      renderAtlas();renderLocations();renderLog();renderStats();
-      toast(`Imported ${added} entries (${skipped} duplicates skipped)`,'info');
-    }catch{toast('Failed to parse — is this a valid Atlas JSON?','error');}
-    evt.target.value='';
+      if(data.atlas&&Array.isArray(data.atlas)){
+        if(!confirm(`Import ${data.atlas.length} mineral entries and ${(data.log||[]).length} log entries?\n\nThis will REPLACE all current data.`))return;
+        localStorage.setItem('sc_atlas_v3',JSON.stringify(data.atlas));
+        if(data.log)localStorage.setItem('sc_log_v1',JSON.stringify(data.log));
+        renderAtlas();renderLocations();renderLog();
+        toast(`Imported ${data.atlas.length} entries ⬆`,'info');
+      }else{toast('Invalid atlas file format','error')}
+    }catch{toast('Failed to parse JSON file','error')}
   };
-  reader.readAsText(file);
-}
-function renderStats(){
-  const entries=DB.entries;const logs=DB.logs;const locs=getAllLocations();
-  document.getElementById('data-stats').innerHTML=[
-    {num:entries.length,label:'Mineral Entries'},
-    {num:locs.size,label:'Unique Locations'},
-    {num:entries.filter(e=>e.isPriority).length,label:'Priority Targets'},
-    {num:logs.length,label:'Log Entries'},
-    {num:entries.filter(e=>e.secondaryMineral).length,label:'With Secondary'},
-    {num:entries.filter(e=>e.tertiaryMineral).length,label:'With Tertiary'},
-  ].map(s=>`<div class="stat-box"><div class="stat-num">${s.num}</div><div class="stat-label">${s.label}</div></div>`).join('');
+  reader.readAsText(file);evt.target.value='';
 }
 </script>
 </body>
