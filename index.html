@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UEE Mining Atlas v4.7 — Classified</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+:root{
+  --bg:#020810;--bg2:#040d18;--bg3:#071525;--surface:#0a1d30;--surface2:#0f2640;
+  --border:#1a3f60;--border2:#2a5f88;--gold:#e8a020;--gold2:#ffcc55;
+  --cyan:#00c8e8;--cyan2:#55eeff;--red:#e83030;--red2:#ff6666;
+  --green:#20e880;--purple:#cc44ff;--orange:#e87820;--yellow:#e8c820;
+  --text:#a8cce0;--text2:#c8dde8;--textdim:#4a7090;--radius:4px;
+}
+body{background:var(--bg);color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:15px;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,180,230,0.018) 2px,rgba(0,180,230,0.018) 4px)}
+body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,rgba(0,140,200,0.07) 0%,transparent 70%)}
+#grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(0,180,230,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,230,0.04) 1px,transparent 1px);background-size:40px 40px;animation:gridpulse 8s ease-in-out infinite}
+@keyframes gridpulse{0%,100%{opacity:.6}50%{opacity:1}}
+
+/* LOGIN */
+#login-screen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,#071a30 0%,#020810 70%)}
+.login-box{width:400px;border:1px solid var(--border2);background:var(--bg2);padding:40px;position:relative;animation:fadeIn .6s ease}
+.login-box::before,.login-box::after{content:'';position:absolute;width:16px;height:16px;border-color:var(--gold);border-style:solid}
+.login-box::before{top:-1px;left:-1px;border-width:2px 0 0 2px}
+.login-box::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+.login-emblem{text-align:center;margin-bottom:32px}
+.logo-title{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:6px;color:var(--textdim);text-transform:uppercase;margin-bottom:8px}
+.logo-main{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;color:var(--gold);letter-spacing:3px;text-shadow:0 0 20px rgba(232,160,32,.5)}
+.logo-sub{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim);letter-spacing:4px;margin-top:4px}
+.login-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);margin-bottom:28px}
+.field-group{margin-bottom:18px}
+.field-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;display:block}
+.field-input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-family:'Share Tech Mono',monospace;font-size:14px;padding:10px 14px;outline:none;transition:border-color .2s,box-shadow .2s;border-radius:var(--radius)}
+.field-input:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,200,232,.1)}
+.login-error{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--red);letter-spacing:2px;text-align:center;min-height:20px;margin-bottom:12px}
+.btn-login{width:100%;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'Orbitron',monospace;font-size:12px;letter-spacing:4px;padding:13px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.btn-login:hover{background:var(--gold);color:#000;box-shadow:0 0 20px rgba(232,160,32,.3)}
+
+/* APP SHELL */
+#app{position:fixed;inset:0;display:flex;flex-direction:column;z-index:1}
+#header{height:56px;flex-shrink:0;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(7,21,37,.98),rgba(4,13,24,.98));display:flex;align-items:center;padding:0 24px;gap:20px;position:relative}
+#header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.4}
+.header-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:14px;color:var(--gold);letter-spacing:2px;white-space:nowrap;text-shadow:0 0 12px rgba(232,160,32,.4)}
+.header-logo span{color:var(--cyan);font-size:10px;font-weight:400;margin-left:6px;letter-spacing:4px}
+.header-sep{width:1px;height:24px;background:var(--border);flex-shrink:0}
+.header-nav{display:flex;gap:1px;flex:1}
+.nav-tab{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;padding:0 13px;height:40px;display:flex;align-items:center;cursor:pointer;color:var(--textdim);border:1px solid transparent;transition:all .2s;background:transparent;position:relative;text-transform:uppercase;white-space:nowrap}
+.nav-tab:hover{color:var(--text2);border-color:var(--border)}
+.nav-tab.active{color:var(--cyan);border-color:var(--border2);background:rgba(0,200,232,.05)}
+.nav-tab.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:var(--cyan)}
+.header-user{display:flex;align-items:center;gap:8px;margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim);flex-shrink:0}
+.user-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
+.btn-logout{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--textdim);background:transparent;border:1px solid var(--border);padding:4px 10px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.btn-logout:hover{color:var(--red);border-color:var(--red)}
+
+/* MAIN */
+#main{flex:1;overflow:hidden;position:relative}
+.tab-panel{position:absolute;inset:0;overflow-y:auto;padding:24px;display:none}
+.tab-panel.active{display:block}
+.tab-panel::-webkit-scrollbar{width:4px}
+.tab-panel::-webkit-scrollbar-track{background:transparent}
+.tab-panel::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* SECTION HEAD */
+.section-head{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.section-title{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--gold);letter-spacing:3px;text-transform:uppercase;white-space:nowrap}
+.section-count{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim);background:var(--surface);border:1px solid var(--border);padding:2px 10px;border-radius:20px;white-space:nowrap}
+.section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);min-width:20px}
+.btn-add{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:7px 14px;cursor:pointer;transition:all .2s;text-transform:uppercase;white-space:nowrap}
+.btn-add:hover{background:var(--gold);color:#000;box-shadow:0 0 14px rgba(232,160,32,.3)}
+
+/* FILTER BAR */
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);align-items:flex-end}
+.filter-field{display:flex;flex-direction:column;gap:5px}
+.filter-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase}
+.filter-input,.filter-select{background:var(--surface);border:1px solid var(--border);color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:13px;padding:7px 10px;outline:none;transition:border-color .2s;border-radius:var(--radius)}
+.filter-input:focus,.filter-select:focus{border-color:var(--cyan)}
+.filter-select option{background:var(--bg3)}
+.filter-input{width:160px}
+.filter-select{width:140px}
+.btn-clear-filter{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;background:transparent;border:1px solid var(--border);color:var(--textdim);padding:7px 12px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius);align-self:flex-end}
+.btn-clear-filter:hover{border-color:var(--red2);color:var(--red2)}
+.priority-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;align-self:flex-end;padding:7px 12px;border:1px solid var(--border);border-radius:var(--radius);transition:all .15s;background:transparent}
+.priority-toggle:hover{border-color:var(--gold)}
+.priority-toggle.active{border-color:var(--gold);background:rgba(232,160,32,.08)}
+.priority-toggle-icon{font-size:13px;color:var(--textdim);transition:color .15s}
+.priority-toggle.active .priority-toggle-icon{color:var(--gold)}
+.priority-toggle-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--textdim);text-transform:uppercase;transition:color .15s}
+.priority-toggle.active .priority-toggle-label{color:var(--gold)}
+
+/* ATLAS CARDS */
+#atlas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.mineral-card{background:var(--bg2);border:1px solid var(--border);position:relative;overflow:hidden;transition:border-color .2s,transform .15s;animation:fadeIn .3s ease;border-radius:var(--radius)}
+.mineral-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.mineral-card.priority{border-color:rgba(232,160,32,.35)}
+.mineral-card.priority::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.card-header{padding:12px 14px 10px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.card-primary-row{display:flex;align-items:center;gap:7px}
+.card-primary{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--gold2);letter-spacing:1px}
+.priority-star{font-size:13px;color:var(--gold);text-shadow:0 0 8px rgba(232,160,32,.6)}
+.card-minerals-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.mineral-tag{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 8px;border-radius:2px;text-transform:uppercase}
+.tag-secondary{background:rgba(0,200,232,.1);border:1px solid rgba(0,200,232,.3);color:var(--cyan)}
+.tag-tertiary{background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.2);color:var(--gold)}
+.card-actions{display:flex;gap:5px;flex-shrink:0}
+.btn-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--border);cursor:pointer;transition:all .15s;font-size:11px;color:var(--textdim);border-radius:var(--radius)}
+.btn-icon:hover.edit{border-color:var(--cyan);color:var(--cyan);background:rgba(0,200,232,.08)}
+.btn-icon:hover.del{border-color:var(--red);color:var(--red);background:rgba(232,48,48,.08)}
+.btn-icon:hover.prio{border-color:var(--gold);color:var(--gold);background:rgba(232,160,32,.08)}
+.btn-icon.prio.on{color:var(--gold);border-color:rgba(232,160,32,.5);background:rgba(232,160,32,.06)}
+.card-body{padding:10px 14px}
+.card-row{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.card-key{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase;flex-shrink:0;width:104px}
+.card-val{font-size:13px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-weight:500}
+.diff-badge{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 8px;border-radius:2px;text-transform:uppercase}
+.diff-easy{background:rgba(32,232,128,.1);border:1px solid rgba(32,232,128,.3);color:var(--green)}
+.diff-moderate{background:rgba(232,200,32,.1);border:1px solid rgba(232,200,32,.3);color:var(--yellow)}
+.diff-hard{background:rgba(232,120,32,.1);border:1px solid rgba(232,120,32,.3);color:var(--orange)}
+.diff-veryhard{background:rgba(232,48,48,.1);border:1px solid rgba(232,48,48,.3);color:var(--red)}
+.diff-extreme{background:rgba(180,0,255,.1);border:1px solid rgba(180,0,255,.3);color:var(--purple)}
+.stars{display:flex;gap:2px;align-items:center}
+.star{font-size:11px;color:var(--border)}
+.star.on{color:var(--gold)}
+.card-locations{margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.loc-chip-list{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.loc-chip{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 9px;border:1px solid var(--border);color:var(--textdim);border-radius:2px;background:rgba(255,255,255,.02)}
+
+/* FORM */
+#form-panel .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:840px}
+.form-section-label{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;grid-column:1/-1;padding-bottom:6px;border-bottom:1px solid var(--border);margin-top:4px;margin-bottom:-6px}
+.form-full{grid-column:1/-1}
+.form-field{display:flex;flex-direction:column;gap:6px}
+.form-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase}
+.form-input,.form-select,.form-textarea{background:var(--surface);border:1px solid var(--border);color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:14px;padding:9px 12px;outline:none;transition:border-color .2s,box-shadow .2s;border-radius:var(--radius);width:100%}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,200,232,.08)}
+.form-select option{background:var(--bg3)}
+.form-textarea{resize:vertical;min-height:80px;font-family:'Rajdhani',sans-serif}
+#locations-list{display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
+.loc-entry{background:var(--bg3);border:1px solid var(--border);padding:10px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:10px;align-items:center;border-radius:var(--radius)}
+.loc-entry .form-label{font-size:9px}
+.loc-entry .form-input{padding:6px 10px;font-size:13px}
+.btn-rm-loc{width:26px;height:26px;background:transparent;border:1px solid var(--border);color:var(--red);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .15s;border-radius:var(--radius);flex-shrink:0}
+.btn-rm-loc:hover{background:rgba(232,48,48,.1);border-color:var(--red)}
+.btn-add-loc{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;background:transparent;border:1px dashed var(--border2);color:var(--textdim);padding:8px 14px;cursor:pointer;transition:all .15s;text-transform:uppercase;border-radius:var(--radius);width:100%}
+.btn-add-loc:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,200,232,.04)}
+.star-input{display:flex;gap:3px;align-items:center}
+.star-btn{font-size:18px;cursor:pointer;color:var(--border);transition:color .1s;background:none;border:none;padding:0 1px}
+.star-btn.on{color:var(--gold)}
+.priority-check-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg3);cursor:pointer;transition:all .15s}
+.priority-check-row:hover{border-color:var(--gold)}
+.priority-check-row input{accent-color:var(--gold);width:16px;height:16px;cursor:pointer}
+.priority-check-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase}
+.form-actions{grid-column:1/-1;display:flex;gap:10px;margin-top:6px}
+.btn-submit{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;background:var(--gold);color:#000;border:none;padding:11px 26px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius);font-weight:700}
+.btn-submit:hover{background:var(--gold2);box-shadow:0 0 18px rgba(232,160,32,.4)}
+.btn-cancel{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;background:transparent;border:1px solid var(--border);color:var(--textdim);padding:11px 20px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
+.btn-cancel:hover{border-color:var(--border2);color:var(--text2)}
+
+/* SEARCH */
+.search-bar-wrap{max-width:680px;position:relative;margin-bottom:12px}
+.search-input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:15px;padding:12px 16px 12px 42px;outline:none;transition:all .2s;border-radius:var(--radius)}
+.search-input:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,200,232,.08)}
+.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--textdim);pointer-events:none}
+.search-mode-row{display:flex;gap:8px;margin-bottom:18px}
+.mode-btn{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;padding:6px 14px;border:1px solid var(--border);background:transparent;color:var(--textdim);cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
+.mode-btn.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,200,232,.07)}
+.search-results{display:flex;flex-direction:column;gap:10px}
+.result-card{background:var(--bg2);border:1px solid var(--border);padding:14px 18px;animation:fadeIn .2s ease;border-radius:var(--radius)}
+.result-card-title{font-family:'Orbitron',monospace;font-size:12px;color:var(--gold);margin-bottom:10px;letter-spacing:1px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.result-mineral-name{color:var(--cyan)}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.result-row{display:flex;flex-direction:column;gap:2px}
+.result-key{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase}
+.result-val{font-size:13px;color:var(--text2);font-weight:500}
+
+/* LOCATIONS */
+#locations-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+.loc-card{background:var(--bg2);border:1px solid var(--border);overflow:hidden;animation:fadeIn .3s ease;border-radius:var(--radius)}
+.loc-card-header{padding:10px 14px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(0,200,232,.06),transparent);display:flex;align-items:center;gap:10px}
+.loc-card-name{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--cyan);letter-spacing:2px;flex:1}
+.loc-mineral-count{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim)}
+.loc-card-body{padding:0}
+.loc-mineral-row{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid rgba(26,63,96,.5);transition:background .15s}
+.loc-mineral-row:last-child{border-bottom:none}
+.loc-mineral-row:hover{background:rgba(0,200,232,.03)}
+.loc-min-name{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;color:var(--gold2);min-width:120px}
+.loc-min-role{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;padding:1px 6px;border-radius:2px}
+.role-primary{background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.25);color:var(--gold)}
+.role-secondary{background:rgba(0,200,232,.1);border:1px solid rgba(0,200,232,.25);color:var(--cyan)}
+.role-tertiary{background:rgba(160,0,255,.1);border:1px solid rgba(160,0,255,.25);color:var(--purple)}
+.loc-min-quality{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text2);margin-left:auto}
+.loc-min-ratings{display:flex;gap:8px;align-items:center}
+.loc-rating-group{display:flex;flex-direction:column;align-items:center;gap:1px}
+.loc-rating-label{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--textdim);letter-spacing:1px;text-transform:uppercase}
+.loc-stars{display:flex;gap:1px}
+.loc-star{font-size:9px;color:var(--border)}
+.loc-star.on{color:var(--gold)}
+
+/* EXPEDITION LOG */
+.log-toolbar{display:flex;gap:10px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
+.log-system-filter{display:flex;gap:6px;flex-wrap:wrap}
+.sys-btn{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;padding:5px 12px;border:1px solid var(--border);background:transparent;color:var(--textdim);cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
+.sys-btn.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,200,232,.07)}
+.btn-new-log{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;background:transparent;border:1px solid var(--green);color:var(--green);padding:7px 14px;cursor:pointer;transition:all .2s;text-transform:uppercase;white-space:nowrap;margin-left:auto}
+.btn-new-log:hover{background:var(--green);color:#000}
+.log-entries{display:flex;flex-direction:column;gap:10px}
+.log-entry{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;animation:fadeIn .3s ease;transition:border-color .15s}
+.log-entry:hover{border-color:var(--border2)}
+.log-entry-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.15);flex-wrap:wrap}
+.log-ts{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);flex-shrink:0}
+.log-location-tag{font-family:'Orbitron',monospace;font-size:10px;color:var(--cyan);letter-spacing:1px}
+.log-system-badge{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;padding:2px 8px;border-radius:2px;text-transform:uppercase}
+.sys-pyro{background:rgba(232,120,32,.1);border:1px solid rgba(232,120,32,.3);color:var(--orange)}
+.sys-stanton{background:rgba(0,200,232,.1);border:1px solid rgba(0,200,232,.25);color:var(--cyan)}
+.sys-nyx{background:rgba(160,0,255,.1);border:1px solid rgba(160,0,255,.3);color:var(--purple)}
+.log-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;color:var(--text2);flex:1;min-width:100px}
+.log-actions{display:flex;gap:5px;margin-left:auto}
+.log-body{padding:12px 14px}
+.log-text{font-family:'Rajdhani',sans-serif;font-size:14px;color:var(--text);line-height:1.6;white-space:pre-wrap}
+.log-compose{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:18px;margin-bottom:18px;animation:fadeIn .2s ease}
+.log-compose-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.log-compose-actions{display:flex;gap:10px}
+.btn-save-log{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;background:var(--green);color:#000;border:none;padding:9px 18px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius);font-weight:700}
+.btn-save-log:hover{box-shadow:0 0 14px rgba(32,232,128,.3)}
+.btn-discard{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;background:transparent;border:1px solid var(--border);color:var(--textdim);padding:9px 14px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
+.btn-discard:hover{border-color:var(--red2);color:var(--red2)}
+
+/* DATA */
+.data-panel{max-width:680px}
+.data-section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+.data-section-title{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:12px;text-transform:uppercase}
+.data-section-desc{font-family:'Rajdhani',sans-serif;font-size:13px;color:var(--textdim);margin-bottom:12px;line-height:1.5}
+.data-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-export{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:9px 18px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
+.btn-export:hover{background:var(--cyan);color:#000}
+.btn-import{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:9px 18px;cursor:pointer;transition:all .2s;text-transform:uppercase;border-radius:var(--radius)}
+.btn-import:hover{background:var(--gold);color:#000}
+.import-file{display:none}
+.data-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:14px}
+.stat-box{background:var(--bg3);border:1px solid var(--border);padding:12px;border-radius:var(--radius);text-align:center}
+.stat-num{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;color:var(--gold);line-height:1}
+.stat-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--textdim);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+
+/* MISC */
+.empty-state{text-align:center;padding:60px 20px}
+.empty-icon{font-size:44px;margin-bottom:14px;opacity:.4}
+.empty-title{font-family:'Orbitron',monospace;font-size:12px;color:var(--textdim);letter-spacing:3px;margin-bottom:8px}
+.empty-sub{font-size:13px;color:var(--textdim);opacity:.7}
+#toast{position:fixed;bottom:22px;right:22px;z-index:9000;display:flex;flex-direction:column;gap:8px}
+.toast-item{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;padding:9px 16px;border-radius:var(--radius);animation:slideIn .3s ease}
+.toast-success{background:rgba(32,232,128,.15);border:1px solid var(--green);color:var(--green)}
+.toast-error{background:rgba(232,48,48,.15);border:1px solid var(--red);color:var(--red)}
+.toast-info{background:rgba(0,200,232,.15);border:1px solid var(--cyan);color:var(--cyan)}
+@keyframes slideIn{from{transform:translateX(60px);opacity:0}to{transform:none;opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div id="grid-bg"></div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-emblem">
+      <div class="logo-title">United Earth Economy</div>
+      <div class="logo-main">⬡ MINING ATLAS</div>
+      <div class="logo-sub">VERSION 4.7 — CLASSIFIED</div>
+    </div>
+    <div class="login-divider"></div>
+    <div class="field-group">
+      <label class="field-label">Commander ID</label>
+      <input class="field-input" id="l-user" type="text" autocomplete="off" placeholder="Enter identifier">
+    </div>
+    <div class="field-group">
+      <label class="field-label">Auth Code</label>
+      <input class="field-input" id="l-pass" type="password" placeholder="••••••••••">
+    </div>
+    <div class="login-error" id="l-error"></div>
+    <button class="btn-login" onclick="doLogin()">AUTHENTICATE</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" class="hidden">
+  <div id="header">
+    <div class="header-logo">UEE MINING ATLAS <span>v4.7</span></div>
+    <div class="header-sep"></div>
+    <div class="header-nav">
+      <button class="nav-tab active" onclick="setTab('atlas',this)">⬡ ATLAS</button>
+      <button class="nav-tab" onclick="setTab('form',this)">+ ADD</button>
+      <button class="nav-tab" onclick="setTab('search',this)">⌕ SEARCH</button>
+      <button class="nav-tab" onclick="setTab('locations',this)">◈ LOCATIONS</button>
+      <button class="nav-tab" onclick="setTab('log',this)">📋 EXP. LOG</button>
+      <button class="nav-tab" onclick="setTab('data',this)">⇅ DATA</button>
+    </div>
+    <div class="header-user">
+      <div class="user-dot"></div>
+      <span id="header-username"></span>
+      <button class="btn-logout" onclick="doLogout()">LOGOUT</button>
+    </div>
+  </div>
+
+  <div id="main">
+
+    <!-- ATLAS -->
+    <div class="tab-panel active" id="panel-atlas">
+      <div class="section-head">
+        <div class="section-title">⬡ Mineral Registry</div>
+        <div class="section-count" id="atlas-count">0 entries</div>
+        <div class="section-line"></div>
+        <button class="btn-add" onclick="setTab('form',document.querySelector('[onclick*=form]'))">+ New Entry</button>
+      </div>
+      <div class="filter-bar">
+        <div class="filter-field">
+          <div class="filter-label">Mineral Name</div>
+          <input class="filter-input" id="fl-name" placeholder="Search name…" oninput="renderAtlas()">
+        </div>
+        <div class="filter-field">
+          <div class="filter-label">Find Difficulty</div>
+          <select class="filter-select" id="fl-find" onchange="renderAtlas()">
+            <option value="">All</option><option>Easy</option><option>Moderate</option><option>Hard</option><option>Very Hard</option><option>Extreme</option>
+          </select>
+        </div>
+        <div class="filter-field">
+          <div class="filter-label">Mine Difficulty</div>
+          <select class="filter-select" id="fl-mine" onchange="renderAtlas()">
+            <option value="">All</option><option>Easy</option><option>Moderate</option><option>Hard</option><option>Very Hard</option><option>Extreme</option>
+          </select>
+        </div>
+        <div class="filter-field">
+          <div class="filter-label">Location</div>
+          <input class="filter-input" id="fl-loc" placeholder="Filter location…" oninput="renderAtlas()">
+        </div>
+        <div class="priority-toggle" id="fl-prio-toggle" onclick="togglePriorityFilter()">
+          <span class="priority-toggle-icon">★</span>
+          <span class="priority-toggle-label">Priority Only</span>
+        </div>
+        <button class="btn-clear-filter" onclick="clearFilters()">✕ Clear</button>
+      </div>
+      <div id="atlas-grid"></div>
+    </div>
+
+    <!-- FORM -->
+    <div class="tab-panel" id="panel-form">
+      <div class="section-head">
+        <div class="section-title" id="form-title">+ Add New Entry</div>
+        <div class="section-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-section-label">— Mineral Composition</div>
+        <div class="form-field">
+          <label class="form-label">Primary Mineral *</label>
+          <input class="form-input" id="f-primary" placeholder="e.g. Quantanium">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Secondary Mineral</label>
+          <input class="form-input" id="f-secondary" placeholder="e.g. Borase">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Tertiary Mineral</label>
+          <input class="form-input" id="f-tertiary" placeholder="e.g. Taranite">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Priority Target</label>
+          <label class="priority-check-row">
+            <input type="checkbox" id="f-priority">
+            <span class="priority-check-label">★ Mark as Priority Target for Platinum Post</span>
+          </label>
+        </div>
+        <div class="form-section-label">— Locations & Quality</div>
+        <div class="form-full">
+          <div id="locations-list"></div>
+          <button class="btn-add-loc" onclick="addLocationRow()">+ Add Location</button>
+        </div>
+        <div class="form-section-label">— Mining Difficulty</div>
+        <div class="form-field">
+          <label class="form-label">Difficulty to Find</label>
+          <select class="form-select" id="f-find-diff">
+            <option value="">— Select —</option><option>Easy</option><option>Moderate</option><option>Hard</option><option>Very Hard</option><option>Extreme</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Difficulty to Mine</label>
+          <select class="form-select" id="f-mine-diff">
+            <option value="">— Select —</option><option>Easy</option><option>Moderate</option><option>Hard</option><option>Very Hard</option><option>Extreme</option>
+          </select>
+        </div>
+        <div class="form-field form-full">
+          <label class="form-label">Required Mining Setup</label>
+          <input class="form-input" id="f-ship" placeholder="e.g. Fully kitted Prospector, Base MOLE, Hand laser…">
+        </div>
+        <div class="form-section-label">— Use & Value</div>
+        <div class="form-field form-full">
+          <label class="form-label">Primary Use</label>
+          <textarea class="form-textarea" id="f-use" placeholder="Describe the primary industrial / economic use of this mineral…"></textarea>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Usefulness Rating</label>
+          <div class="star-input" id="f-usefulness" data-val="0">
+            <button class="star-btn" onclick="setStar('f-usefulness',1)">★</button>
+            <button class="star-btn" onclick="setStar('f-usefulness',2)">★</button>
+            <button class="star-btn" onclick="setStar('f-usefulness',3)">★</button>
+            <button class="star-btn" onclick="setStar('f-usefulness',4)">★</button>
+            <button class="star-btn" onclick="setStar('f-usefulness',5)">★</button>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-submit" onclick="submitEntry()">SAVE ENTRY</button>
+          <button class="btn-cancel" onclick="cancelForm()">CANCEL</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="tab-panel" id="panel-search">
+      <div class="section-head">
+        <div class="section-title">⌕ Search Database</div>
+        <div class="section-line"></div>
+      </div>
+      <div class="search-bar-wrap">
+        <div class="search-icon">⌕</div>
+        <input class="search-input" id="search-input" placeholder="Type mineral name or location…" oninput="runSearch()">
+      </div>
+      <div class="search-mode-row">
+        <button class="mode-btn active" id="mode-mineral" onclick="setMode('mineral')">By Mineral</button>
+        <button class="mode-btn" id="mode-location" onclick="setMode('location')">By Location</button>
+      </div>
+      <div class="search-results" id="search-results">
+        <div class="empty-state">
+          <div class="empty-icon">⌕</div>
+          <div class="empty-title">Begin typing to search</div>
+          <div class="empty-sub">Switch between mineral and location modes above</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOCATIONS -->
+    <div class="tab-panel" id="panel-locations">
+      <div class="section-head">
+        <div class="section-title">◈ Location Atlas</div>
+        <div class="section-count" id="loc-count">0 locations</div>
+        <div class="section-line"></div>
+      </div>
+      <div id="locations-grid"></div>
+    </div>
+
+    <!-- EXPEDITION LOG -->
+    <div class="tab-panel" id="panel-log">
+      <div class="section-head">
+        <div class="section-title">📋 Expedition Log</div>
+        <div class="section-count" id="log-count">0 entries</div>
+        <div class="section-line"></div>
+      </div>
+      <div class="log-toolbar">
+        <div class="log-system-filter">
+          <button class="sys-btn active" id="sys-all" onclick="setSysFilter('all')">All Systems</button>
+          <button class="sys-btn" id="sys-pyro" onclick="setSysFilter('Pyro')">Pyro</button>
+          <button class="sys-btn" id="sys-stanton" onclick="setSysFilter('Stanton')">Stanton</button>
+          <button class="sys-btn" id="sys-nyx" onclick="setSysFilter('Nyx')">Nyx</button>
+        </div>
+        <button class="btn-new-log" onclick="openLogCompose()">+ New Log Entry</button>
+      </div>
+      <div id="log-compose-area"></div>
+      <div class="log-entries" id="log-entries"></div>
+    </div>
+
+    <!-- DATA MANAGEMENT -->
+    <div class="tab-panel" id="panel-data">
+      <div class="section-head">
+        <div class="section-title">⇅ Data Management</div>
+        <div class="section-line"></div>
+      </div>
+      <div class="data-panel">
+        <div class="data-section">
+          <div class="data-section-title">Export Atlas Data</div>
+          <div class="data-section-desc">Download all mineral entries and expedition log entries as a JSON file. Back up your data, transfer to another device, or share with crew.</div>
+          <div class="data-actions">
+            <button class="btn-export" onclick="exportData()">⬇ Export JSON</button>
+          </div>
+        </div>
+        <div class="data-section">
+          <div class="data-section-title">Import Atlas Data</div>
+          <div class="data-section-desc">Load a previously exported JSON file. This will <strong style="color:var(--red2)">merge</strong> imported entries with your current data. Duplicate IDs are skipped automatically.</div>
+          <div class="data-actions">
+            <button class="btn-import" onclick="document.getElementById('import-file').click()">⬆ Import JSON</button>
+            <input type="file" id="import-file" class="import-file" accept=".json" onchange="importData(event)">
+          </div>
+        </div>
+        <div class="data-section">
+          <div class="data-section-title">Atlas Statistics</div>
+          <div class="data-stats" id="data-stats"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+// ===== DB =====
+const DB={
+  get entries(){try{return JSON.parse(localStorage.getItem('sc_atlas_v2')||'[]')}catch{return[]}},
+  get logs(){try{return JSON.parse(localStorage.getItem('sc_logs_v2')||'[]')}catch{return[]}},
+  saveEntries(e){localStorage.setItem('sc_atlas_v2',JSON.stringify(e))},
+  saveLogs(l){localStorage.setItem('sc_logs_v2',JSON.stringify(l))},
+  addEntry(e){const a=DB.entries;e.id=uid();a.push(e);DB.saveEntries(a);return e},
+  updateEntry(id,d){DB.saveEntries(DB.entries.map(x=>x.id===id?{...x,...d}:x))},
+  deleteEntry(id){DB.saveEntries(DB.entries.filter(x=>x.id!==id))},
+  getEntry(id){return DB.entries.find(x=>x.id===id)},
+  addLog(l){const a=DB.logs;l.id=uid();a.unshift(l);DB.saveLogs(a);return l},
+  deleteLog(id){DB.saveLogs(DB.logs.filter(x=>x.id!==id))},
+};
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+
+// ===== AUTH =====
+function doLogin(){
+  const u=document.getElementById('l-user').value.trim();
+  const p=document.getElementById('l-pass').value;
+  if(u==='TheRealKnight'&&p==='IMTHEREALKNIGHT67'){
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    document.getElementById('header-username').textContent=u;
+    renderAtlas();renderLocations();renderLog();renderStats();
+  } else {
+    const err=document.getElementById('l-error');
+    err.textContent='⚠ INVALID CREDENTIALS — ACCESS DENIED';
+    document.getElementById('l-pass').value='';
+    setTimeout(()=>err.textContent='',3000);
+  }
+}
+function doLogout(){
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('l-user').value='';
+  document.getElementById('l-pass').value='';
+}
+document.getElementById('l-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+document.getElementById('l-user').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('l-pass').focus()});
+
+// ===== TABS =====
+function setTab(id,btn){
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  else document.querySelectorAll('.nav-tab').forEach(t=>{if((t.getAttribute('onclick')||'').includes("'"+id+"'"))t.classList.add('active')});
+  document.getElementById('panel-'+id).classList.add('active');
+  if(id==='atlas')renderAtlas();
+  if(id==='locations')renderLocations();
+  if(id==='log')renderLog();
+  if(id==='data')renderStats();
+  if(id==='form'&&!editingId)resetForm();
+  if(id==='search')document.getElementById('search-input').focus();
+}
+
+// ===== HELPERS =====
+function diffClass(d){const m={Easy:'easy',Moderate:'moderate',Hard:'hard','Very Hard':'veryhard',Extreme:'extreme'};return'diff-'+(m[d]||'moderate')}
+function starsHtml(n,max=5){let s='';for(let i=1;i<=max;i++)s+=`<span class="star ${i<=n?'on':''}">★</span>`;return s}
+function locStarsHtml(n,max=5){let s='';for(let i=1;i<=max;i++)s+=`<span class="loc-star ${i<=n?'on':''}">★</span>`;return s}
+function toast(msg,type='success'){
+  const t=document.getElementById('toast');const d=document.createElement('div');
+  d.className=`toast-item toast-${type}`;d.textContent=msg;t.appendChild(d);setTimeout(()=>d.remove(),3000);
+}
+function getAllLocations(){
+  const locs=new Map();
+  DB.entries.forEach(e=>{(e.locations||[]).forEach(l=>{
+    if(l.name&&l.name.trim()){const k=l.name.trim();if(!locs.has(k))locs.set(k,[]);locs.get(k).push({entry:e,loc:l});}
+  })});
+  return locs;
+}
+function fmtDate(ts){const d=new Date(ts);return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+' '+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+// ===== FILTERS =====
+let prioFilterOn=false;
+function togglePriorityFilter(){
+  prioFilterOn=!prioFilterOn;
+  document.getElementById('fl-prio-toggle').classList.toggle('active',prioFilterOn);
+  renderAtlas();
+}
+function clearFilters(){
+  ['fl-name','fl-loc'].forEach(id=>document.getElementById(id).value='');
+  ['fl-find','fl-mine'].forEach(id=>document.getElementById(id).value='');
+  prioFilterOn=false;document.getElementById('fl-prio-toggle').classList.remove('active');
+  renderAtlas();
+}
+
+// ===== ATLAS =====
+function renderAtlas(){
+  let entries=DB.entries;
+  const name=(document.getElementById('fl-name')?.value||'').toLowerCase();
+  const find=document.getElementById('fl-find')?.value||'';
+  const mine=document.getElementById('fl-mine')?.value||'';
+  const loc=(document.getElementById('fl-loc')?.value||'').toLowerCase();
+  if(name)entries=entries.filter(e=>(e.primaryMineral||'').toLowerCase().includes(name)||(e.secondaryMineral||'').toLowerCase().includes(name)||(e.tertiaryMineral||'').toLowerCase().includes(name));
+  if(find)entries=entries.filter(e=>e.findDifficulty===find);
+  if(mine)entries=entries.filter(e=>e.mineDifficulty===mine);
+  if(loc)entries=entries.filter(e=>(e.locations||[]).some(l=>(l.name||'').toLowerCase().includes(loc)));
+  if(prioFilterOn)entries=entries.filter(e=>e.isPriority);
+  const grid=document.getElementById('atlas-grid');
+  document.getElementById('atlas-count').textContent=entries.length+' entr'+(entries.length===1?'y':'ies');
+  if(!entries.length){grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">⬡</div><div class="empty-title">No entries match filters</div><div class="empty-sub">Adjust filters or add new entries</div></div>`;return;}
+  grid.innerHTML=entries.map(cardHtml).join('');
+}
+function cardHtml(e){
+  const locs=(e.locations||[]).filter(l=>l.name);
+  const tags=[e.secondaryMineral?`<span class="mineral-tag tag-secondary">◈ ${e.secondaryMineral}</span>`:'',e.tertiaryMineral?`<span class="mineral-tag tag-tertiary">◈ ${e.tertiaryMineral}</span>`:''].join('');
+  return`<div class="mineral-card${e.isPriority?' priority':''}">
+  <div class="card-header">
+    <div>
+      <div class="card-primary-row">
+        <div class="card-primary">⬡ ${e.primaryMineral||'—'}</div>
+        ${e.isPriority?'<span class="priority-star">★</span>':''}
+      </div>
+      <div class="card-minerals-row">${tags}</div>
+    </div>
+    <div class="card-actions">
+      <button class="btn-icon prio ${e.isPriority?'on':''}" onclick="togglePriority('${e.id}')" title="${e.isPriority?'Remove priority':'Mark priority'}">★</button>
+      <button class="btn-icon edit" onclick="editEntry('${e.id}')">✎</button>
+      <button class="btn-icon del" onclick="deleteEntry('${e.id}')">✕</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="card-row"><span class="card-key">Find Diff.</span><span class="diff-badge ${diffClass(e.findDifficulty)}">${e.findDifficulty||'—'}</span></div>
+    <div class="card-row"><span class="card-key">Mine Diff.</span><span class="diff-badge ${diffClass(e.mineDifficulty)}">${e.mineDifficulty||'—'}</span></div>
+    <div class="card-row"><span class="card-key">Ship Req.</span><span class="card-val">${e.requiredShip||'—'}</span></div>
+    <div class="card-row"><span class="card-key">Primary Use</span><span class="card-val" style="font-size:12px">${e.primaryUse||'—'}</span></div>
+    <div class="card-row"><span class="card-key">Usefulness</span><div class="stars">${starsHtml(e.usefulnessRating||0)}</div></div>
+    ${locs.length?`<div class="card-locations"><div class="card-key" style="margin-bottom:4px">Locations</div><div class="loc-chip-list">${locs.map(l=>`<span class="loc-chip">${l.name}</span>`).join('')}</div></div>`:''}
+  </div></div>`;
+}
+function togglePriority(id){const e=DB.getEntry(id);if(!e)return;DB.updateEntry(id,{isPriority:!e.isPriority});renderAtlas();toast(e.isPriority?'Priority removed':'Marked as Priority Target','info')}
+function deleteEntry(id){if(!confirm('Delete this entry?'))return;DB.deleteEntry(id);renderAtlas();renderLocations();toast('Entry deleted')}
+
+// ===== EDIT =====
+let editingId=null;
+function editEntry(id){
+  const e=DB.getEntry(id);if(!e)return;
+  editingId=id;
+  document.getElementById('form-title').textContent='✎ Edit Entry';
+  document.getElementById('f-primary').value=e.primaryMineral||'';
+  document.getElementById('f-secondary').value=e.secondaryMineral||'';
+  document.getElementById('f-tertiary').value=e.tertiaryMineral||'';
+  document.getElementById('f-priority').checked=!!e.isPriority;
+  document.getElementById('f-find-diff').value=e.findDifficulty||'';
+  document.getElementById('f-mine-diff').value=e.mineDifficulty||'';
+  document.getElementById('f-ship').value=e.requiredShip||'';
+  document.getElementById('f-use').value=e.primaryUse||'';
+  setStar('f-usefulness',e.usefulnessRating||0);
+  const list=document.getElementById('locations-list');list.innerHTML='';
+  (e.locations||[]).forEach(l=>addLocationRow(l));
+  setTab('form');
+  document.querySelectorAll('.nav-tab').forEach(t=>{t.classList.toggle('active',(t.getAttribute('onclick')||'').includes("'form'"))});
+}
+function cancelForm(){resetForm();setTab('atlas',document.querySelector('.nav-tab[onclick*="atlas"]'))}
+
+// ===== FORM =====
+function resetForm(){
+  editingId=null;
+  document.getElementById('form-title').textContent='+ Add New Entry';
+  ['f-primary','f-secondary','f-tertiary','f-ship','f-use'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-find-diff').value='';
+  document.getElementById('f-mine-diff').value='';
+  document.getElementById('f-priority').checked=false;
+  setStar('f-usefulness',0);
+  document.getElementById('locations-list').innerHTML='';
+}
+function addLocationRow(prefill){
+  const list=document.getElementById('locations-list');
+  const el=document.createElement('div');el.className='loc-entry';
+  const mr=prefill?.miningRating||0;const qr=prefill?.qualityRating||0;
+  el.innerHTML=`
+    <div><div class="form-label">Location</div><input class="form-input" placeholder="e.g. Yela" value="${prefill?.name||''}"></div>
+    <div><div class="form-label">Avg. Quality</div><input class="form-input" placeholder="e.g. 75–85%" value="${prefill?.avgQuality||''}"></div>
+    <div><div class="form-label">Mining Rating</div><div class="star-input loc-star-input" data-val="${mr}">${[1,2,3,4,5].map(i=>`<button class="star-btn ${i<=mr?'on':''}" onclick="setLocStar(this.closest('.loc-star-input'),${i})">★</button>`).join('')}</div></div>
+    <div><div class="form-label">Quality Rating</div><div class="star-input loc-star-input" data-val="${qr}">${[1,2,3,4,5].map(i=>`<button class="star-btn ${i<=qr?'on':''}" onclick="setLocStar(this.closest('.loc-star-input'),${i})">★</button>`).join('')}</div></div>
+    <button class="btn-rm-loc" onclick="this.closest('.loc-entry').remove()">✕</button>`;
+  list.appendChild(el);
+}
+function setLocStar(c,v){c.dataset.val=v;c.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('on',i<v))}
+function setStar(fieldId,val){const el=document.getElementById(fieldId);el.dataset.val=val;el.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('on',i<val))}
+function getLocations(){
+  return[...document.querySelectorAll('#locations-list .loc-entry')].map(row=>{
+    const inputs=row.querySelectorAll('input');const stars=row.querySelectorAll('.loc-star-input');
+    return{name:inputs[0].value.trim(),avgQuality:inputs[1].value.trim(),miningRating:+(stars[0]?.dataset.val||0),qualityRating:+(stars[1]?.dataset.val||0)};
+  }).filter(l=>l.name);
+}
+function submitEntry(){
+  const primary=document.getElementById('f-primary').value.trim();
+  if(!primary){toast('Primary mineral is required','error');return;}
+  const entry={
+    primaryMineral:primary,secondaryMineral:document.getElementById('f-secondary').value.trim(),
+    tertiaryMineral:document.getElementById('f-tertiary').value.trim(),
+    isPriority:document.getElementById('f-priority').checked,
+    locations:getLocations(),findDifficulty:document.getElementById('f-find-diff').value,
+    mineDifficulty:document.getElementById('f-mine-diff').value,
+    requiredShip:document.getElementById('f-ship').value.trim(),
+    primaryUse:document.getElementById('f-use').value.trim(),
+    usefulnessRating:+(document.getElementById('f-usefulness').dataset.val||0),
+  };
+  if(editingId){DB.updateEntry(editingId,entry);toast('Entry updated')}
+  else{DB.addEntry(entry);toast('Entry added')}
+  resetForm();setTab('atlas',document.querySelector('.nav-tab[onclick*="atlas"]'));
+  renderAtlas();renderLocations();
+}
+
+// ===== LOCATIONS =====
+function renderLocations(){
+  const locs=getAllLocations();const grid=document.getElementById('locations-grid');
+  document.getElementById('loc-count').textContent=locs.size+' location'+(locs.size===1?'':'s');
+  if(!locs.size){grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">◈</div><div class="empty-title">No locations found</div><div class="empty-sub">Add entries with location data to populate this view</div></div>`;return;}
+  let html='';
+  locs.forEach((items,locName)=>{
+    const rows=[];
+    items.forEach(({entry,loc})=>{
+      rows.push({name:entry.primaryMineral,role:'PRIMARY',quality:loc.avgQuality,mr:loc.miningRating,qr:loc.qualityRating});
+      if(entry.secondaryMineral)rows.push({name:entry.secondaryMineral,role:'SECONDARY',quality:loc.avgQuality,mr:loc.miningRating,qr:loc.qualityRating});
+      if(entry.tertiaryMineral)rows.push({name:entry.tertiaryMineral,role:'TERTIARY',quality:loc.avgQuality,mr:loc.miningRating,qr:loc.qualityRating});
+    });
+    html+=`<div class="loc-card"><div class="loc-card-header"><div class="loc-card-name">◈ ${locName}</div><div class="loc-mineral-count">${rows.length} mineral${rows.length===1?'':'s'}</div></div>
+    <div class="loc-card-body">${rows.map(m=>`<div class="loc-mineral-row">
+      <div class="loc-min-name">${m.name}</div><span class="loc-min-role role-${m.role.toLowerCase()}">${m.role}</span>
+      ${m.quality?`<div class="loc-min-quality">${m.quality}</div>`:'<div></div>'}
+      <div class="loc-min-ratings">
+        <div class="loc-rating-group"><div class="loc-rating-label">Mine</div><div class="loc-stars">${locStarsHtml(m.mr||0)}</div></div>
+        <div class="loc-rating-group"><div class="loc-rating-label">Qual.</div><div class="loc-stars">${locStarsHtml(m.qr||0)}</div></div>
+      </div></div>`).join('')}</div></div>`;
+  });
+  grid.innerHTML=html;
+}
+
+// ===== SEARCH =====
+let searchMode='mineral';
+function setMode(mode){
+  searchMode=mode;
+  document.getElementById('mode-mineral').classList.toggle('active',mode==='mineral');
+  document.getElementById('mode-location').classList.toggle('active',mode==='location');
+  runSearch();
+}
+function runSearch(){
+  const q=document.getElementById('search-input').value.trim().toLowerCase();
+  const container=document.getElementById('search-results');
+  if(!q){container.innerHTML=`<div class="empty-state"><div class="empty-icon">⌕</div><div class="empty-title">Begin typing to search</div><div class="empty-sub">Switch between mineral and location modes above</div></div>`;return;}
+  if(searchMode==='mineral'){
+    const results=DB.entries.filter(e=>(e.primaryMineral||'').toLowerCase().includes(q)||(e.secondaryMineral||'').toLowerCase().includes(q)||(e.tertiaryMineral||'').toLowerCase().includes(q));
+    if(!results.length){container.innerHTML=`<div class="empty-state"><div class="empty-icon">⌕</div><div class="empty-title">No minerals found</div></div>`;return;}
+    container.innerHTML=results.map(e=>{
+      const locs=(e.locations||[]).filter(l=>l.name);
+      const match=[];
+      if((e.primaryMineral||'').toLowerCase().includes(q))match.push(`<span class="result-mineral-name">${e.primaryMineral}</span> (Primary)`);
+      if((e.secondaryMineral||'').toLowerCase().includes(q))match.push(`<span class="result-mineral-name">${e.secondaryMineral}</span> (Secondary of ${e.primaryMineral})`);
+      if((e.tertiaryMineral||'').toLowerCase().includes(q))match.push(`<span class="result-mineral-name">${e.tertiaryMineral}</span> (Tertiary of ${e.primaryMineral})`);
+      return`<div class="result-card">
+        <div class="result-card-title">${match.join(' · ')}${e.isPriority?' <span class="priority-star" style="font-size:12px">★ PRIORITY</span>':''}</div>
+        <div class="result-grid">
+          <div class="result-row"><div class="result-key">Find Difficulty</div><div class="result-val"><span class="diff-badge ${diffClass(e.findDifficulty)}">${e.findDifficulty||'—'}</span></div></div>
+          <div class="result-row"><div class="result-key">Mine Difficulty</div><div class="result-val"><span class="diff-badge ${diffClass(e.mineDifficulty)}">${e.mineDifficulty||'—'}</span></div></div>
+          <div class="result-row"><div class="result-key">Ship Required</div><div class="result-val">${e.requiredShip||'—'}</div></div>
+          <div class="result-row"><div class="result-key">Primary Use</div><div class="result-val">${e.primaryUse||'—'}</div></div>
+          <div class="result-row"><div class="result-key">Usefulness</div><div class="result-val">${starsHtml(e.usefulnessRating||0)}</div></div>
+          <div class="result-row"><div class="result-key">Locations</div><div class="result-val">${locs.map(l=>l.name).join(', ')||'—'}</div></div>
+        </div></div>`;
+    }).join('');
+  } else {
+    const locs=getAllLocations();const found=[...locs.entries()].filter(([k])=>k.toLowerCase().includes(q));
+    if(!found.length){container.innerHTML=`<div class="empty-state"><div class="empty-icon">◈</div><div class="empty-title">No locations found</div></div>`;return;}
+    container.innerHTML=found.map(([locName,items])=>{
+      const minerals=items.map(({entry,loc})=>({name:entry.primaryMineral,quality:loc.avgQuality,secondary:entry.secondaryMineral,tertiary:entry.tertiaryMineral}));
+      return`<div class="result-card">
+        <div class="result-card-title">◈ <span class="result-mineral-name">${locName}</span></div>
+        <div class="result-grid" style="grid-template-columns:1fr">${minerals.map(m=>`<div class="result-row">
+          <div class="result-key">${m.name} <span class="mineral-tag tag-secondary" style="font-size:8px">Primary</span></div>
+          <div class="result-val" style="font-size:12px">Quality: ${m.quality||'—'}${m.secondary?` · Secondary: <span style="color:var(--cyan)">${m.secondary}</span>`:''}${m.tertiary?` · Tertiary: <span style="color:var(--gold)">${m.tertiary}</span>`:''}</div>
+        </div>`).join('')}</div></div>`;
+    }).join('');
+  }
+}
+
+// ===== EXPEDITION LOG =====
+let sysFilter='all';
+function setSysFilter(sys){
+  sysFilter=sys;
+  ['all','pyro','stanton','nyx'].forEach(s=>{const el=document.getElementById('sys-'+s);if(el)el.classList.toggle('active',s===(sys==='all'?'all':sys.toLowerCase()))});
+  document.getElementById('sys-all').classList.toggle('active',sys==='all');
+  renderLog();
+}
+function openLogCompose(){
+  const area=document.getElementById('log-compose-area');
+  if(area.innerHTML!==''){area.innerHTML='';return;}
+  area.innerHTML=`<div class="log-compose">
+    <div class="log-compose-grid">
+      <div class="filter-field"><div class="filter-label">Log Title</div><input class="filter-input" style="width:100%" id="lc-title" placeholder="e.g. Bloom Survey Day 1"></div>
+      <div class="filter-field"><div class="filter-label">Location</div><input class="filter-input" style="width:100%" id="lc-loc" placeholder="e.g. Bloom, Yela Belt…"></div>
+      <div class="filter-field"><div class="filter-label">System</div>
+        <select class="filter-select" style="width:100%" id="lc-sys">
+          <option value="">— Select —</option><option>Pyro</option><option>Stanton</option><option>Nyx</option>
+        </select></div>
+    </div>
+    <div class="filter-field" style="margin-bottom:12px">
+      <div class="filter-label">Field Notes</div>
+      <textarea class="form-textarea" id="lc-notes" style="min-height:120px" placeholder="Rock density, ore clusters, coordinates, hazards, observations — anything useful for the expedition record…"></textarea>
+    </div>
+    <div class="log-compose-actions">
+      <button class="btn-save-log" onclick="saveLog()">SAVE ENTRY</button>
+      <button class="btn-discard" onclick="document.getElementById('log-compose-area').innerHTML=''">DISCARD</button>
+    </div></div>`;
+  document.getElementById('lc-title').focus();
+}
+function saveLog(){
+  const title=document.getElementById('lc-title').value.trim();
+  const loc=document.getElementById('lc-loc').value.trim();
+  const sys=document.getElementById('lc-sys').value;
+  const notes=document.getElementById('lc-notes').value.trim();
+  if(!notes&&!title){toast('Add a title or notes first','error');return;}
+  DB.addLog({title:title||'Untitled Entry',location:loc,system:sys,notes,timestamp:Date.now()});
+  document.getElementById('log-compose-area').innerHTML='';
+  renderLog();toast('Log entry saved');
+}
+function renderLog(){
+  let logs=DB.logs;
+  if(sysFilter!=='all')logs=logs.filter(l=>l.system===sysFilter);
+  document.getElementById('log-count').textContent=DB.logs.length+' entr'+(DB.logs.length===1?'y':'ies');
+  const container=document.getElementById('log-entries');
+  if(!logs.length){container.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">${sysFilter==='all'?'No log entries yet':'No entries for this system'}</div><div class="empty-sub">Click New Log Entry above to start documenting your expedition</div></div>`;return;}
+  container.innerHTML=logs.map(l=>`<div class="log-entry">
+    <div class="log-entry-header">
+      <div class="log-ts">${fmtDate(l.timestamp)}</div>
+      ${l.location?`<div class="log-location-tag">◈ ${l.location}</div>`:''}
+      ${l.system?`<span class="log-system-badge sys-${(l.system||'').toLowerCase()}">${l.system}</span>`:''}
+      <div class="log-title">${l.title||'Untitled'}</div>
+      <div class="log-actions"><button class="btn-icon del" onclick="deleteLog('${l.id}')">✕</button></div>
+    </div>
+    ${l.notes?`<div class="log-body"><div class="log-text">${escHtml(l.notes)}</div></div>`:''}
+  </div>`).join('');
+}
+function deleteLog(id){if(!confirm('Delete this log entry?'))return;DB.deleteLog(id);renderLog();toast('Log entry deleted')}
+
+// ===== DATA =====
+function exportData(){
+  const data={version:'sc_atlas_v2',exported:new Date().toISOString(),entries:DB.entries,logs:DB.logs};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  a.href=url;a.download=`uee-mining-atlas-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();URL.revokeObjectURL(url);toast('Atlas exported','info');
+}
+function importData(evt){
+  const file=evt.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      let added=0,skipped=0;
+      const existingIds=new Set(DB.entries.map(x=>x.id));
+      const existingLogIds=new Set(DB.logs.map(x=>x.id));
+      const newEntries=[...DB.entries];const newLogs=[...DB.logs];
+      (data.entries||[]).forEach(entry=>{if(!existingIds.has(entry.id)){newEntries.push(entry);added++;}else skipped++;});
+      (data.logs||[]).forEach(log=>{if(!existingLogIds.has(log.id))newLogs.push(log);});
+      DB.saveEntries(newEntries);DB.saveLogs(newLogs);
+      renderAtlas();renderLocations();renderLog();renderStats();
+      toast(`Imported ${added} entries (${skipped} duplicates skipped)`,'info');
+    }catch{toast('Failed to parse — is this a valid Atlas JSON?','error');}
+    evt.target.value='';
+  };
+  reader.readAsText(file);
+}
+function renderStats(){
+  const entries=DB.entries;const logs=DB.logs;const locs=getAllLocations();
+  document.getElementById('data-stats').innerHTML=[
+    {num:entries.length,label:'Mineral Entries'},
+    {num:locs.size,label:'Unique Locations'},
+    {num:entries.filter(e=>e.isPriority).length,label:'Priority Targets'},
+    {num:logs.length,label:'Log Entries'},
+    {num:entries.filter(e=>e.secondaryMineral).length,label:'With Secondary'},
+    {num:entries.filter(e=>e.tertiaryMineral).length,label:'With Tertiary'},
+  ].map(s=>`<div class="stat-box"><div class="stat-num">${s.num}</div><div class="stat-label">${s.label}</div></div>`).join('');
+}
+</script>
+</body>
+</html>
