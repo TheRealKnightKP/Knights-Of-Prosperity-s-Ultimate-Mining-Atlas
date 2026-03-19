@@ -1,0 +1,49 @@
+{
+  "atlas": [
+    {
+      "location": "Aaron Halo",
+      "primaryMineral": "Aslarite",
+      "rsSignature": 3840,
+      "secondaryMineral": "Agricium",
+      "tertiaryMineral": "Titanium",
+      "quality": "550",
+      "findDifficulty": "Moderate",
+      "mineDifficulty": "Moderate",
+      "requiredShip": "Id say a Fully Kitted Prospector/Golem works perfectly",
+      "primaryUse": "N/A",
+      "usefulnessRating": 3,
+      "miningRating": 4,
+      "qualityRating": 3,
+      "isPriority": false,
+      "id": "mmxmtnrrf6ie"
+    },
+    {
+      "location": "Lyria",
+      "primaryMineral": "Laranite",
+      "rsSignature": 3825,
+      "secondaryMineral": "Tungsten",
+      "tertiaryMineral": "",
+      "quality": "350-650",
+      "findDifficulty": "Moderate",
+      "mineDifficulty": "Very Hard",
+      "requiredShip": "Perhaps a fuly kitted MOLE or two are required to mine the highest quality versions of these.",
+      "primaryUse": "",
+      "usefulnessRating": 3,
+      "miningRating": 2,
+      "qualityRating": 4,
+      "isPriority": false,
+      "id": "mmxmxp7p16ex"
+    }
+  ],
+  "log": [
+    {
+      "title": "The Start",
+      "body": "This is where we start. Currently, above Bloom, in Orbituary station, we await for the Platinum Sun to prepare. We shall depart with it, inside of the Platinum Sun will be a Golem for ship mining, an ATLS GEO for FPS/Ground mining, a Fury LX for scouting fast. Then in one pod theres various boxes holding supplies like food, water, and mining modules, and the Fabricator. Then, in the second Pod, we hold Golem mining bags for when we are on transit but need more space. Finally, the last pod will hold all our materials that have been refined.",
+      "tag": "note",
+      "id": "mmxkxcmz3ghg",
+      "ts": 1773931353659
+    }
+  ],
+  "exportedAt": "2026-03-19T15:42:51.860Z",
+  "version": "4.7"
+}
