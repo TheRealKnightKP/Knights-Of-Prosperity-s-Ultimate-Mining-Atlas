@@ -909,6 +909,72 @@ function editJourneyNotes(id){
   dbSave(JDB_KEY,journeys);renderJourneys();
 }
 
+// ── IMPORT / EXPORT ──────────────────────────────────────────
+function exportData(){
+  const payload={locations,journeys,exportedAt:new Date().toISOString(),version:'4.7-new'};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`sc_mining_atlas_${new Date().toISOString().slice(0,10)}.json`;a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(){
+  document.getElementById('import-file').click();
+}
+
+function handleImport(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      // Support both old and new format
+      if(data.locations){
+        if(confirm(`Import ${data.locations.length} locations and ${(data.journeys||[]).length} journeys? This will REPLACE existing data.`)){
+          locations=data.locations;
+          journeys=data.journeys||[];
+          dbSave(DB_KEY,locations);
+          dbSave(JDB_KEY,journeys);
+          renderAtlas();renderMap();renderJourneys();
+          alert('Import successful!');
+        }
+      } else if(data.atlas){
+        // Old format — convert on the fly
+        if(confirm(`Detected old format with ${data.atlas.length} entries. Convert and import? This will REPLACE existing data.`)){
+          const locMap=new Map();
+          data.atlas.forEach(e=>{
+            if(!locMap.has(e.location))locMap.set(e.location,[]);
+            locMap.get(e.location).push(e);
+          });
+          locations=[];
+          locMap.forEach((entries,locName)=>{
+            const minerals=[];
+            entries.forEach(e=>{
+              [e.primaryMineral,e.secondaryMineral,e.tertiaryMineral].filter(Boolean).forEach(m=>{
+                if(!minerals.find(x=>x.name===m))minerals.push({name:m,concentration:'',mass:'',resistance:'',rating:0});
+              });
+            });
+            locations.push({
+              id:uid(),name:locName,system:'Stanton',type:'planet',parent:'',
+              notes:entries.map(e=>e.requiredShip).filter(Boolean).join(' | '),
+              minerals,addedAt:Date.now(),updatedAt:Date.now()
+            });
+          });
+          journeys=[];
+          dbSave(DB_KEY,locations);
+          dbSave(JDB_KEY,journeys);
+          renderAtlas();renderMap();renderJourneys();
+          alert(`Converted ${locations.length} locations from old format!`);
+        }
+      } else {
+        alert('Unrecognized file format.');
+      }
+    }catch(err){alert('Failed to parse JSON: '+err.message);}
+    e.target.value='';
+  };
+  reader.readAsText(file);
+}
+
 // Resize map on window resize
 window.addEventListener('resize',()=>{if(document.getElementById('panel-map').classList.contains('active'))renderMap()});
 </script>
