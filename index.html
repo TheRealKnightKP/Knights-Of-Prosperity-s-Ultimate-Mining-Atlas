@@ -167,7 +167,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 
 /* MAP TOOLTIP */
-#map-tooltip{position:absolute;z-index:20;background:rgba(4,13,24,.95);border:1px solid var(--border2);padding:10px 14px;pointer-events:none;display:none;min-width:160px}
+#map-tooltip{position:absolute;z-index:20;background:rgba(4,13,24,.95);border:1px solid var(--border2);padding:10px 14px;pointer-events:none;display:none;min-width:160px;max-width:260px;word-wrap:break-word;white-space:normal}
 .tt-name{font-family:'Orbitron',monospace;font-size:11px;color:var(--cyan);margin-bottom:4px}
 .tt-row{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--textdim);margin-bottom:2px}
 .tt-minerals{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text2);margin-top:4px}
@@ -713,30 +713,47 @@ function renderMineralSearch(){
   const q=(document.getElementById('min-search').value||'').toLowerCase();
   const sys=document.getElementById('min-system').value;
   const mineral2locs=new Map();
+
   locations.forEach(l=>{
     if(sys&&l.system!==sys)return;
     (l.minerals||[]).forEach(m=>{
-      if(q&&!m.name.toLowerCase().includes(q))return;
-      const key=m.name;
-      if(!mineral2locs.has(key))mineral2locs.set(key,[]);
-      mineral2locs.get(key).push({loc:l,mineral:m});
+      // Index primary
+      const addEntry=(name,role)=>{
+        if(!name)return;
+        if(q&&!name.toLowerCase().includes(q))return;
+        if(!mineral2locs.has(name))mineral2locs.set(name,[]);
+        mineral2locs.get(name).push({loc:l,mineral:m,role});
+      };
+      addEntry(m.name,'PRIMARY');
+      addEntry(m.secondaryMineral,'SECONDARY');
+      addEntry(m.tertiaryMineral,'TERTIARY');
     });
   });
+
   const res=document.getElementById('mineral-results');
   if(!mineral2locs.size){
     res.innerHTML=`<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">NO MINERALS FOUND</div><div class="empty-sub">Add mineral data to locations in the Atlas tab</div></div>`;
     return;
   }
   const sorted=[...mineral2locs.entries()].sort((a,b)=>a[0].localeCompare(b[0]));
+  const roleColor={PRIMARY:'var(--cyan)',SECONDARY:'var(--gold)',TERTIARY:'var(--purple)'};
   res.innerHTML=`<div class="search-results">${sorted.map(([name,entries])=>`
-    <div class="search-result-card">
-      <div class="sr-mineral">${esc(name)}</div>
-      <div class="sr-locations">
+    <div class="search-result-card" style="cursor:pointer;flex-direction:column;gap:0" onclick="this.querySelector('.sr-locs').style.display=this.querySelector('.sr-locs').style.display==='none'?'block':'none'">
+      <div style="display:flex;align-items:center;gap:12px;width:100%">
+        <div class="sr-mineral">${esc(name)}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          ${[...new Set(entries.map(e=>e.role))].map(r=>`<span style="font-family:Share Tech Mono,monospace;font-size:9px;color:${roleColor[r]};border:1px solid ${roleColor[r]};padding:1px 6px;border-radius:10px;opacity:0.8">${r}</span>`).join('')}
+        </div>
+        <div style="margin-left:auto;font-family:Share Tech Mono,monospace;font-size:10px;color:var(--textdim)">${entries.length} location${entries.length!==1?'s':''} ▼</div>
+      </div>
+      <div class="sr-locs" style="display:none;margin-top:10px;border-top:1px solid var(--border);padding-top:8px">
         ${entries.map(e=>`
-          <div class="sr-loc-row">
+          <div class="sr-loc-row" style="gap:10px">
+            <span style="font-family:Share Tech Mono,monospace;font-size:9px;color:${roleColor[e.role]};border:1px solid ${roleColor[e.role]};padding:1px 6px;border-radius:10px;flex-shrink:0">${e.role}</span>
             <span class="sr-loc-name">${esc(e.loc.name)}</span>
             <span class="sr-loc-type">${esc(e.loc.system)} · ${e.loc.type.toUpperCase()}</span>
-            <span class="sr-conc">${e.mineral.concentration||'—'}</span>
+            ${e.role==='PRIMARY'?`<span style="font-family:Orbitron,monospace;font-size:10px;color:var(--gold)">${e.mineral.quality||''}</span>`:''}
+            ${e.role==='PRIMARY'&&e.mineral.rating?`<span style="font-family:Share Tech Mono,monospace;font-size:10px;color:var(--gold)">${'★'.repeat(e.mineral.rating)}</span>`:''}
           </div>`).join('')}
       </div>
     </div>
@@ -956,8 +973,12 @@ function showMapTooltip(e,name,type,hasEntry){
   document.getElementById('tt-minerals').textContent=loc?(loc.minerals||[]).map(m=>m.name).join(', '):'';
   tt.style.display='block';
   const wrap=document.getElementById('map-canvas-wrap').getBoundingClientRect();
-  tt.style.left=(e.clientX-wrap.left+12)+'px';
-  tt.style.top=(e.clientY-wrap.top+12)+'px';
+  const mx=e.clientX-wrap.left;
+  const my=e.clientY-wrap.top;
+  // Flip left if near right edge, flip up if near bottom
+  const ttW=280, ttH=80;
+  tt.style.left=(mx+ttW>wrap.width ? mx-ttW-8 : mx+12)+'px';
+  tt.style.top=(my+ttH>wrap.height ? my-ttH-8 : my+12)+'px';
 }
 function hideMapTooltip(){document.getElementById('map-tooltip').style.display='none'}
 // ── SURFACE VIEW ─────────────────────────────────────────────────────────────
