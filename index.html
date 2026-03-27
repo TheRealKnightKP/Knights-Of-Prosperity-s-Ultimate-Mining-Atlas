@@ -541,9 +541,9 @@ function renderAtlas(){
       <div class="loc-body">
         ${(l.minerals||[]).length?`
         <table class="min-table">
-          <thead><tr><th>PRIMARY</th><th>SECONDARY</th><th>TERTIARY</th><th>RS SIG</th><th>QUALITY</th><th>FIND</th><th>MINE</th><th>RATING</th></tr></thead>
+          <thead><tr><th>PRIMARY</th><th>SECONDARY</th><th>TERTIARY</th><th>RS SIG</th><th>QUALITY</th><th>FIND</th><th>MINE</th><th>RATING</th><th>NOTES</th></tr></thead>
           <tbody>${(l.minerals||[]).map(m=>`<tr>
-            <td class="min-name">${esc(m.name)}</td>
+            <td class="min-name" style="cursor:pointer;color:var(--cyan)" onclick="openSurfaceFromAtlas('${l.id}')">${esc(m.name)}</td>
             <td>${esc(m.secondaryMineral||'—')}</td>
             <td>${esc(m.tertiaryMineral||'—')}</td>
             <td>${m.rsSignature||'—'}</td>
@@ -551,12 +551,13 @@ function renderAtlas(){
             <td>${m.findDifficulty||'—'}</td>
             <td>${m.mineDifficulty||'—'}</td>
             <td>${'★'.repeat(m.rating||0)+'☆'.repeat(5-(m.rating||0))}</td>
+            <td style="color:var(--textdim);font-style:italic;max-width:200px;white-space:normal">${esc(m.requiredShip||'—')}</td>
           </tr>`).join('')}</tbody>
         </table>`:'<div style="color:var(--textdim);font-family:Share Tech Mono,monospace;font-size:11px;margin-bottom:8px">No minerals logged yet.</div>'}
-        ${l.notes?`<div class="loc-notes">"${esc(l.notes)}"</div>`:''}
         <div class="min-actions">
           <button class="btn-xs" onclick="editLocation('${l.id}')">EDIT</button>
           <button class="btn-xs" onclick="addToJourneyFromAtlas('${l.id}')">ADD TO JOURNEY</button>
+          <button class="btn-xs" onclick="openSurfaceFromAtlas('${l.id}')">VIEW SURFACE</button>
           <button class="btn-xs danger" onclick="deleteLocation('${l.id}')">DELETE</button>
         </div>
       </div>
@@ -613,6 +614,7 @@ function saveLocation(){
       findDifficulty:row.querySelector('.me-find').value,
       mineDifficulty:row.querySelector('.me-mine').value,
       rating:parseInt(row.querySelector('.me-rating').value)||0,
+      requiredShip:row.querySelector('.me-notes').value.trim(),
     });
   });
   const id=document.getElementById('edit-id').value;
@@ -700,6 +702,12 @@ function addMineralRow(m){
         <div class="form-group" style="max-width:65px">
           <div class="form-label">RATING</div>
           <input class="form-input me-rating" type="number" min="0" max="5" placeholder="0-5" value="${m.rating||0}">
+        </div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <div class="form-group" style="flex:1">
+          <div class="form-label">NOTES / REQUIRED SHIP</div>
+          <input class="form-input me-notes" placeholder="e.g. Fully kitted Prospector recommended" value="${esc(m.requiredShip||m.notes||'')}">
         </div>
       </div>
     </div>
@@ -1311,6 +1319,21 @@ document.getElementById('surface-canvas').addEventListener('click',function(e){
     }
   }
 });
+
+function openSurfaceFromAtlas(locId){
+  const loc=locations.find(l=>l.id===locId);
+  if(!loc)return;
+  // Switch to map panel and open surface
+  const body=SYSTEM_LAYOUTS[loc.system]?(SYSTEM_LAYOUTS[loc.system].bodies.find(b=>b.name===loc.name)||null):null;
+  surfaceBody={name:loc.name,body,loc};
+  surfaceRocks=[];surfaceHover=-1;
+  document.getElementById('surf-title').textContent=loc.name.toUpperCase();
+  document.getElementById('surf-subtitle').textContent=loc.type.toUpperCase()+' · '+loc.system.toUpperCase()+' · '+(loc.minerals||[]).length+' MINERALS LOGGED';
+  document.getElementById('surf-add-btn').style.display='none';
+  document.getElementById('rock-info').style.display='none';
+  document.getElementById('surface-overlay').style.display='block';
+  drawSurface();
+}
 
 function handleMapNodeClick(name){
   openSurface(name);
