@@ -1,202 +1,148 @@
 {
   "locations": [
     {
-      "id": "loc_aaronhalo",
+      "id": "mmxmtnrrf6ie",
       "name": "Aaron Halo",
       "system": "Stanton",
       "type": "asteroid",
       "parent": "",
-      "notes": "Fully kitted Prospector or Golem works perfectly. Moderate find and mine difficulty.",
+      "notes": "Id say a Fully Kitted Prospector/Golem works perfectly",
       "minerals": [
         {
           "name": "Aslarite",
-          "concentration": "",
-          "mass": "",
-          "resistance": "",
-          "rating": 4,
+          "secondaryMineral": "Agricium",
+          "tertiaryMineral": "Titanium",
           "rsSignature": 3840,
           "quality": "550",
           "findDifficulty": "Moderate",
           "mineDifficulty": "Moderate",
           "primaryUse": "N/A",
+          "requiredShip": "Id say a Fully Kitted Prospector/Golem works perfectly",
           "usefulnessRating": 3,
+          "miningRating": 4,
           "qualityRating": 3,
-          "isPrimary": true
-        },
-        {
-          "name": "Agricium",
-          "concentration": "",
-          "mass": "",
-          "resistance": "",
-          "rating": 0,
-          "isPrimary": false
-        },
-        {
-          "name": "Titanium",
-          "concentration": "",
-          "mass": "",
-          "resistance": "",
-          "rating": 0,
-          "isPrimary": false
+          "rating": 4,
+          "isPriority": true
         }
       ],
       "addedAt": 1773963103362,
-      "updatedAt": 1773963103362,
-      "isPriority": true
+      "updatedAt": 1773963103362
     },
     {
-      "id": "loc_lyria",
+      "id": "mmxmxp7p16ex",
       "name": "Lyria",
       "system": "Stanton",
       "type": "moon",
       "parent": "ArcCorp",
-      "notes": "Very hard to mine at higher qualities. Fully kitted MOLE or two required for highest quality rocks. RS Signature 3825.",
+      "notes": "Perhaps a fuly kitted MOLE or two are required to mine the highest quality versions of these.",
       "minerals": [
         {
           "name": "Laranite",
-          "concentration": "",
-          "mass": "",
-          "resistance": "",
-          "rating": 4,
+          "secondaryMineral": "Tungsten",
+          "tertiaryMineral": "",
           "rsSignature": 3825,
           "quality": "350-650",
           "findDifficulty": "Moderate",
           "mineDifficulty": "Very Hard",
+          "primaryUse": "",
+          "requiredShip": "Perhaps a fuly kitted MOLE or two are required to mine the highest quality versions of these.",
           "usefulnessRating": 3,
+          "miningRating": 2,
           "qualityRating": 4,
-          "isPrimary": true
-        },
-        {
-          "name": "Tungsten",
-          "concentration": "",
-          "mass": "",
-          "resistance": "",
-          "rating": 0,
-          "isPrimary": false
+          "rating": 2,
+          "isPriority": false
         }
       ],
       "addedAt": 1773963103362,
-      "updatedAt": 1773963103362,
-      "isPriority": false
+      "updatedAt": 1773963103362
     },
     {
-      "id": "loc_hurston",
+      "id": "mmy33dzmhinb",
       "name": "Hurston",
       "system": "Stanton",
       "type": "planet",
       "parent": "",
-      "notes": "Multiple mineral types available. Ouratite: always appears at two quality tiers simultaneously (one better, one lesser) — strange behavior. Any ship works for Aluminum and Tin. Fully kitted Prospector needed for higher quality Ouratite. Primarily useful for Armor (Ouratite) and Weapons (Aluminum).",
+      "notes": "Id say a fully kitted Prospector might be able to get the higher quality rocks. Something weird to note, it has two qualities of Ouratite always, one better quality, one lesser.",
       "minerals": [
         {
           "name": "Ouratite",
-          "concentration": "",
-          "mass": "",
-          "resistance": "",
-          "rating": 4,
+          "secondaryMineral": "Ouratite",
+          "tertiaryMineral": "Agricium",
           "rsSignature": 3370,
           "quality": "550",
           "findDifficulty": "Moderate",
           "mineDifficulty": "Hard",
           "primaryUse": "Primarily used in Armor",
+          "requiredShip": "Id say a fully kitted Prospector might be able to get the higher quality rocks. Something weird to note, it has two qualities of Ouratite always, one better quality, one lesser.",
           "usefulnessRating": 4,
+          "miningRating": 4,
           "qualityRating": 3,
-          "isPrimary": true,
+          "rating": 4,
           "isPriority": true
         },
         {
           "name": "Aluminium",
-          "concentration": "",
-          "mass": "",
-          "resistance": "",
-          "rating": 3,
+          "secondaryMineral": "Corundum",
+          "tertiaryMineral": "Aluminium",
           "rsSignature": 4285,
           "quality": "550",
           "findDifficulty": "Easy",
           "mineDifficulty": "Moderate",
-          "primaryUse": "Mostly used in weapons",
+          "primaryUse": "Mostly used in weapons it seems. Quick note, i",
+          "requiredShip": "Any ship is capable",
           "usefulnessRating": 4,
+          "miningRating": 3,
           "qualityRating": 3,
-          "isPrimary": true,
+          "rating": 3,
           "isPriority": true
         },
         {
           "name": "Tin",
-          "concentration": "",
-          "mass": "",
-          "resistance": "",
-          "rating": 3,
+          "secondaryMineral": "Copper",
+          "tertiaryMineral": "Tin",
           "rsSignature": 4195,
           "quality": "550",
           "findDifficulty": "Easy",
           "mineDifficulty": "Easy",
           "primaryUse": "N/A",
+          "requiredShip": "Any ship works",
           "usefulnessRating": 3,
+          "miningRating": 3,
           "qualityRating": 3,
-          "isPrimary": true,
+          "rating": 3,
           "isPriority": false
-        },
-        {
-          "name": "Agricium",
-          "concentration": "",
-          "mass": "",
-          "resistance": "",
-          "rating": 0,
-          "isPrimary": false
-        },
-        {
-          "name": "Corundum",
-          "concentration": "",
-          "mass": "",
-          "resistance": "",
-          "rating": 0,
-          "isPrimary": false
-        },
-        {
-          "name": "Copper",
-          "concentration": "",
-          "mass": "",
-          "resistance": "",
-          "rating": 0,
-          "isPrimary": false
         }
       ],
       "addedAt": 1773963103362,
-      "updatedAt": 1773963103362,
-      "isPriority": true
+      "updatedAt": 1773963103362
     }
   ],
   "journeys": [
     {
-      "id": "journey_expedition1",
-      "name": "KP Expedition — Day 1",
-      "notes": "First expedition run. Started above Bloom at Orbituary station aboard the Platinum Sun. Cargo: Golem, ATLS GEO, Fury LX, supplies, mining modules, Fabricator, mining bags, materials pod.",
-      "createdAt": 1773931353659,
+      "id": "j_expedition1",
+      "name": "KP Expedition \u2014 Day 1",
+      "notes": "[Day 1:  Hurston]\nWe have logged Hurston's minerals. Aluminum, tin, and most importantly Ouratite, all at around 550 quality, and with secondary materials of Agricium and/or Copper. Its good for a start, and we have gathered some materials.\n\n[Day 1: Premature start]\nDue to some issues, instead of starting with the Pre-Expedition blueprint gathering and the in-expedition mining, we shall just log whats located on Pyro, and then after the issues are resolved we shall go to Stanton, get the blueprints, and gather the materials there or in Nyx. \n\nToday we start by loading everything into the Platinum Sun: The Golem, the Mining Pods, the Food, water, and mining equipment. I think we shall try and complete a blueprint for the goal of seeing how crafting works, so we shall also load up a Refinery.\n\n[The Start]\nThis is where we start. Currently, above Bloom, in Orbituary station, we await for the Platinum Sun to prepare. We shall depart with it, inside of the Platinum Sun will be a Golem for ship mining, an ATLS GEO for FPS/Ground mining, a Fury LX for scouting fast. Then in one pod theres various boxes holding supplies like food, water, and mining modules, and the Fabricator. Then, in the second Pod, we hold Golem mining bags for when we are on transit but need more space. Finally, the last pod will hold all our materials that have been refined.",
       "stops": [
         {
-          "locName": "Orbituary Station — Bloom, Pyro",
+          "locName": "Orbituary Station",
           "system": "Pyro",
           "type": "planet",
           "entryIds": [],
-          "note": "Departure point. Platinum Sun loaded and ready. Golem, ATLS GEO, Fury LX, supplies, mining modules, Fabricator aboard.",
-          "visited": true
-        },
-        {
-          "locName": "Arial — Hurston Moon",
-          "system": "Stanton",
-          "type": "moon",
-          "entryIds": [],
-          "note": "Golem exploded in Platinum Sun hangar on arrival. Stood down for the day.",
+          "note": "Departure point. Platinum Sun loaded.",
           "visited": true
         },
         {
           "locName": "Hurston",
           "system": "Stanton",
           "type": "planet",
-          "entryIds": ["loc_hurston"],
-          "note": "Logged Aluminum, Tin, and Ouratite — all around 550 quality. Secondary: Agricium and Copper. Good starting haul. Materials gathered.",
+          "entryIds": [
+            "mmy33dzmhinb"
+          ],
+          "note": "Logged Ouratite, Aluminium, Tin.",
           "visited": true
         }
-      ]
+      ],
+      "createdAt": 1773931353659
     }
   ],
   "exportedAt": "2026-03-27T00:00:00.000Z",
