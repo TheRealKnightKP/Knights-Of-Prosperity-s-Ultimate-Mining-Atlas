@@ -1259,8 +1259,7 @@ document.getElementById('surface-canvas').addEventListener('mousemove',function(
       if(m.findDifficulty)lines.push(`FIND           ${m.findDifficulty}`);
       if(m.mineDifficulty)lines.push(`MINE           ${m.mineDifficulty}`);
       if(m.quality)lines.push(`QUALITY        ${m.quality}`);
-      document.getElementById('rock-details').textContent=lines.join('
-')||'No detailed data logged.';
+      document.getElementById('rock-details').textContent=lines.join('\n')||'No detailed data logged.';
     } else {
       info.style.display='none';
     }
@@ -1270,21 +1269,6 @@ document.getElementById('surface-canvas').addEventListener('mousemove',function(
 
 function handleMapNodeClick(name){
   openSurface(name);
-}\n${loc.system} · ${loc.type}\n\nMinerals: ${(loc.minerals||[]).map(m=>m.name).join(', ')||'None logged'}\n\nNotes: ${loc.notes||'—'}`);
-  } else {
-    // No atlas entry yet
-    if(confirm(`No atlas entry for "${name}" yet.\nAdd one now?`)){
-      document.getElementById('f-name').value=name;
-      document.getElementById('f-system').value=activeSystem;
-      const b=SYSTEM_LAYOUTS[activeSystem].bodies.find(x=>x.name===name);
-      if(b)document.getElementById('f-type').value=b.type;
-      document.getElementById('mineral-entries').innerHTML='';
-      addMineralRow();
-      document.getElementById('edit-id').value='';
-      document.getElementById('modal-title').textContent='ADD LOCATION';
-      document.getElementById('modal-overlay').classList.add('open');
-    }
-  }
 }
 
 // ── JOURNEYS ──────────────────────────────────────────────────
