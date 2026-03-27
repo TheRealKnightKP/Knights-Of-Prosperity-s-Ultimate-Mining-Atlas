@@ -298,11 +298,10 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
         <div style="background:var(--surface);border:1px solid var(--border2);padding:24px;margin-bottom:20px;position:relative">
           <div style="position:absolute;top:-1px;left:-1px;width:12px;height:12px;border-top:2px solid var(--gold);border-left:2px solid var(--gold)"></div>
           <div style="position:absolute;bottom:-1px;right:-1px;width:12px;height:12px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)"></div>
-          <div style="font-family:Share Tech Mono,monospace;font-size:10px;color:var(--textdim);letter-spacing:3px;margin-bottom:12px">ENTER THE SIGNATURE YOU SEE ON YOUR SCANNER</div>
-          <div style="display:flex;gap:10px;align-items:center">
-            <input id="rs-input" class="filter-input" type="number" placeholder="e.g. 3840" style="font-family:Orbitron,monospace;font-size:20px;font-weight:700;color:var(--cyan);letter-spacing:2px;max-width:200px" oninput="rsLookup()">
-            <div style="font-family:Share Tech Mono,monospace;font-size:10px;color:var(--textdim)">± TOLERANCE</div>
-            <input id="rs-tolerance" class="filter-input" type="number" placeholder="100" value="200" style="max-width:90px" oninput="rsLookup()">
+          <div style="font-family:Share Tech Mono,monospace;font-size:10px;color:var(--textdim);letter-spacing:3px;margin-bottom:12px">ENTER THE RS SIGNATURE FROM YOUR SCANNER</div>
+          <input id="rs-input" class="filter-input" type="number" placeholder="e.g. 7170" style="font-family:Orbitron,monospace;font-size:24px;font-weight:700;color:var(--cyan);letter-spacing:2px;max-width:280px" oninput="rsLookup()">
+          <div style="font-family:Share Tech Mono,monospace;font-size:10px;color:var(--textdim);margin-top:10px">
+            Any multiple of a mineral's base signature matches it. Example: 7170 = Gold (3585 × 2)
           </div>
         </div>
         <div id="rs-results"></div>
@@ -1286,54 +1285,92 @@ function handleMapNodeClick(name){
 }
 
 // ── RS SCANNER ───────────────────────────────────────────────
+// 4.7 base RS values (n*). In-game signature = base * multiplier.
+// FPS/Ship mining multiplier = 3000. Ground Vehicle = 4000.
+const RS_TABLE_47=[
+  {name:'Quantainium',base:3170},{name:'Stileron',base:3185},
+  {name:'Savrilium',base:3200},{name:'Ouratite',base:3370},
+  {name:'Riccite',base:3385},{name:'Lindinium',base:3400},
+  {name:'Beryl',base:3540},{name:'Taranite',base:3555},
+  {name:'Borase',base:3570},{name:'Gold',base:3585},
+  {name:'Bexalite',base:3600},{name:'Laranite',base:3825},
+  {name:'Aslarite',base:3840},{name:'Titanium',base:3855},
+  {name:'Tungsten',base:3870},{name:'Agricium',base:3885},
+  {name:'Torite',base:3900},{name:'Hephestanite',base:4180},
+  {name:'Tin',base:4195},{name:'Quartz',base:4210},
+  {name:'Corundum',base:4225},{name:'Copper',base:4240},
+  {name:'Silicon',base:4255},{name:'Iron',base:4270},
+  {name:'Aluminium',base:4285},{name:'Ice',base:4300},
+];
+
 function rsLookup(){
-  const val=parseInt(document.getElementById('rs-input').value)||0;
-  const tol=parseInt(document.getElementById('rs-tolerance').value)||200;
+  const raw=parseFloat(document.getElementById('rs-input').value)||0;
   const res=document.getElementById('rs-results');
-  if(!val){
-    res.innerHTML=`<div class="empty"><div class="empty-icon" style="font-size:28px">📡</div><div class="empty-title">AWAITING SIGNATURE INPUT</div><div class="empty-sub">Enter the RS value shown on your mining scanner</div></div>`;
+  if(!raw){
+    res.innerHTML=`<div class="empty"><div class="empty-icon" style="font-size:28px">📡</div><div class="empty-title">AWAITING SIGNATURE INPUT</div><div class="empty-sub">Enter the RS signature from your scanner. Any multiple of a mineral base matches it.</div></div>`;
     return;
   }
-  // Search all logged minerals across all locations
+  // For each mineral base, check if raw is a near-multiple of it
+  // i.e. raw / base should be close to a whole number
   const matches=[];
-  locations.forEach(loc=>{
-    (loc.minerals||[]).forEach(m=>{
-      if(!m.rsSignature)return;
-      const sig=parseInt(m.rsSignature)||0;
-      const diff=Math.abs(sig-val);
-      if(diff<=tol){
-        matches.push({loc,mineral:m,sig,diff,pct:Math.round((1-diff/tol)*100)});
-      }
-    });
+  RS_TABLE_47.forEach(entry=>{
+    const ratio=raw/entry.base;
+    const nearestInt=Math.round(ratio);
+    if(nearestInt<1)return;
+    const remainder=Math.abs(ratio-nearestInt);
+    // Allow 0.5% tolerance
+    if(remainder<=0.005){
+      const atlasEntry=locations.flatMap(l=>(l.minerals||[]).filter(m=>m.name.toLowerCase()===entry.name.toLowerCase())).map(m=>({m,loc:locations.find(l=>(l.minerals||[]).includes(m))}))[0];
+      const exactSig=entry.base*nearestInt;
+      const off=Math.abs(raw-exactSig);
+      matches.push({...entry,ratio:nearestInt,remainder,off,atlasEntry,exactSig});
+    }
   });
-  matches.sort((a,b)=>a.diff-b.diff);
+  matches.sort((a,b)=>a.remainder-b.remainder);
   if(!matches.length){
-    res.innerHTML=`<div class="empty"><div class="empty-icon" style="font-size:28px">❌</div><div class="empty-title">NO MATCH FOUND</div><div class="empty-sub">Signature ${val} not in atlas within ±${tol}. Try increasing tolerance or log this location.</div></div>`;
+    const closest=[...RS_TABLE_47].sort((a,b)=>{
+      const ra=raw/a.base, rb=raw/b.base;
+      return Math.abs(ra-Math.round(ra))-Math.abs(rb-Math.round(rb));
+    }).slice(0,3);
+    res.innerHTML=`
+      <div style="background:var(--surface);border:1px solid var(--red);padding:14px 18px;margin-bottom:12px;border-radius:4px">
+        <div style="font-family:Orbitron,monospace;font-size:11px;color:var(--red);margin-bottom:6px">NO CLEAN MATCH — CLOSEST POSSIBILITIES</div>
+        <div style="font-family:Share Tech Mono,monospace;font-size:10px;color:var(--textdim)">Input ${raw.toLocaleString()} is not a clean multiple of any known base signature.</div>
+      </div>
+      ${closest.map(e=>{const r=raw/e.base;const ni=Math.round(r);return`<div style="background:var(--surface);border:1px solid var(--border);padding:12px 18px;margin-bottom:6px;border-radius:4px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-family:Orbitron,monospace;font-size:13px;color:var(--textdim)">${e.name}</div>
+        <div style="font-family:Share Tech Mono,monospace;font-size:10px;color:var(--textdim)">base ${e.base} × ${ni} = ${(e.base*ni).toLocaleString()} (off by ${Math.abs(e.base*ni-raw).toLocaleString()})</div>
+      </div>`}).join('')}`;
     return;
   }
-  res.innerHTML=matches.map((m,i)=>{
+  res.innerHTML=`
+    <div style="font-family:Share Tech Mono,monospace;font-size:10px;color:var(--textdim);margin-bottom:10px;padding:8px 12px;background:var(--bg3);border-radius:4px;border:1px solid var(--border)">
+      INPUT ${raw.toLocaleString()}
+    </div>
+    ${matches.map((m,i)=>{
     const barW=Math.max(4,m.pct);
     const barCol=m.pct>80?'var(--green)':m.pct>50?'var(--gold)':'var(--red)';
-    return `<div style="background:var(--surface);border:1px solid ${i===0?'var(--cyan)':'var(--border)'};padding:14px 18px;margin-bottom:8px;border-radius:4px;position:relative">
-      ${i===0?'<div style="position:absolute;top:8px;right:10px;font-family:Orbitron,monospace;font-size:8px;color:var(--cyan);letter-spacing:2px">BEST MATCH</div>':''}
-      <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px">
-        <div style="font-family:Orbitron,monospace;font-size:14px;font-weight:700;color:var(--cyan)">${esc(m.mineral.name)}</div>
-        <div style="font-family:Share Tech Mono,monospace;font-size:10px;color:var(--textdim)">${esc(m.loc.name)} · ${m.loc.system}</div>
-        <div style="font-family:Orbitron,monospace;font-size:12px;color:var(--gold);margin-left:auto">${m.sig} <span style="color:var(--textdim);font-size:9px">(±${m.diff})</span></div>
+    const ae=m.atlasEntry;
+    return `<div style="background:var(--surface);border:1px solid ${i===0?'var(--cyan)':'var(--border)'};padding:16px 18px;margin-bottom:8px;border-radius:4px;position:relative">
+      ${i===0?'<div style="position:absolute;top:10px;right:12px;font-family:Orbitron,monospace;font-size:8px;color:var(--cyan);letter-spacing:2px;border:1px solid var(--cyan);padding:2px 8px">BEST MATCH</div>':''}
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px">
+        <div style="font-family:Orbitron,monospace;font-size:16px;font-weight:900;color:var(--cyan)">${m.name}</div>
+        <div style="font-family:Share Tech Mono,monospace;font-size:10px;color:var(--textdim)">base ${m.base} · expected ${m.computedSig.toLocaleString()} · off by ${Math.abs(m.computedSig-raw)}</div>
       </div>
-      <div style="background:var(--bg3);border-radius:3px;height:4px;margin-bottom:8px">
-        <div style="width:${barW}%;height:100%;background:${barCol};border-radius:3px;transition:width .3s"></div>
+      <div style="background:var(--bg3);border-radius:3px;height:3px;margin-bottom:10px">
+        <div style="width:${barW}%;height:100%;background:${barCol};border-radius:3px"></div>
       </div>
+      ${ae?`<div style="font-family:Share Tech Mono,monospace;font-size:10px;color:var(--green);margin-bottom:6px">✓ IN YOUR ATLAS · ${esc(ae.loc.name)} · ${ae.loc.system}</div>
       <div style="font-family:Share Tech Mono,monospace;font-size:10px;color:var(--textdim);display:flex;gap:16px;flex-wrap:wrap">
-        ${m.mineral.secondaryMineral?`<span>SEC: <span style="color:var(--text2)">${esc(m.mineral.secondaryMineral)}</span></span>`:''}
-        ${m.mineral.tertiaryMineral?`<span>TER: <span style="color:var(--text2)">${esc(m.mineral.tertiaryMineral)}</span></span>`:''}
-        ${m.mineral.quality?`<span>QUALITY: <span style="color:var(--text2)">${esc(m.mineral.quality)}</span></span>`:''}
-        ${m.mineral.findDifficulty?`<span>FIND: <span style="color:var(--text2)">${esc(m.mineral.findDifficulty)}</span></span>`:''}
-        ${m.mineral.mineDifficulty?`<span>MINE: <span style="color:var(--text2)">${esc(m.mineral.mineDifficulty)}</span></span>`:''}
-        ${m.mineral.rating?`<span>RATING: <span style="color:var(--gold)">${'★'.repeat(m.mineral.rating)}</span></span>`:''}
-      </div>
+        ${ae.m.secondaryMineral?`<span>SEC <span style="color:var(--text2)">${esc(ae.m.secondaryMineral)}</span></span>`:''}
+        ${ae.m.tertiaryMineral?`<span>TER <span style="color:var(--text2)">${esc(ae.m.tertiaryMineral)}</span></span>`:''}
+        ${ae.m.quality?`<span>QUALITY <span style="color:var(--text2)">${esc(ae.m.quality)}</span></span>`:''}
+        ${ae.m.findDifficulty?`<span>FIND <span style="color:var(--text2)">${esc(ae.m.findDifficulty)}</span></span>`:''}
+        ${ae.m.mineDifficulty?`<span>MINE <span style="color:var(--text2)">${esc(ae.m.mineDifficulty)}</span></span>`:''}
+        ${ae.m.rating?`<span>RATING <span style="color:var(--gold)">${'★'.repeat(ae.m.rating)}</span></span>`:''}
+      </div>`:`<div style="font-family:Share Tech Mono,monospace;font-size:10px;color:var(--textdim)">NOT IN YOUR ATLAS YET</div>`}
     </div>`;
-  }).join('');
+  }).join('')}`;
 }
 
 // ── JOURNEYS ──────────────────────────────────────────────────
