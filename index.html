@@ -406,7 +406,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
   <div id="surf-title" style="position:absolute;top:16px;left:50%;transform:translateX(-50%);font-family:Orbitron,monospace;font-size:14px;font-weight:900;color:var(--gold);letter-spacing:4px;text-shadow:0 0 20px rgba(232,160,32,.6);pointer-events:none;z-index:10"></div>
   <div id="surf-subtitle" style="position:absolute;top:40px;left:50%;transform:translateX(-50%);font-family:Share Tech Mono,monospace;font-size:10px;color:var(--textdim);letter-spacing:3px;pointer-events:none;z-index:10;white-space:nowrap"></div>
   <!-- Rock info panel -->
-  <div id="rock-info" style="display:none;position:absolute;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(4,13,24,.95);border:1px solid var(--border2);padding:16px 24px;min-width:320px;max-width:500px;z-index:10;pointer-events:none">
+  <div id="rock-info" style="display:none;position:absolute;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(4,13,24,.95);border:1px solid var(--border2);padding:16px 24px;min-width:280px;max-width:460px;width:max-content;z-index:10;pointer-events:none;word-break:break-word;white-space:pre-wrap">
     <div style="position:absolute;top:-1px;left:-1px;width:10px;height:10px;border-top:2px solid var(--gold);border-left:2px solid var(--gold)"></div>
     <div style="position:absolute;bottom:-1px;right:-1px;width:10px;height:10px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)"></div>
     <div id="rock-name" style="font-family:Orbitron,monospace;font-size:13px;font-weight:900;color:var(--cyan);letter-spacing:2px;margin-bottom:8px"></div>
@@ -1233,6 +1233,31 @@ function drawSurface(){
 }
 
 // Mouse events on canvas
+function showRockInfo(rock){
+  const m=rock.mineral;
+  const info=document.getElementById('rock-info');
+  info.style.display='block';
+  document.getElementById('rock-name').textContent=m.name.toUpperCase();
+  const lines=[];
+  if(m.secondaryMineral||m.tertiaryMineral){
+    lines.push('COMPOSITION');
+    lines.push(`  PRIMARY    ${m.name}`);
+    if(m.secondaryMineral)lines.push(`  SECONDARY  ${m.secondaryMineral}`);
+    if(m.tertiaryMineral)lines.push(`  TERTIARY   ${m.tertiaryMineral}`);
+    lines.push('');
+  }
+  if(m.rsSignature)lines.push(`RS SIGNATURE   ${m.rsSignature}`);
+  if(m.quality)lines.push(`QUALITY        ${m.quality}`);
+  if(m.findDifficulty)lines.push(`FIND           ${m.findDifficulty}`);
+  if(m.mineDifficulty)lines.push(`MINE           ${m.mineDifficulty}`);
+  if(m.primaryUse)lines.push(`USE            ${m.primaryUse}`);
+  if(m.requiredShip)lines.push(`SHIP           ${m.requiredShip}`);
+  if(m.rating)lines.push(`MINING RATING  ${'★'.repeat(m.rating)}${'☆'.repeat(5-m.rating)}`);
+  if(m.usefulnessRating)lines.push(`USEFULNESS     ${'★'.repeat(m.usefulnessRating)}${'☆'.repeat(5-m.usefulnessRating)}`);
+  if(rock.locNotes){lines.push('');lines.push(`NOTES  ${rock.locNotes}`);}
+  document.getElementById('rock-details').textContent=lines.join('\n')||'No detailed data logged.';
+}
+
 document.getElementById('surface-canvas').addEventListener('mousemove',function(e){
   const rect=this.getBoundingClientRect();
   const mx=e.clientX-rect.left,my=e.clientY-rect.top;
@@ -1245,37 +1270,8 @@ document.getElementById('surface-canvas').addEventListener('mousemove',function(
   if(hit!==surfaceHover){
     surfaceHover=hit;
     drawSurface();
-    const info=document.getElementById('rock-info');
-    if(hit>=0){
-      const rock=surfaceRocks[hit];
-      const m=rock.mineral;
-      info.style.display='block';
-      document.getElementById('rock-name').textContent=m.name.toUpperCase();
-      const lines=[];
-      // Minerals inside this rock
-      if(m.secondaryMineral||m.tertiaryMineral){
-        lines.push('COMPOSITION');
-        lines.push(`  PRIMARY    ${m.name}`);
-        if(m.secondaryMineral)lines.push(`  SECONDARY  ${m.secondaryMineral}`);
-        if(m.tertiaryMineral)lines.push(`  TERTIARY   ${m.tertiaryMineral}`);
-        lines.push('');
-      }
-      // Stats
-      if(m.rsSignature)lines.push(`RS SIGNATURE   ${m.rsSignature}`);
-      if(m.quality)lines.push(`QUALITY        ${m.quality}`);
-      if(m.concentration)lines.push(`CONCENTRATION  ${m.concentration}`);
-      if(m.mass)lines.push(`MASS           ${m.mass}`);
-      if(m.resistance)lines.push(`RESISTANCE     ${m.resistance}`);
-      if(m.findDifficulty)lines.push(`FIND           ${m.findDifficulty}`);
-      if(m.mineDifficulty)lines.push(`MINE           ${m.mineDifficulty}`);
-      if(m.primaryUse)lines.push(`USE            ${m.primaryUse}`);
-      if(m.rating)lines.push(`RATING         ${'★'.repeat(m.rating)}${'☆'.repeat(5-m.rating)}`);
-      if(m.usefulnessRating)lines.push(`USEFULNESS     ${'★'.repeat(m.usefulnessRating)}${'☆'.repeat(5-m.usefulnessRating)}`);
-      if(rock.locNotes){lines.push('');lines.push(`NOTES: ${rock.locNotes}`);}
-      document.getElementById('rock-details').textContent=lines.join('\n')||'No detailed data logged.';
-    } else {
-      info.style.display='none';
-    }
+    if(hit>=0){showRockInfo(surfaceRocks[hit]);}
+    else{document.getElementById('rock-info').style.display='none';}
   }
   this.style.cursor=hit>=0?'pointer':'default';
 });
@@ -1287,31 +1283,9 @@ document.getElementById('surface-canvas').addEventListener('click',function(e){
     const r=surfaceRocks[i];
     const dx=mx-r.x,dy=my-r.y;
     if(Math.sqrt(dx*dx+dy*dy)<r.r*1.1){
-      // Pin the info panel open
       surfaceHover=i;
       drawSurface();
-      const info=document.getElementById('rock-info');
-      const m=r.mineral;
-      info.style.display='block';
-      document.getElementById('rock-name').textContent=m.name.toUpperCase();
-      const lines=[];
-      if(m.secondaryMineral||m.tertiaryMineral){
-        lines.push('COMPOSITION');
-        lines.push(`  PRIMARY    ${m.name}`);
-        if(m.secondaryMineral)lines.push(`  SECONDARY  ${m.secondaryMineral}`);
-        if(m.tertiaryMineral)lines.push(`  TERTIARY   ${m.tertiaryMineral}`);
-        lines.push('');
-      }
-      if(m.rsSignature)lines.push(`RS SIGNATURE   ${m.rsSignature}`);
-      if(m.quality)lines.push(`QUALITY        ${m.quality}`);
-      if(m.findDifficulty)lines.push(`FIND           ${m.findDifficulty}`);
-      if(m.mineDifficulty)lines.push(`MINE           ${m.mineDifficulty}`);
-      if(m.primaryUse)lines.push(`USE            ${m.primaryUse}`);
-      if(m.requiredShip)lines.push(`SHIP           ${m.requiredShip}`);
-      if(m.rating)lines.push(`MINING RATING  ${'★'.repeat(m.rating)}${'☆'.repeat(5-m.rating)}`);
-      if(m.usefulnessRating)lines.push(`USEFULNESS     ${'★'.repeat(m.usefulnessRating)}${'☆'.repeat(5-m.usefulnessRating)}`);
-      if(r.locNotes){lines.push('');lines.push(`NOTES  ${r.locNotes}`);}
-      document.getElementById('rock-details').textContent=lines.join('\n')||'No detailed data logged.';
+      showRockInfo(surfaceRocks[i]);
       break;
     }
   }
