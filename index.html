@@ -531,7 +531,7 @@ function renderAtlas(){
         <div class="loc-info">
           <div class="loc-name">${esc(l.name)}</div>
           <div class="loc-meta">${esc(l.system)} · ${l.type.toUpperCase()}${l.parent?' · '+esc(l.parent):''}</div>
-          <div class="loc-mineral-pills">${(l.minerals||[]).map(m=>`<span class="mineral-pill">${esc(m.name)}</span>`).join('')}</div>
+          <div class="loc-mineral-pills">${(l.minerals||[]).map(m=>`<span class="mineral-pill" title="${esc(m.secondaryMineral?'+ '+m.secondaryMineral+(m.tertiaryMineral?' + '+m.tertiaryMineral:''):'')}">${esc(m.name)}${m.secondaryMineral?'<span style=\'font-size:8px;opacity:0.6;margin-left:3px\'>+</span>':''}</span>`).join('')}</div>
         </div>
         <div class="loc-stats">
           <div class="loc-stat"><div class="loc-stat-val">${(l.minerals||[]).length}</div><div class="loc-stat-lbl">MINERALS</div></div>
@@ -1280,6 +1280,43 @@ document.getElementById('surface-canvas').addEventListener('mousemove',function(
   this.style.cursor=hit>=0?'pointer':'default';
 });
 
+document.getElementById('surface-canvas').addEventListener('click',function(e){
+  const rect=this.getBoundingClientRect();
+  const mx=e.clientX-rect.left,my=e.clientY-rect.top;
+  for(let i=0;i<surfaceRocks.length;i++){
+    const r=surfaceRocks[i];
+    const dx=mx-r.x,dy=my-r.y;
+    if(Math.sqrt(dx*dx+dy*dy)<r.r*1.1){
+      // Pin the info panel open
+      surfaceHover=i;
+      drawSurface();
+      const info=document.getElementById('rock-info');
+      const m=r.mineral;
+      info.style.display='block';
+      document.getElementById('rock-name').textContent=m.name.toUpperCase();
+      const lines=[];
+      if(m.secondaryMineral||m.tertiaryMineral){
+        lines.push('COMPOSITION');
+        lines.push(`  PRIMARY    ${m.name}`);
+        if(m.secondaryMineral)lines.push(`  SECONDARY  ${m.secondaryMineral}`);
+        if(m.tertiaryMineral)lines.push(`  TERTIARY   ${m.tertiaryMineral}`);
+        lines.push('');
+      }
+      if(m.rsSignature)lines.push(`RS SIGNATURE   ${m.rsSignature}`);
+      if(m.quality)lines.push(`QUALITY        ${m.quality}`);
+      if(m.findDifficulty)lines.push(`FIND           ${m.findDifficulty}`);
+      if(m.mineDifficulty)lines.push(`MINE           ${m.mineDifficulty}`);
+      if(m.primaryUse)lines.push(`USE            ${m.primaryUse}`);
+      if(m.requiredShip)lines.push(`SHIP           ${m.requiredShip}`);
+      if(m.rating)lines.push(`MINING RATING  ${'★'.repeat(m.rating)}${'☆'.repeat(5-m.rating)}`);
+      if(m.usefulnessRating)lines.push(`USEFULNESS     ${'★'.repeat(m.usefulnessRating)}${'☆'.repeat(5-m.usefulnessRating)}`);
+      if(r.locNotes){lines.push('');lines.push(`NOTES  ${r.locNotes}`);}
+      document.getElementById('rock-details').textContent=lines.join('\n')||'No detailed data logged.';
+      break;
+    }
+  }
+});
+
 function handleMapNodeClick(name){
   openSurface(name);
 }
@@ -1529,16 +1566,29 @@ function handleImport(e){
             locMap.get(e.location).push(e);
           });
           locations=[];
+          const knownMeta={'Aaron Halo':{system:'Stanton',type:'asteroid',parent:''},'Lyria':{system:'Stanton',type:'moon',parent:'ArcCorp'},'Hurston':{system:'Stanton',type:'planet',parent:''},'Daymar':{system:'Stanton',type:'moon',parent:'Crusader'},'Cellin':{system:'Stanton',type:'moon',parent:'Crusader'},'Yela':{system:'Stanton',type:'moon',parent:'Crusader'},'ArcCorp':{system:'Stanton',type:'planet',parent:''},'microTech':{system:'Stanton',type:'planet',parent:''},'Calliope':{system:'Stanton',type:'moon',parent:'microTech'},'Clio':{system:'Stanton',type:'moon',parent:'microTech'},'Euterpe':{system:'Stanton',type:'moon',parent:'microTech'}};
           locMap.forEach((entries,locName)=>{
-            const minerals=[];
-            entries.forEach(e=>{
-              [e.primaryMineral,e.secondaryMineral,e.tertiaryMineral].filter(Boolean).forEach(m=>{
-                if(!minerals.find(x=>x.name===m))minerals.push({name:m,concentration:'',mass:'',resistance:'',rating:0});
-              });
-            });
+            const meta=knownMeta[locName]||{system:'Stanton',type:'planet',parent:''};
+            // One rock (mineral entry) per original atlas entry
+            const minerals=entries.map(e=>({
+              name:e.primaryMineral||'',
+              secondaryMineral:e.secondaryMineral||'',
+              tertiaryMineral:e.tertiaryMineral||'',
+              rsSignature:e.rsSignature||'',
+              quality:e.quality||'',
+              findDifficulty:e.findDifficulty||'',
+              mineDifficulty:e.mineDifficulty||'',
+              primaryUse:e.primaryUse||'',
+              requiredShip:e.requiredShip||'',
+              usefulnessRating:e.usefulnessRating||0,
+              miningRating:e.miningRating||0,
+              qualityRating:e.qualityRating||0,
+              rating:e.miningRating||0,
+              isPriority:e.isPriority||false,
+            }));
             locations.push({
-              id:uid(),name:locName,system:'Stanton',type:'planet',parent:'',
-              notes:entries.map(e=>e.requiredShip).filter(Boolean).join(' | '),
+              id:uid(),name:locName,system:meta.system,type:meta.type,parent:meta.parent,
+              notes:entries[0]?entries[0].requiredShip||'':'',
               minerals,addedAt:Date.now(),updatedAt:Date.now()
             });
           });
