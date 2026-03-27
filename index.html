@@ -794,16 +794,24 @@ function renderMap(){
   layout.bodies.forEach(b=>{
     if(!b.ring)return;
     const cx=px(b.x),cy=py(b.y),r=sc*b.ringR;
-    rings+=`<ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${r*0.3}" fill="none" stroke="${b.color}" stroke-width="1.5" stroke-dasharray="2,5" opacity="0.35"/>`;
+    const hasEntry=locMap.has(b.name);
+    const ringStroke=hasEntry?'#20e880':b.color;
+    rings+=`<ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${r*0.3}" fill="none" stroke="${ringStroke}" stroke-width="1.5" stroke-dasharray="2,5" opacity="0.4"
+      style="cursor:pointer"
+      onmouseenter="showMapTooltip(event,'${esc(b.name)}','${b.type}',${hasEntry})"
+      onmouseleave="hideMapTooltip()"
+      onclick="handleMapNodeClick('${esc(b.name)}')"
+    />`;
+    // Label near ring
+    rings+=`<text x="${cx}" y="${cy-r*0.3-6}" text-anchor="middle" font-family="Share Tech Mono,monospace" font-size="7" fill="${hasEntry?'#20e880':b.color}" opacity="0.7" style="pointer-events:none">${b.name}</text>`;
     // Dots to suggest asteroid field
     for(let i=0;i<28;i++){
       const ang=(i/28)*Math.PI*2;
-      const jitter=(Math.random()-0.5)*sc*2;
       const rx2=r+(Math.random()-0.5)*sc*2;
       const ry2=r*0.3+(Math.random()-0.5)*sc*0.8;
-      const dx=Math.cos(ang)*rx2+jitter*0.3;
-      const dy=Math.sin(ang)*ry2+jitter*0.3;
-      rings+=`<circle cx="${cx+dx}" cy="${cy+dy}" r="${0.5+Math.random()}" fill="${b.color}" opacity="${0.2+Math.random()*0.3}"/>`;
+      const dx=Math.cos(ang)*rx2;
+      const dy=Math.sin(ang)*ry2;
+      rings+=`<circle cx="${cx+dx}" cy="${cy+dy}" r="${0.5+Math.random()}" fill="${b.color}" opacity="${0.2+Math.random()*0.3}" style="pointer-events:none"/>`;
     }
   });
 
@@ -905,7 +913,23 @@ function showMapTooltip(e,name,type,hasEntry){
 function hideMapTooltip(){document.getElementById('map-tooltip').style.display='none'}
 function handleMapNodeClick(name){
   const loc=locations.find(l=>l.name===name&&l.system===activeSystem);
-  if(loc){showPanel({target:document.querySelector('.nav-tab')});document.querySelectorAll('.nav-tab')[0].click();setTimeout(()=>{const c=document.getElementById('card-'+loc.id);if(c){c.scrollIntoView({behavior:'smooth'});c.classList.add('expanded');}},100);}
+  if(loc){
+    // Show tooltip with location info instead of navigating away
+    alert(`📍 ${loc.name}\n${loc.system} · ${loc.type}\n\nMinerals: ${(loc.minerals||[]).map(m=>m.name).join(', ')||'None logged'}\n\nNotes: ${loc.notes||'—'}`);
+  } else {
+    // No atlas entry yet
+    if(confirm(`No atlas entry for "${name}" yet.\nAdd one now?`)){
+      document.getElementById('f-name').value=name;
+      document.getElementById('f-system').value=activeSystem;
+      const b=SYSTEM_LAYOUTS[activeSystem].bodies.find(x=>x.name===name);
+      if(b)document.getElementById('f-type').value=b.type;
+      document.getElementById('mineral-entries').innerHTML='';
+      addMineralRow();
+      document.getElementById('edit-id').value='';
+      document.getElementById('modal-title').textContent='ADD LOCATION';
+      document.getElementById('modal-overlay').classList.add('open');
+    }
+  }
 }
 
 // ── JOURNEYS ──────────────────────────────────────────────────
