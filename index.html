@@ -390,6 +390,25 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
   </div>
 </div>
 
+<!-- SURFACE VIEW OVERLAY -->
+<div id="surface-overlay" style="display:none;position:fixed;inset:0;z-index:200;overflow:hidden">
+  <canvas id="surface-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+  <!-- Back button -->
+  <button onclick="closeSurface()" style="position:absolute;top:16px;left:16px;font-family:Orbitron,monospace;font-size:9px;letter-spacing:3px;background:rgba(2,8,16,.9);border:1px solid var(--border2);color:var(--cyan);padding:8px 16px;cursor:pointer;z-index:10;border-radius:4px">← BACK TO MAP</button>
+  <!-- Location title -->
+  <div id="surf-title" style="position:absolute;top:16px;left:50%;transform:translateX(-50%);font-family:Orbitron,monospace;font-size:14px;font-weight:900;color:var(--gold);letter-spacing:4px;text-shadow:0 0 20px rgba(232,160,32,.6);pointer-events:none;z-index:10"></div>
+  <div id="surf-subtitle" style="position:absolute;top:40px;left:50%;transform:translateX(-50%);font-family:Share Tech Mono,monospace;font-size:10px;color:var(--textdim);letter-spacing:3px;pointer-events:none;z-index:10;white-space:nowrap"></div>
+  <!-- Rock info panel -->
+  <div id="rock-info" style="display:none;position:absolute;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(4,13,24,.95);border:1px solid var(--border2);padding:16px 24px;min-width:320px;z-index:10;pointer-events:none">
+    <div style="position:absolute;top:-1px;left:-1px;width:10px;height:10px;border-top:2px solid var(--gold);border-left:2px solid var(--gold)"></div>
+    <div style="position:absolute;bottom:-1px;right:-1px;width:10px;height:10px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)"></div>
+    <div id="rock-name" style="font-family:Orbitron,monospace;font-size:13px;font-weight:900;color:var(--cyan);letter-spacing:2px;margin-bottom:8px"></div>
+    <div id="rock-details" style="font-family:Share Tech Mono,monospace;font-size:11px;color:var(--text2);line-height:1.7"></div>
+  </div>
+  <!-- Add entry button (when no entry exists) -->
+  <button id="surf-add-btn" onclick="surfaceAddEntry()" style="display:none;position:absolute;bottom:24px;right:24px;font-family:Orbitron,monospace;font-size:9px;letter-spacing:3px;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:10px 18px;cursor:pointer;z-index:10;border-radius:4px">+ LOG THIS LOCATION</button>
+</div>
+
 <!-- LOCATION MODAL -->
 <div id="modal-overlay">
   <div class="modal">
@@ -911,11 +930,347 @@ function showMapTooltip(e,name,type,hasEntry){
   tt.style.top=(e.clientY-wrap.top+12)+'px';
 }
 function hideMapTooltip(){document.getElementById('map-tooltip').style.display='none'}
-function handleMapNodeClick(name){
+// ── SURFACE VIEW ─────────────────────────────────────────────────────────────
+let surfaceBody=null;
+let surfaceRocks=[];
+let surfaceHover=-1;
+
+function seededRand(seed){
+  let s=seed;
+  return function(){s=(s*1664525+1013904223)&0xffffffff;return(s>>>0)/0xffffffff};
+}
+
+function makeRockPath(cx,cy,r,rng,sides){
+  sides=sides||Math.floor(7+rng()*5);
+  let d='';
+  for(let i=0;i<sides;i++){
+    const ang=(i/sides)*Math.PI*2-Math.PI/2;
+    const wobble=0.6+rng()*0.8;
+    const x=cx+Math.cos(ang)*r*wobble;
+    const y=cy+Math.sin(ang)*r*wobble;
+    d+=(i===0?'M':'L')+x.toFixed(1)+' '+y.toFixed(1);
+  }
+  return d+'Z';
+}
+
+function openSurface(name){
+  const body=SYSTEM_LAYOUTS[activeSystem].bodies.find(b=>b.name===name);
   const loc=locations.find(l=>l.name===name&&l.system===activeSystem);
-  if(loc){
-    // Show tooltip with location info instead of navigating away
-    alert(`📍 ${loc.name}\n${loc.system} · ${loc.type}\n\nMinerals: ${(loc.minerals||[]).map(m=>m.name).join(', ')||'None logged'}\n\nNotes: ${loc.notes||'—'}`);
+  surfaceBody={name,body,loc};
+  surfaceRocks=[];
+  surfaceHover=-1;
+
+  document.getElementById('surf-title').textContent=name.toUpperCase();
+  document.getElementById('surf-subtitle').textContent=
+    (body?body.type.toUpperCase():'LOCATION')+' · '+activeSystem.toUpperCase()+
+    (loc?' · '+(loc.minerals||[]).length+' MINERALS LOGGED':'· NO ENTRY');
+  document.getElementById('surf-add-btn').style.display=loc?'none':'block';
+  document.getElementById('rock-info').style.display='none';
+  document.getElementById('surface-overlay').style.display='block';
+  drawSurface();
+}
+
+function closeSurface(){
+  document.getElementById('surface-overlay').style.display='none';
+  surfaceBody=null;surfaceRocks=[];
+}
+
+function surfaceAddEntry(){
+  closeSurface();
+  const b=surfaceBody||{};
+  document.getElementById('f-name').value=b.name||'';
+  document.getElementById('f-system').value=activeSystem;
+  if(b.body)document.getElementById('f-type').value=b.body.type||'planet';
+  document.getElementById('mineral-entries').innerHTML='';
+  addMineralRow();
+  document.getElementById('edit-id').value='';
+  document.getElementById('modal-title').textContent='ADD LOCATION';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function drawSurface(){
+  const canvas=document.getElementById('surface-canvas');
+  const W=canvas.offsetWidth, H=canvas.offsetHeight;
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  const body=surfaceBody.body;
+  const loc=surfaceBody.loc;
+  const isAsteroid=body&&body.type==='asteroid';
+  const isMoon=body&&body.type==='moon';
+  const rng=seededRand(surfaceBody.name.split('').reduce((a,c)=>a+c.charCodeAt(0),0));
+  surfaceRocks=[];
+
+  // ── SKY / BACKGROUND ──
+  if(isAsteroid){
+    // Deep space — black gradient with nebula tint
+    const grad=ctx.createLinearGradient(0,0,0,H);
+    grad.addColorStop(0,'#000408');
+    grad.addColorStop(1,'#020c18');
+    ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+    // Stars
+    for(let i=0;i<200;i++){
+      const sx=rng()*W,sy=rng()*H,ss=rng()<0.05?2:1;
+      ctx.fillStyle=`rgba(255,255,255,${0.2+rng()*0.6})`;
+      ctx.beginPath();ctx.arc(sx,sy,ss*0.5,0,Math.PI*2);ctx.fill();
+    }
+  } else if(isMoon){
+    const grad=ctx.createLinearGradient(0,0,0,H);
+    grad.addColorStop(0,'#000204');
+    grad.addColorStop(0.5,'#020810');
+    grad.addColorStop(1,'#0a1520');
+    ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+    // Stars
+    for(let i=0;i<150;i++){
+      ctx.fillStyle=`rgba(255,255,255,${0.15+rng()*0.5})`;
+      ctx.beginPath();ctx.arc(rng()*W,rng()*H*0.6,rng()<0.05?1.5:0.8,0,Math.PI*2);ctx.fill();
+    }
+  } else {
+    // Planet — atmosphere sky
+    const bodyColor=body?body.color:'#405060';
+    const grad=ctx.createLinearGradient(0,0,0,H*0.65);
+    grad.addColorStop(0,'#000408');
+    grad.addColorStop(0.3,bodyColor+'44');
+    grad.addColorStop(1,bodyColor+'88');
+    ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+    // Haze bands
+    for(let i=0;i<3;i++){
+      const hy=H*0.1+rng()*H*0.3;
+      const hg=ctx.createLinearGradient(0,hy-20,0,hy+20);
+      hg.addColorStop(0,'transparent');
+      hg.addColorStop(0.5,bodyColor+'22');
+      hg.addColorStop(1,'transparent');
+      ctx.fillStyle=hg;ctx.fillRect(0,hy-20,W,40);
+    }
+  }
+
+  // ── HORIZON / GROUND ──
+  const horizonY=H*0.58;
+  if(isAsteroid){
+    // Dark rocky ground chunks floating in space
+    ctx.fillStyle='#0a0e14';
+    ctx.fillRect(0,horizonY,W,H-horizonY);
+    // Jagged horizon
+    ctx.beginPath();ctx.moveTo(0,horizonY);
+    for(let x=0;x<=W;x+=30){
+      ctx.lineTo(x,horizonY+(rng()-0.5)*25);
+    }
+    ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();
+    ctx.fillStyle='#080c12';ctx.fill();
+  } else if(isMoon){
+    // Grey regolith
+    const ggrad=ctx.createLinearGradient(0,horizonY,0,H);
+    ggrad.addColorStop(0,'#1a1a20');
+    ggrad.addColorStop(1,'#0a0a10');
+    ctx.fillStyle=ggrad;
+    ctx.beginPath();ctx.moveTo(0,horizonY);
+    for(let x=0;x<=W;x+=20){ctx.lineTo(x,horizonY+(rng()-0.5)*12);}
+    ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();ctx.fill();
+    // Craters
+    for(let i=0;i<8;i++){
+      const cx2=rng()*W,cy2=horizonY+rng()*(H-horizonY),cr=10+rng()*30;
+      ctx.strokeStyle='rgba(60,60,80,0.5)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.ellipse(cx2,cy2,cr,cr*0.4,0,0,Math.PI*2);ctx.stroke();
+      ctx.fillStyle='rgba(5,5,8,0.3)';ctx.fill();
+    }
+  } else {
+    // Planet ground — colored based on body
+    const bodyColor=body?body.color:'#405060';
+    const ggrad=ctx.createLinearGradient(0,horizonY,0,H);
+    ggrad.addColorStop(0,bodyColor+'cc');
+    ggrad.addColorStop(1,bodyColor+'44');
+    ctx.fillStyle=ggrad;
+    ctx.beginPath();ctx.moveTo(0,horizonY);
+    for(let x=0;x<=W;x+=15){ctx.lineTo(x,horizonY+(rng()-0.5)*18);}
+    ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();ctx.fill();
+    // Ground texture lines
+    for(let i=0;i<12;i++){
+      const ty=horizonY+30+rng()*(H-horizonY-30);
+      ctx.strokeStyle=`rgba(0,0,0,0.15)`;ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(0,ty);
+      for(let x=0;x<=W;x+=40){ctx.lineTo(x,ty+(rng()-0.5)*8);}
+      ctx.stroke();
+    }
+  }
+
+  // ── BACKGROUND ROCKS (decorative, not clickable) ──
+  const bgRockCount=12+Math.floor(rng()*8);
+  for(let i=0;i<bgRockCount;i++){
+    const rx=rng()*W;
+    const ry=horizonY+20+rng()*(H-horizonY-40);
+    const rr=6+rng()*18;
+    const baseCol=isAsteroid?'#1a2030':isMoon?'#252530':'#1e2830';
+    ctx.fillStyle=baseCol;
+    ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=1;
+    ctx.beginPath();
+    const path=makeRockPath(rx,ry,rr,rng);
+    const p=new Path2D(path);ctx.fill(p);ctx.stroke(p);
+    // Light catch
+    ctx.fillStyle='rgba(255,255,255,0.04)';
+    ctx.beginPath();ctx.ellipse(rx-rr*0.2,ry-rr*0.3,rr*0.4,rr*0.2,-0.3,0,Math.PI*2);ctx.fill();
+  }
+
+  // ── MINERAL ROCKS (clickable) ──
+  const minerals=loc?(loc.minerals||[]):[];
+  const rockCount=Math.max(minerals.length,1);
+  
+  // Place rocks in a natural scattered pattern across ground
+  const cols=Math.ceil(Math.sqrt(rockCount*1.8));
+  const cellW=W/cols;
+  
+  minerals.forEach((mineral,idx)=>{
+    const col=idx%cols;
+    const row=Math.floor(idx/cols);
+    const maxRows=Math.ceil(rockCount/cols);
+    const groundHeight=H-horizonY-20;
+    const zy=horizonY+30+row*(groundHeight/maxRows)+(rng()-0.5)*20;
+    const zx=cellW*col+cellW/2+(rng()-0.5)*cellW*0.4;
+    
+    // Size based on rating
+    const rating=mineral.rating||1;
+    const baseSize=28+rating*8;
+    const rockSize=baseSize+rng()*20;
+    
+    // Color based on mineral index — each mineral has a distinct hue
+    const hues=[180,30,280,120,60,320,200,80];
+    const hue=hues[idx%hues.length];
+    const rockBaseColor=isAsteroid?`hsl(${hue},20%,18%)`:
+                        isMoon?`hsl(${hue},10%,22%)`:
+                        `hsl(${hue},18%,20%)`;
+    const rockVeinColor=`hsl(${hue},60%,55%)`;
+    const rockHighlight=`hsl(${hue},40%,35%)`;
+
+    // Draw rock shadow
+    ctx.fillStyle='rgba(0,0,0,0.3)';
+    ctx.beginPath();ctx.ellipse(zx,zy+rockSize*0.8,rockSize*0.8,rockSize*0.2,0,0,Math.PI*2);ctx.fill();
+
+    // Main rock body
+    const rockPath=makeRockPath(zx,zy,rockSize,rng,8+Math.floor(rng()*4));
+    const p2d=new Path2D(rockPath);
+    ctx.fillStyle=rockBaseColor;ctx.fill(p2d);
+
+    // Surface facets
+    for(let f=0;f<3;f++){
+      const fx=zx+(rng()-0.5)*rockSize*0.6;
+      const fy=zy+(rng()-0.5)*rockSize*0.5;
+      const fr=rockSize*(0.15+rng()*0.2);
+      ctx.fillStyle=`rgba(255,255,255,${0.03+rng()*0.04})`;
+      ctx.beginPath();
+      const fp=new Path2D(makeRockPath(fx,fy,fr,rng,5));
+      ctx.fill(fp);
+    }
+
+    // Mineral vein lines
+    const veinCount=2+Math.floor(rng()*3);
+    for(let v=0;v<veinCount;v++){
+      const vx1=zx+(rng()-0.5)*rockSize*0.8;
+      const vy1=zy+(rng()-0.5)*rockSize*0.6;
+      const vx2=vx1+(rng()-0.5)*rockSize*0.5;
+      const vy2=vy1+(rng()-0.5)*rockSize*0.4;
+      ctx.strokeStyle=rockVeinColor;ctx.lineWidth=1+rng()*2;ctx.globalAlpha=0.4+rng()*0.3;
+      ctx.beginPath();ctx.moveTo(vx1,vy1);ctx.lineTo(vx2,vy2);ctx.stroke();
+      ctx.globalAlpha=1;
+    }
+
+    // Mineral crystal clusters
+    const crystalCount=3+Math.floor(rng()*4);
+    for(let c=0;c<crystalCount;c++){
+      const cx3=zx+(rng()-0.5)*rockSize*0.6;
+      const cy3=zy+(rng()-0.5)*rockSize*0.5;
+      const cs=2+rng()*5;
+      ctx.fillStyle=rockVeinColor;ctx.globalAlpha=0.5+rng()*0.4;
+      ctx.beginPath();
+      ctx.moveTo(cx3,cy3-cs);ctx.lineTo(cx3+cs*0.5,cy3+cs*0.5);
+      ctx.lineTo(cx3-cs*0.5,cy3+cs*0.5);ctx.closePath();ctx.fill();
+      ctx.globalAlpha=1;
+    }
+
+    // Light highlight (top-left)
+    const hlGrad=ctx.createRadialGradient(zx-rockSize*0.3,zy-rockSize*0.3,0,zx,zy,rockSize);
+    hlGrad.addColorStop(0,'rgba(255,255,255,0.12)');
+    hlGrad.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=hlGrad;ctx.fill(p2d);
+
+    // Outline
+    ctx.strokeStyle=surfaceHover===idx?'#00c8e8':'rgba(255,255,255,0.12)';
+    ctx.lineWidth=surfaceHover===idx?2:1;
+    ctx.stroke(p2d);
+
+    // Hover glow
+    if(surfaceHover===idx){
+      ctx.shadowColor=rockVeinColor;ctx.shadowBlur=16;
+      ctx.strokeStyle=rockVeinColor;ctx.lineWidth=2;ctx.stroke(p2d);
+      ctx.shadowBlur=0;
+    }
+
+    // Mineral name label
+    ctx.font=`bold ${Math.max(9,Math.min(13,rockSize*0.3))}px "Share Tech Mono"`;
+    ctx.textAlign='center';
+    ctx.fillStyle='rgba(0,0,0,0.7)';
+    ctx.fillText(mineral.name,zx+1,zy+rockSize+13+1);
+    ctx.fillStyle=surfaceHover===idx?'#00c8e8':rockVeinColor;
+    ctx.fillText(mineral.name,zx,zy+rockSize+13);
+
+    // Rating stars below name
+    if(mineral.rating){
+      ctx.font='8px serif';
+      ctx.fillStyle=surfaceHover===idx?'#ffcc55':'rgba(232,160,32,0.7)';
+      ctx.fillText('★'.repeat(mineral.rating)+'☆'.repeat(5-mineral.rating),zx,zy+rockSize+23);
+    }
+
+    surfaceRocks.push({idx,x:zx,y:zy,r:rockSize,mineral,path:rockPath});
+  });
+
+  // If no entry — show ghost rocks with "NO DATA" prompt
+  if(!loc||!minerals.length){
+    ctx.font='bold 13px "Share Tech Mono"';
+    ctx.textAlign='center';
+    ctx.fillStyle='rgba(74,112,144,0.6)';
+    ctx.fillText('NO MINERALS LOGGED FOR THIS LOCATION',W/2,H*0.75);
+    ctx.font='10px "Share Tech Mono"';
+    ctx.fillStyle='rgba(74,112,144,0.4)';
+    ctx.fillText('USE "+ LOG THIS LOCATION" TO ADD DATA',W/2,H*0.75+20);
+  }
+}
+
+// Mouse events on canvas
+document.getElementById('surface-canvas').addEventListener('mousemove',function(e){
+  const rect=this.getBoundingClientRect();
+  const mx=e.clientX-rect.left,my=e.clientY-rect.top;
+  let hit=-1;
+  for(let i=0;i<surfaceRocks.length;i++){
+    const r=surfaceRocks[i];
+    const dx=mx-r.x,dy=my-r.y;
+    if(Math.sqrt(dx*dx+dy*dy)<r.r*1.1){hit=i;break;}
+  }
+  if(hit!==surfaceHover){
+    surfaceHover=hit;
+    drawSurface();
+    const info=document.getElementById('rock-info');
+    if(hit>=0){
+      const m=surfaceRocks[hit].mineral;
+      info.style.display='block';
+      document.getElementById('rock-name').textContent=m.name.toUpperCase();
+      const lines=[];
+      if(m.concentration)lines.push(`CONCENTRATION  ${m.concentration}`);
+      if(m.mass)lines.push(`MASS           ${m.mass}`);
+      if(m.resistance)lines.push(`RESISTANCE     ${m.resistance}`);
+      if(m.rating)lines.push(`RATING         ${'★'.repeat(m.rating)}${'☆'.repeat(5-m.rating)}`);
+      if(m.primaryUse)lines.push(`USE            ${m.primaryUse}`);
+      if(m.findDifficulty)lines.push(`FIND           ${m.findDifficulty}`);
+      if(m.mineDifficulty)lines.push(`MINE           ${m.mineDifficulty}`);
+      if(m.quality)lines.push(`QUALITY        ${m.quality}`);
+      document.getElementById('rock-details').textContent=lines.join('
+')||'No detailed data logged.';
+    } else {
+      info.style.display='none';
+    }
+  }
+  this.style.cursor=hit>=0?'pointer':'default';
+});
+
+function handleMapNodeClick(name){
+  openSurface(name);
+}\n${loc.system} · ${loc.type}\n\nMinerals: ${(loc.minerals||[]).map(m=>m.name).join(', ')||'None logged'}\n\nNotes: ${loc.notes||'—'}`);
   } else {
     // No atlas entry yet
     if(confirm(`No atlas entry for "${name}" yet.\nAdd one now?`)){
